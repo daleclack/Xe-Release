@@ -26,7 +26,7 @@ static void gtkmain(GtkApplication *app,gpointer user_data){
     //Header bar
     header=gtk_header_bar_new();
     gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(header),TRUE);
-    gtk_header_bar_set_title(GTK_HEADER_BAR(header),"Xe release 10");
+    gtk_header_bar_set_title(GTK_HEADER_BAR(header),"Xe release 11");
     gtk_header_bar_set_decoration_layout(GTK_HEADER_BAR(header),"close,minimize:menu");
     //A application menu
     menubtn=gtk_menu_button_new();
