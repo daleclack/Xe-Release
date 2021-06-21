@@ -7,11 +7,7 @@ void app_init(GtkApplication *application);
 
 void MsgBox(const gchar *msg,gpointer app);
 
-void InputBox(const gchar *content,gpointer app);
-
-void InputBox_activated(GtkWidget *widget,int response,gpointer app);
-
-void entry_activate(GtkWidget *widget,gpointer data);
+void InputBox(const char *content,const char *filename,gpointer app);
 
 void config1_activated(GSimpleAction *action,GVariant *parameter,gpointer app);
 
