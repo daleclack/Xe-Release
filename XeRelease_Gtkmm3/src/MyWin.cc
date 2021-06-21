@@ -15,6 +15,17 @@ btn_ver("Xe-Ver")
     header.set_decoration_layout("close,minimize:menu");
     set_titlebar(header);
 
+    //Initalize Menu
+    menu_builder=Gtk::Builder::create_from_resource("/XeRelease/menubar.xml");
+    auto object=menu_builder->get_object("app-menu");
+    auto gmenu=Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+    popover.bind_model(gmenu);
+
+    //Initalize MenuButton
+    menubtn.set_image_from_icon_name("open-menu");
+    menubtn.set_popover(popover);
+    header.pack_end(menubtn);
+
     //Set Background Image
     auto pixbuf=Gdk::Pixbuf::create_from_xpm_data(img7);
     auto sized=pixbuf->scale_simple(640,360,Gdk::INTERP_BILINEAR);
