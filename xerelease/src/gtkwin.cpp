@@ -42,39 +42,69 @@ void MsgBox(const gchar *msg,gpointer app){
 }
 
 void config1_activated(GSimpleAction *action,
-                              GVariant      *parameter,
-                              gpointer      app)
+                       GVariant      *parameter,
+                       gpointer      app)
 {
     InputBox("Input config1",app);
     filename="config_lts";
 }
 
 void config2_activated(GSimpleAction *action,
-                              GVariant      *parameter,
-                              gpointer      app)
+                       GVariant      *parameter,
+                       gpointer      app)
 {
     InputBox("Input config2",app);
     filename="config_stable";
 }
 
 void config3_activated(GSimpleAction *action,
-                              GVariant      *parameter,
-                              gpointer      app)
+                       GVariant      *parameter,
+                       gpointer      app)
 {
     InputBox("Input config3",app);
     filename="config_devel";
 }
 
 void about_activated(GSimpleAction *action,
-                           GVariant      *parameter,
-                           gpointer      app)
+                     GVariant      *parameter,
+                     gpointer      app)
 {
-    MsgBox("About Xe release 10(Gtk3 Version)\n2019-2021 Xe Corporation",app);
+    GtkWindow *win;
+    win=gtk_application_get_active_window(GTK_APPLICATION(app));
+    //Authors and version Information
+    const char *authors[]={
+        "Dale Clack",
+        NULL
+    };
+    char *version;
+    version=g_strdup_printf("10.0\nRunning Against GTK %d.%d.%d",
+                            gtk_get_major_version(),
+                            gtk_get_minor_version(),
+                            gtk_get_micro_version());
+    //Application Logo
+    GdkPixbuf *pixbuf=gdk_pixbuf_new_from_resource("/gtk59/icon.png",NULL);
+    GdkPixbuf *sized=gdk_pixbuf_scale_simple(pixbuf,48,48,GDK_INTERP_BILINEAR);
+    //Show Dialog
+    GtkWidget *dialog;
+    dialog=gtk_about_dialog_new();
+    gtk_show_about_dialog(win,
+    "program-name","Xe Release",
+    "version",version,
+    "copyright", "© 2019—2021 The Xe Project",
+    "comments", "A Tool for Xe Release Version",
+    "authors",authors,
+    "logo",sized,
+    "title","About Xe-Release",
+    NULL);
+    g_object_unref(pixbuf);
+    g_object_unref(sized);
+    g_free(version);
+    //MsgBox("About Xe release 10(Gtk3 Version)\n2019-2021 Xe Corporation",app);
 }
 
 void quit_activated(GSimpleAction *action,
-                           GVariant      *parameter,
-                           gpointer      app)
+                    GVariant      *parameter,
+                    gpointer      app)
 {
     g_application_quit(G_APPLICATION(app));
 }
