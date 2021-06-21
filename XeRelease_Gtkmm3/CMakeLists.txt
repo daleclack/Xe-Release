@@ -1,6 +1,6 @@
 set(CMAKE_CXX_STANDARD 17)
 cmake_minimum_required(VERSION 3.0.0)
-project(gtk85 VERSION 0.1.0)
+project(XeRelease VERSION 12.0.0)
 
 include(CTest)
 enable_testing()
@@ -16,7 +16,7 @@ pkg_check_modules (GTKMM3 REQUIRED gtkmm-3.0)
 include_directories (${GTKMM3_INCLUDE_DIRS})
 link_directories (${GTKMM3_LIBRARY_DIRS})
 
-add_executable(gtk85 src/main.cc src/MyWin.cc src/MyStack.cc)
+add_executable(XeRelease src/main.cc src/MyWin.cc)
 
 IF(WIN32)
 	SET(CMAKE_EXE_LINKER_FLAGS -mwindows)
