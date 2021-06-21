@@ -75,7 +75,32 @@ void about_activated(GSimpleAction *action,
                            GVariant      *parameter,
                            gpointer      app)
 {
-    MsgBox("About Xe release 10(Gtk4 Version)\n2019-2021 Xe Corporation",app);
+    GtkWindow *win;
+    win=gtk_application_get_active_window(GTK_APPLICATION(app));
+    //Authors and version Information
+    const char *authors[]={
+        "Dale Clack",
+        NULL
+    };
+    char *version;
+    version=g_strdup_printf("10.0\nRunning Against GTK %d.%d.%d",
+                            gtk_get_major_version(),
+                            gtk_get_minor_version(),
+                            gtk_get_micro_version());
+    //Show Dialog
+    GtkWidget *dialog;
+    dialog=gtk_about_dialog_new();
+    gtk_show_about_dialog(win,
+    "program-name","Xe Release",
+    "version",version,
+    "copyright", "© 2019—2021 The Xe Project",
+    "comments", "A Tool for Xe Release Version",
+    "authors",authors,
+    "logo-icon-name","Xe-Release",
+    "title","About Xe-Release",
+    NULL);
+    g_free(version);
+    //MsgBox("About Xe release 10(Gtk4 Version)\n2019-2021 Xe Corporation",app);
 }
 
 void quit_activated(GSimpleAction *action,
