@@ -6,7 +6,7 @@ MyWin::MyWin()
 btn_ver("Xe-Ver")
 {
     //Initalize window
-    set_icon_name("org.gtk.daleclack");
+    set_icon_name("Xe-Release");
     set_default_size(640,360);
 
     //Add HeaderBar

@@ -16,7 +16,7 @@ pkg_check_modules (GTKMM3 REQUIRED gtkmm-3.0)
 include_directories (${GTKMM3_INCLUDE_DIRS})
 link_directories (${GTKMM3_LIBRARY_DIRS})
 
-add_executable(XeRelease src/main.cc src/MyWin.cc)
+add_executable(XeRelease src/main.cc src/MyWin.cc src/resources.cpp)
 
 IF(WIN32)
 	SET(CMAKE_EXE_LINKER_FLAGS -mwindows)

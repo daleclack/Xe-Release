@@ -1,0 +1,1 @@
+glib-compile-resources xerelease.gresource.xml --target=../src/resources.cpp --generate-source
