@@ -55,6 +55,7 @@ void MyWin::titlebar_init(){
     //Add Menu Actions
     add_action("back1",sigc::mem_fun(*this,&MyWin::background1));
     add_action("back2",sigc::mem_fun(*this,&MyWin::background2));
+    add_action("about",sigc::mem_fun(*this,&MyWin::about_dialog));
     add_action("quit",sigc::mem_fun(*this,&MyWin::hide));
 
     //Initalize MenuButton
@@ -83,4 +84,23 @@ void MyWin::background2(){
     //Free Memory
     pixbuf.reset();
     sized.reset();
+}
+
+void MyWin::about_dialog(){
+    char *version;
+    version=g_strdup_printf("12.0\nRunning Against Gtkmm %d.%d.%d",
+                            GTKMM_MAJOR_VERSION,
+                            GTKMM_MINOR_VERSION,
+                            GTKMM_MICRO_VERSION);
+    const char *authors[]={"Dale Clack",NULL};
+    gtk_show_about_dialog(GTK_WINDOW(this->gobj()),
+                          "program-name","Xe Release",
+                          "version",version,
+                          "copyright", "© 2019—2021 The Xe Project",
+                          "comments", "A program for generate version",
+                          "authors",authors,
+                          "license-type",GTK_LICENSE_GPL_3_0,
+                          "logo-icon-name","Xe-Release",
+                          "title","About Xe Release",
+                          NULL);
 }
