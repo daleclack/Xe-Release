@@ -6,24 +6,35 @@
                 <attribute name='label'>Config</attribute>
                 <item>
                     <attribute name='label'>Change Xe-lts config</attribute>
-                    <attribute name='action'>app.config1</attribute>
+                    <attribute name='action'>win.config1</attribute>
                 </item>
                 <item>
                     <attribute name='label'>Change Xe-stable config</attribute>
-                    <attribute name='action'>app.config2</attribute>
+                    <attribute name='action'>win.config2</attribute>
                 </item>
                 <item>
                     <attribute name='label'>Change Xe-devel config</attribute>
-                    <attribute name='action'>app.config3</attribute>
+                    <attribute name='action'>win.config3</attribute>
+                </item>
+            </submenu>
+            <submenu>
+                <attribute name='label'>Backgrounds</attribute>
+                <item>
+                    <attribute name='label'>XeRelease8-9</attribute>
+                    <attribute name='action'>win.back1</attribute>
+                </item>
+                <item>
+                    <attribute name='label'>XeRelease10-12</attribute>
+                    <attribute name='action'>win.back2</attribute>
                 </item>
             </submenu>
             <item>
                 <attribute name='label'>About</attribute>
-                <attribute name='action'>app.about</attribute>
+                <attribute name='action'>win.about</attribute>
             </item>
             <item>
                 <attribute name='label'>Exit</attribute>
-                <attribute name='action'>app.quit</attribute>
+                <attribute name='action'>win.quit</attribute>
             </item>
         </section>
     </menu>
