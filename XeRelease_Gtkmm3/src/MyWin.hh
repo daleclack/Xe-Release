@@ -25,4 +25,7 @@ private:
     //Backgrounds
     void background1();
     void background2();
+
+    //Signal Handlers
+    void about_dialog();
 };
