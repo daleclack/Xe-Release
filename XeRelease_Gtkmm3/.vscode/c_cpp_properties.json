@@ -91,6 +91,7 @@
             "name": "win32",
             "includePath": [
                 "${workspaceFolder}/**",
+                "{$workspaceFolder}/../**",
                 "${workspaceFolder}/src/**",
                 //I assume the msys2 installed in D:/msys64
                 "D:/msys64/mingw64/include/gtkmm-3.0/**",

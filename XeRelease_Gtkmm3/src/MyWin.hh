@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gtkmm.h>
+#include "MyDialog.hh"
 
 class MyWin : public Gtk::ApplicationWindow{
 public:
@@ -22,10 +23,14 @@ private:
     Gtk::PopoverMenu popover;
     void titlebar_init();
 
+    //Dialogs
+    MsgBox msg_dialog;
+
     //Backgrounds
     void background1();
     void background2();
 
     //Signal Handlers
     void about_dialog();
+    void main_releases();
 };

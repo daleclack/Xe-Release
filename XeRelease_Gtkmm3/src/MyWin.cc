@@ -2,9 +2,16 @@
 #include "img7.xpm"
 #include "winpe.xpm"
 
+enum Releases{
+    LongTerm,
+    Stable,
+    Develop,
+};
+
 MyWin::MyWin()
 :btn_box(Gtk::ORIENTATION_VERTICAL,5),
-btn_ver("Xe-Ver")
+btn_ver("Xe-Ver"),
+msg_dialog(*this)
 {
     //Initalize window
     set_icon_name("Xe-Release");
@@ -29,6 +36,7 @@ btn_ver("Xe-Ver")
     btn_box.pack_start(combo,Gtk::PACK_SHRINK);
     btn_box.pack_start(btn_ver,Gtk::PACK_SHRINK);
     overlay.add_overlay(btn_box);
+    btn_ver.signal_clicked().connect(sigc::mem_fun(*this,&MyWin::main_releases));
 
     //Show everything
     add(overlay);
@@ -84,6 +92,23 @@ void MyWin::background2(){
     //Free Memory
     pixbuf.reset();
     sized.reset();
+}
+
+void MyWin::main_releases(){
+    int version=combo.get_active_row_number();
+    switch (version)
+    {
+    case Releases::LongTerm:
+        msg_dialog.Init("Xe LongTerm");
+        break;
+    case Releases::Stable:
+        msg_dialog.Init("Xe Stable");
+        break;
+    case Releases::Develop:
+        msg_dialog.Init("Xe Develop");
+        break;
+    }
+    msg_dialog.show_all();
 }
 
 void MyWin::about_dialog(){
