@@ -99,13 +99,13 @@ void MyWin::main_releases(){
     switch (version)
     {
     case Releases::LongTerm:
-        msg_dialog.Init("Xe LongTerm");
+        msg_dialog.Init("Xe LongTerm Version:");
         break;
     case Releases::Stable:
-        msg_dialog.Init("Xe Stable");
+        msg_dialog.Init("Xe Stable Version:");
         break;
     case Releases::Develop:
-        msg_dialog.Init("Xe Develop");
+        msg_dialog.Init("Xe Develop Version");
         break;
     }
     msg_dialog.show_all();
