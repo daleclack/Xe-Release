@@ -3,7 +3,19 @@
 #include <gtkmm.h>
 
 class MyDialog : public Gtk::Dialog{
-
+public:
+    MyDialog(Gtk::Window &parent);
+    void set_filename(const char *filename);
+    void set_msg(Glib::ustring msg);
+protected:
+    void on_response(int response_id) override;
+private:
+    //Child widgets
+    Gtk::Label msg_label,label2;
+    Gtk::Entry entry;
+    Gtk::Box *vbox;
+    //File Proprties
+    char filename1[57];
 };
 
 class MsgBox : public Gtk::Dialog{

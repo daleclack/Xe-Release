@@ -11,7 +11,8 @@ enum Releases{
 MyWin::MyWin()
 :btn_box(Gtk::ORIENTATION_VERTICAL,5),
 btn_ver("Xe-Ver"),
-msg_dialog(*this)
+msg_dialog(*this),
+input_dialog(*this)
 {
     //Initalize window
     set_icon_name("Xe-Release");
@@ -61,6 +62,9 @@ void MyWin::titlebar_init(){
     popover.bind_model(gmenu);
 
     //Add Menu Actions
+    add_action("config1",sigc::mem_fun(*this,&MyWin::config_lts));
+    add_action("config2",sigc::mem_fun(*this,&MyWin::config_stable));
+    add_action("config3",sigc::mem_fun(*this,&MyWin::config_devel));
     add_action("back1",sigc::mem_fun(*this,&MyWin::background1));
     add_action("back2",sigc::mem_fun(*this,&MyWin::background2));
     add_action("about",sigc::mem_fun(*this,&MyWin::about_dialog));
@@ -92,6 +96,24 @@ void MyWin::background2(){
     //Free Memory
     pixbuf.reset();
     sized.reset();
+}
+
+void MyWin::config_lts(){
+    input_dialog.set_msg("Input Xe LTS Config");
+    input_dialog.set_filename("config_lts");
+    input_dialog.show_all();
+}
+
+void MyWin::config_stable(){
+    input_dialog.set_msg("Input Xe Stable Config");
+    input_dialog.set_filename("config_stable");
+    input_dialog.show_all();
+}
+
+void MyWin::config_devel(){
+    input_dialog.set_msg("Input Xe Devel Config");
+    input_dialog.set_filename("config_devel");
+    input_dialog.show_all();
 }
 
 void MyWin::main_releases(){

@@ -25,10 +25,16 @@ private:
 
     //Dialogs
     MsgBox msg_dialog;
+    MyDialog input_dialog;
 
     //Backgrounds
     void background1();
     void background2();
+
+    //Version Configs
+    void config_lts();
+    void config_stable();
+    void config_devel();
 
     //Signal Handlers
     void about_dialog();
