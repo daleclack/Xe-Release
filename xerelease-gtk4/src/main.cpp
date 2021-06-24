@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include "gtkwin.h"
+#include "xeapi.h"
 #include "src/img7.xpm"
 
 static GActionEntry app_entry[] =
@@ -44,7 +45,7 @@ static void gtkmain(GtkApplication *app,gpointer user_data){
     gtk_overlay_set_child(GTK_OVERLAY(overlay),background);
 
     //Main widgets
-    GtkWidget *vbox,*combo,*btn_ver;
+    GtkWidget *vbox,*api_label,*combo,*btn_ver;
     vbox=gtk_box_new(GTK_ORIENTATION_VERTICAL,10);
 
     //Combo box to select version
@@ -56,6 +57,17 @@ static void gtkmain(GtkApplication *app,gpointer user_data){
     btn_ver=gtk_button_new_with_label("Xe-Ver");
     g_signal_connect(btn_ver,"clicked",G_CALLBACK(print),combo);
 
+    //Initalize api label
+    time_t t;
+    struct tm *local;
+    t=time(NULL);
+    local=localtime(&t);
+    char api_version[57];
+    sprintf(api_version,"Xe Api Version:%d",xeapi1(local));
+    api_label=gtk_label_new(api_version);
+
+    //Pack widgets
+    gtk_box_append(GTK_BOX(vbox),api_label);
     gtk_box_append(GTK_BOX(vbox),combo);
     gtk_box_append(GTK_BOX(vbox),btn_ver);
     gtk_widget_set_halign(vbox,GTK_ALIGN_CENTER);
