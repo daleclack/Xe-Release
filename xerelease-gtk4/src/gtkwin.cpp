@@ -91,7 +91,7 @@ void about_activated(GSimpleAction *action,
         NULL
     };
     char *version;
-    version=g_strdup_printf("11.0\nRunning Against GTK %d.%d.%d",
+    version=g_strdup_printf("11.1\nRunning Against GTK %d.%d.%d",
                             gtk_get_major_version(),
                             gtk_get_minor_version(),
                             gtk_get_micro_version());
