@@ -9,7 +9,7 @@ Notice : The build system switched to cmake,use cmake to build binaries for any 
 
 (The binaries have moved to release page)
 
-Current version is xe-release 11(Gtk3 and Gtk4 Version);XeRelease 12(Gtkmm3 Version)
+Current version is xe-release 11.1(Gtk3 and Gtk4 Version);XeRelease 12(Gtkmm3 Version)
 
 Notice:The Gtk4 version only supports linux
 
