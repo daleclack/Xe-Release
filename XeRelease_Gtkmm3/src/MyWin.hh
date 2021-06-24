@@ -14,6 +14,7 @@ private:
     Gtk::Image background;
     Gtk::Overlay overlay;
     Gtk::Box btn_box;
+    Gtk::Label api_label;
     Gtk::ComboBoxText combo;
     Gtk::Button btn_ver;
 
@@ -32,9 +33,13 @@ private:
     void background2();
 
     //Version Configs
+    FILE *fp;//file pointer to read file
+    struct tm *local;
+    char api_version[57];
     void config_lts();
     void config_stable();
     void config_devel();
+    bool get_config(const char *filename);
 
     //Signal Handlers
     void about_dialog();

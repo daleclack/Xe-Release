@@ -1,6 +1,9 @@
 #include "MyWin.hh"
 #include "img7.xpm"
 #include "winpe.xpm"
+#include "xeapi.hh"
+#include "xerelease.hh"
+#include <cstdio>
 
 enum Releases{
     LongTerm,
@@ -25,6 +28,15 @@ input_dialog(*this)
     gtk_image_set_from_pixbuf(background.gobj(),sized->gobj());
     overlay.add(background);
 
+    //Get Local time
+    time_t t;
+    t=time(NULL);
+    local=localtime(&t);
+
+    //Initalize Api Label
+    sprintf(api_version,"Xe Api Version:%d",xeapi1(local));
+    api_label.set_label(api_version);
+
     //Initalize combobox
     combo.append("Longterm");
     combo.append("Stable");
@@ -34,6 +46,7 @@ input_dialog(*this)
     //Add Main Controls
     btn_box.set_halign(Gtk::ALIGN_CENTER);
     btn_box.set_valign(Gtk::ALIGN_CENTER);
+    btn_box.pack_start(api_label,Gtk::PACK_SHRINK);
     btn_box.pack_start(combo,Gtk::PACK_SHRINK);
     btn_box.pack_start(btn_ver,Gtk::PACK_SHRINK);
     overlay.add_overlay(btn_box);
@@ -98,6 +111,16 @@ void MyWin::background2(){
     sized.reset();
 }
 
+bool MyWin::get_config(const char *filename){
+    fp=fopen(filename,"rt+");
+    if(fp==NULL){
+        msg_dialog.Init("The config file not exist!\nUse Change config menu for a config");
+        msg_dialog.show_all();
+        return false;
+    }
+    return true;
+}
+
 void MyWin::config_lts(){
     input_dialog.set_msg("Input Xe LTS Config");
     input_dialog.set_filename("config_lts");
@@ -117,20 +140,40 @@ void MyWin::config_devel(){
 }
 
 void MyWin::main_releases(){
+    //Get Selection
     int version=combo.get_active_row_number();
-    switch (version)
+    char str[57],ver[15];//Version and Full Version
+    switch (version)//Use Selection to Perform
     {
     case Releases::LongTerm:
-        msg_dialog.Init("Xe LongTerm Version:");
+        if(get_config("config_lts")){
+            fscanf(fp,"%s",ver);
+            longterm(local,ver,str);
+            msg_dialog.Init(str);
+            msg_dialog.show_all();
+            fclose(fp);
+        }
         break;
     case Releases::Stable:
-        msg_dialog.Init("Xe Stable Version:");
+        if(get_config("config_stable")){
+            fscanf(fp,"%s",ver);
+            stable(local,ver,str);
+            msg_dialog.Init(str);
+            msg_dialog.show_all();
+            fclose(fp);
+        }
         break;
     case Releases::Develop:
-        msg_dialog.Init("Xe Develop Version");
+        if(get_config("config_devel")){
+            fscanf(fp,"%s",ver);
+            develop(local,ver,str);
+            msg_dialog.Init(str);
+            msg_dialog.show_all();
+            fclose(fp);
+        }
         break;
     }
-    msg_dialog.show_all();
+    
 }
 
 void MyWin::about_dialog(){
