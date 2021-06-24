@@ -1,6 +1,6 @@
 set(CMAKE_CXX_STANDARD 17)
 cmake_minimum_required(VERSION 3.0.0)
-project(xerelease-gtk4 VERSION 10.0.0)
+project(xerelease-gtk4 VERSION 11.1.0)
 
 include(CTest)
 enable_testing()
