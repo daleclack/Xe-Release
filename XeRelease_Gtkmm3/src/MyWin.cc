@@ -178,7 +178,7 @@ void MyWin::main_releases(){
 
 void MyWin::about_dialog(){
     char *version;
-    version=g_strdup_printf("12.0\nRunning Against Gtkmm %d.%d.%d",
+    version=g_strdup_printf("12.1\nRunning Against Gtkmm %d.%d.%d",
                             GTKMM_MAJOR_VERSION,
                             GTKMM_MINOR_VERSION,
                             GTKMM_MICRO_VERSION);

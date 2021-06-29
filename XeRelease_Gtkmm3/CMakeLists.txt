@@ -1,6 +1,6 @@
 set(CMAKE_CXX_STANDARD 17)
 cmake_minimum_required(VERSION 3.0.0)
-project(XeRelease VERSION 12.0.0)
+project(XeRelease VERSION 12.1.0)
 
 include(CTest)
 enable_testing()
@@ -22,7 +22,7 @@ if(WIN32)
 	set_property(SOURCE icon.rc APPEND PROPERTY
         OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/icon.ico
         )
-	add_executable(XeRelease ${app_WINRC} src/main.cc src/MyWin.cc src/MyDialog.cc 
+	add_executable(XeRelease WIN32 ${app_WINRC} src/main.cc src/MyWin.cc src/MyDialog.cc 
     src/xerelease.cc src/xeapi.cc src/resources.cpp)
 else()
     add_executable(XeRelease src/main.cc src/MyWin.cc src/MyDialog.cc 
