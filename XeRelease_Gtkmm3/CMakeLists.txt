@@ -16,12 +16,18 @@ pkg_check_modules (GTKMM3 REQUIRED gtkmm-3.0)
 include_directories (${GTKMM3_INCLUDE_DIRS})
 link_directories (${GTKMM3_LIBRARY_DIRS})
 
-add_executable(XeRelease src/main.cc src/MyWin.cc src/MyDialog.cc 
-src/xerelease.cc src/xeapi.cc src/resources.cpp)
+if(WIN32)
+    SET(CMAKE_RC_COMPILER x86_64-w64-mingw32-windres)
+	set(app_WINRC icon.rc)
+	set_property(SOURCE icon.rc APPEND PROPERTY
+        OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/icon.ico
+        )
+	add_executable(XeRelease ${app_WINRC} src/main.cc src/MyWin.cc src/MyDialog.cc 
+    src/xerelease.cc src/xeapi.cc src/resources.cpp)
+else()
+    add_executable(XeRelease src/main.cc src/MyWin.cc src/MyDialog.cc 
+    src/xerelease.cc src/xeapi.cc src/resources.cpp)
+endif(WIN32)
 
-IF(WIN32)
-	SET(CMAKE_EXE_LINKER_FLAGS -mwindows)
-ENDIF(WIN32)
-
-add_definitions (${GTKMM3_CFLAGS_OTHER})
+SET (CMAKE_EXTRA_CXX_FLAGS ${GTKMM3_CFLAGS_OTHER})
 target_link_libraries (${PROJECT_NAME} ${GTKMM3_LIBRARIES})
