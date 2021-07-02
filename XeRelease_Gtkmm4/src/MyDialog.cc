@@ -14,6 +14,7 @@ vbox(Gtk::Orientation::VERTICAL,5)
     set_transient_for(parent);
     //Add Widgets
     entry.set_text("default config");
+    entry.set_activates_default();
     box=get_content_area();
     vbox.append(label1);
     vbox.append(msg_label);
