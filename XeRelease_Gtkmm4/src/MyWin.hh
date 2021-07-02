@@ -11,7 +11,7 @@ private:
     Glib::RefPtr<Gtk::Builder> menu_builder;
 
     //Main window
-    Gtk::Image background;
+    Gtk::Picture background;
     Gtk::Overlay overlay;
     Gtk::Box btn_box;
     Gtk::Label api_label;

@@ -11,9 +11,9 @@ protected:
     void on_response(int response_id) override;
 private:
     //Child widgets
-    Gtk::Label msg_label,label2;
+    Gtk::Label msg_label,label1;
     Gtk::Entry entry;
-    Gtk::Box *vbox;
+    Gtk::Box *box,vbox;
     //File Proprties
     char filename1[57];
 };
