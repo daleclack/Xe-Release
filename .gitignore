@@ -10,6 +10,9 @@
 */Release/*
 */Testing/*
 
+#Meson Build Directory
+*/builddir/*
+
 #cmake files for mingw
 *.cmake
 *.dir

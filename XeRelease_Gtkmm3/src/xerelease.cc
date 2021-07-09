@@ -83,7 +83,7 @@ void stable(struct tm *local,char rel[],char *str)
     sprintf(str,"Xeinit stable Version:%s.%d\n",rel,devel1);
     freopen(filename,"a",stdout);
     printf("%4d-%02d-%02d ",local->tm_year+1900,local->tm_mon+1,local->tm_mday);//output:development branch time in xe-release
-    printf("%s.%d Api:%d\n",rel,devel1,xeapi1(local));
+    printf("%s.%d build:%d\n",rel,devel1,xeapi1(local));
     fclose(stdout);
     return ;
 }
@@ -97,7 +97,7 @@ void develop(struct tm *local,char devel[],char *str){
     sprintf(str,"Xeinit devel Version:%s.%d\n",devel,devel1);
     freopen(filename,"a",stdout);
     printf("%4d-%02d-%02d ",local->tm_year+1900,local->tm_mon+1,local->tm_mday);//output:development branch time in xe-release
-    printf("%s.%d Api:%d\n",devel,devel1,xeapi1(local));
+    printf("%s.%d build:%d\n",devel,devel1,xeapi1(local));
     fclose(stdout);
     return ;
 }
