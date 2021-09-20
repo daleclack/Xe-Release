@@ -6,16 +6,15 @@
 #include <cstdio>
 
 enum Releases{
-    LongTerm,
+    LTS,
     Stable,
-    Develop,
+    Dev
 };
 
 MyWin::MyWin()
 :btn_box(Gtk::ORIENTATION_VERTICAL,5),
 btn_ver("Xe-Ver"),
-msg_dialog(*this),
-input_dialog(*this)
+msg_dialog(*this)
 {
     //Initalize window
     set_icon_name("Xe-Release");
@@ -63,7 +62,7 @@ input_dialog(*this)
 
 void MyWin::titlebar_init(){
     //Add HeaderBar
-    header.set_title("Xe Release 12");
+    header.set_title("Xe Release 13");
     header.set_show_close_button();
     header.set_decoration_layout("close,minimize:menu");
     set_titlebar(header);
@@ -75,9 +74,7 @@ void MyWin::titlebar_init(){
     popover.bind_model(gmenu);
 
     //Add Menu Actions
-    add_action("config1",sigc::mem_fun(*this,&MyWin::config_lts));
-    add_action("config2",sigc::mem_fun(*this,&MyWin::config_stable));
-    add_action("config3",sigc::mem_fun(*this,&MyWin::config_devel));
+    add_action("configs",sigc::mem_fun(*this,&MyWin::config_dialog));
     add_action("back1",sigc::mem_fun(*this,&MyWin::background1));
     add_action("back2",sigc::mem_fun(*this,&MyWin::background2));
     add_action("about",sigc::mem_fun(*this,&MyWin::about_dialog));
@@ -111,74 +108,61 @@ void MyWin::background2(){
     sized.reset();
 }
 
-bool MyWin::get_config(const char *filename){
-    fp=fopen(filename,"rt+");
-    if(fp==NULL){
-        msg_dialog.Init("The config file not exist!\nUse Change config menu for a config");
-        msg_dialog.show_all();
-        return false;
-    }
-    return true;
+void MyWin::config_dialog(){
+    auto dialog=MyDialog::create(*this);
+    dialog->signal_hide().connect(sigc::bind(sigc::mem_fun(*this,&MyWin::on_window_hide),dialog));
+    dialog->present();
 }
 
-void MyWin::config_lts(){
-    input_dialog.set_msg("Input Xe LTS Config");
-    input_dialog.set_filename("config_lts");
-    input_dialog.show_all();
-}
-
-void MyWin::config_stable(){
-    input_dialog.set_msg("Input Xe Stable Config");
-    input_dialog.set_filename("config_stable");
-    input_dialog.show_all();
-}
-
-void MyWin::config_devel(){
-    input_dialog.set_msg("Input Xe Devel Config");
-    input_dialog.set_filename("config_devel");
-    input_dialog.show_all();
+void MyWin::on_window_hide(Gtk::Window* window){
+    delete window;
 }
 
 void MyWin::main_releases(){
     //Get Selection
     int version=combo.get_active_row_number();
-    char str[57],ver[15];//Version and Full Version
+    std::string ver;//Version and Full Version
+    char str[57];
+    //Get Configs
+
     switch (version)//Use Selection to Perform
     {
-    case Releases::LongTerm:
-        if(get_config("config_lts")){
-            fscanf(fp,"%s",ver);
-            longterm(local,ver,str);
+    case Releases::LTS:
+        if(readCfgFile("xe_config","Longterm",ver)){
+            longterm(local,ver.c_str(),str);
             msg_dialog.Init(str);
-            msg_dialog.show_all();
-            fclose(fp);
+            msg_dialog.present();
+        }else{
+            msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
+            msg_dialog.present();
         }
         break;
     case Releases::Stable:
-        if(get_config("config_stable")){
-            fscanf(fp,"%s",ver);
-            stable(local,ver,str);
+        if(readCfgFile("xe_config","Stable",ver)){
+            stable(local,ver.c_str(),str);
             msg_dialog.Init(str);
             msg_dialog.show_all();
-            fclose(fp);
+        }else{
+            msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
+            msg_dialog.show_all();
         }
         break;
-    case Releases::Develop:
-        if(get_config("config_devel")){
-            fscanf(fp,"%s",ver);
-            develop(local,ver,str);
+    case Releases::Dev:
+        if(readCfgFile("xe_config","Develop",ver)){
+            develop(local,ver.c_str(),str);
             msg_dialog.Init(str);
             msg_dialog.show_all();
-            fclose(fp);
+        }else{
+            msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
+            msg_dialog.show_all();
         }
         break;
     }
-    
 }
 
 void MyWin::about_dialog(){
     char *version;
-    version=g_strdup_printf("12.1\nRunning Against Gtkmm %d.%d.%d",
+    version=g_strdup_printf("13.0\nRunning Against Gtkmm %d.%d.%d",
                             GTKMM_MAJOR_VERSION,
                             GTKMM_MINOR_VERSION,
                             GTKMM_MICRO_VERSION);

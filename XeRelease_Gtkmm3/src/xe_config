@@ -1,0 +1,6 @@
+This is the config file of Xe Release
+See more on github.com/daleclack/Xe-Release
+
+Longterm=default_config
+Stable=default_config
+Develop=default_config

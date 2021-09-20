@@ -12,6 +12,10 @@ gresources = gnome.compile_resources(
     c_name: 'resources'
 )
 
+#source files
+src=['src/main.cc', 'src/MyWin.cc', 'src/MyDialog.cc', 
+     'src/xeapi.cc', 'src/xerelease.cc', '../cfgfile2/cfgfile.cc']
+
 #The Gtkmm Library as a dependency
 gtkdep = dependency('gtkmm-3.0')
 
@@ -22,10 +26,8 @@ dir_include = include_directories('..')
 if host_machine.system() == 'windows'
     win=import('windows')
     icon_res=win.compile_resources('icon.rc')
-    executable('XeRelease', icon_res, 'src/main.cc', 'src/MyWin.cc', 'src/MyDialog.cc', 
-    'src/xeapi.cc', 'src/xerelease.cc', gresources ,dependencies : gtkdep, 
+executable('XeRelease', icon_res, src, gresources ,dependencies : gtkdep, 
     win_subsystem : 'windows', include_directories : dir_include)
 else
-    executable('XeRelease', 'src/main.cc', 'src/MyWin.cc', 'src/MyDialog.cc', 'src/xeapi.cc', 
-    gresources, 'src/xerelease.cc', dependencies : gtkdep, include_directories : dir_include)
+    executable('XeRelease', src, gresources, dependencies : gtkdep, include_directories : dir_include)
 endif

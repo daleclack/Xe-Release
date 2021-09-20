@@ -58,7 +58,7 @@ void dale(struct tm *local)
 	printf("xeinit release maker by dale\n");
 }
 
-void longterm(struct tm *local,char lts[],char *str)
+void longterm(struct tm *local,const char * lts,char *str)
 {
     char filename[57];
     sprintf(filename,"xe-%c.x",lts[0]);
@@ -73,7 +73,7 @@ void longterm(struct tm *local,char lts[],char *str)
     return ;
 }
 
-void stable(struct tm *local,char rel[],char *str)
+void stable(struct tm *local,const char * rel,char *str)
 {
     char filename[57];
     sprintf(filename,"xe-%c.x",rel[0]);
@@ -88,7 +88,7 @@ void stable(struct tm *local,char rel[],char *str)
     return ;
 }
 
-void develop(struct tm *local,char devel[],char *str){
+void develop(struct tm *local,const char * devel,char *str){
     char filename[57];
     sprintf(filename,"xe-%c.x",devel[0]);
     int devel1;//development version

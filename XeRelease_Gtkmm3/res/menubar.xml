@@ -2,21 +2,10 @@
 <interface>
     <menu id='app-menu'>
         <section>
-            <submenu>
-                <attribute name='label'>Config</attribute>
-                <item>
-                    <attribute name='label'>Change Xe-lts config</attribute>
-                    <attribute name='action'>win.config1</attribute>
-                </item>
-                <item>
-                    <attribute name='label'>Change Xe-stable config</attribute>
-                    <attribute name='action'>win.config2</attribute>
-                </item>
-                <item>
-                    <attribute name='label'>Change Xe-devel config</attribute>
-                    <attribute name='action'>win.config3</attribute>
-                </item>
-            </submenu>
+            <item>
+                <attribute name='label'>Configs</attribute>
+                <attribute name='action'>win.configs</attribute>
+            </item>
             <submenu>
                 <attribute name='label'>Backgrounds</attribute>
                 <item>

@@ -2,10 +2,13 @@
 
 #include <gtkmm.h>
 #include "MyDialog.hh"
+#include "../cfgfile2/cfgfile.hh"
 
-class MyWin : public Gtk::ApplicationWindow{
+class MyWin : public Gtk::ApplicationWindow
+{
 public:
     MyWin();
+
 private:
     //Child Widgets
     Glib::RefPtr<Gtk::Builder> menu_builder;
@@ -26,22 +29,18 @@ private:
 
     //Dialogs
     MsgBox msg_dialog;
-    MyDialog input_dialog;
 
     //Backgrounds
     void background1();
     void background2();
 
     //Version Configs
-    FILE *fp;//file pointer to read file
     struct tm *local;
     char api_version[57];
-    void config_lts();
-    void config_stable();
-    void config_devel();
-    bool get_config(const char *filename);
+    void config_dialog();
 
     //Signal Handlers
+    void on_window_hide(Gtk::Window* window);
     void about_dialog();
     void main_releases();
 };

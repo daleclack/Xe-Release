@@ -6,5 +6,6 @@
     </gresource>
     <gresource prefix="XeRelease">
         <file preprocess="xml-stripblanks">menubar.xml</file>
+        <file preprocess="xml-stripblanks">prefs.ui</file>
     </gresource>
 </gresources>
