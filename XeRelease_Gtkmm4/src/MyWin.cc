@@ -19,10 +19,10 @@ input_dialog(*this)
 {
     //Initalize window
     set_icon_name("Xe-Release");
-    set_default_size(640,360);
+    set_default_size(640,360+47);
     set_title("Xe Release 12");
     titlebar_init();
-
+ 
     //Set Background Image
     auto pixbuf=Gdk::Pixbuf::create_from_xpm_data(img7);
     auto sized=pixbuf->scale_simple(640,360,Gdk::InterpType::BILINEAR);
