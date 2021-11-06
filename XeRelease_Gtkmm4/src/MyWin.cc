@@ -19,7 +19,6 @@ input_dialog(*this)
 {
     //Initalize window
     set_icon_name("Xe-Release");
-    set_default_size(640,360+47);
     set_title("Xe Release 12");
     titlebar_init();
  
@@ -179,7 +178,7 @@ void MyWin::main_releases(){
 
 void MyWin::about_dialog(){
     char *version;
-    version=g_strdup_printf("12.1\nRunning Against Gtkmm %d.%d.%d",
+    version=g_strdup_printf("12.2\nRunning Against Gtkmm %d.%d.%d",
                             GTKMM_MAJOR_VERSION,
                             GTKMM_MINOR_VERSION,
                             GTKMM_MICRO_VERSION);
