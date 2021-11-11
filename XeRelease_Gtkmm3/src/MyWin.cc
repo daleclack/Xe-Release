@@ -131,10 +131,10 @@ void MyWin::main_releases(){
         if(readCfgFile("xe_config","Longterm",ver)){
             longterm(local,ver.c_str(),str);
             msg_dialog.Init(str);
-            msg_dialog.present();
+            msg_dialog.show_all();
         }else{
             msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
-            msg_dialog.present();
+            msg_dialog.show_all();
         }
         break;
     case Releases::Stable:

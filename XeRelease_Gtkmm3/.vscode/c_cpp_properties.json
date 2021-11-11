@@ -85,7 +85,7 @@
             "compilerArgs": [
                 "`pkg-config --cflags --libs gtkmm-3.0`"
             ],
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "configurationProvider": "${workspaceFolder}/builddir/compile_commands.json"
         },
         {
             "name": "win32",
