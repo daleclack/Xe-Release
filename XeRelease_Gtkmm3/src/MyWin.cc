@@ -170,7 +170,7 @@ void MyWin::about_dialog(){
     gtk_show_about_dialog(GTK_WINDOW(this->gobj()),
                           "program-name","Xe Release",
                           "version",version,
-                          "copyright", "© 2019—2021 The Xe Project",
+                          "copyright", "© 2019—2022 The Xe Project",
                           "comments", "A program for generate version",
                           "authors",authors,
                           "license-type",GTK_LICENSE_GPL_3_0,
