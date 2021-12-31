@@ -13,7 +13,7 @@
                     <attribute name='action'>win.back1</attribute>
                 </item>
                 <item>
-                    <attribute name='label'>XeRelease10-12</attribute>
+                    <attribute name='label'>XeRelease10-14</attribute>
                     <attribute name='action'>win.back2</attribute>
                 </item>
             </submenu>
