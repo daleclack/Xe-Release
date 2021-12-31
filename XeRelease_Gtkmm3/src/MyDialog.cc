@@ -11,6 +11,9 @@ ref_Glade(ref_builder)
     ref_builder->get_widget("entry_lts",entry_lts);
     ref_builder->get_widget("entry_stable",entry_stable);
     ref_builder->get_widget("entry_dev",entry_dev);
+    ref_builder->get_widget("entry_path",entry_path);
+    ref_builder->get_widget("btnpath",btnpath);
+
     //Read Configs
     std::string config;
     if(readCfgFile("xe_config","Longterm",config)){
@@ -22,6 +25,18 @@ ref_Glade(ref_builder)
     if(readCfgFile("xe_config","Develop",config)){
         entry_dev->set_text(config);
     }
+    readCfgFile("xe_config","Release_Path_Unix",config_unix);
+    readCfgFile("xe_config","Release_Path_Win32",config_win32);
+
+    //Use different path for Linux filesystem and Windows
+    if(unix_file_system_detected()){
+        entry_path->set_text(config_unix);
+    }else{
+        entry_path->set_text(config_win32);
+    }
+
+    //Connect Signal
+    btnpath->signal_clicked().connect(sigc::mem_fun(*this,&MyDialog::btnpath_clicked));
 }
 
 void MyDialog::on_response(int response_id){
@@ -29,7 +44,22 @@ void MyDialog::on_response(int response_id){
     if(response_id == Gtk::RESPONSE_OK){
         Glib::ustring config;
         std::fstream outfile;
-        outfile.open("xe_config",std::ios_base::out);
+        //Initalize Config for path
+        if(unix_file_system_detected()){
+            config_unix = entry_path->get_text();
+        }else{
+            config_win32 = entry_path->get_text();  
+        }
+        //Open the config file
+        outfile.open("xe_config",std::ios_base::out); 
+        /*OutPut contents to the file
+            Simple Contents of xe_config:
+            Longterm=x.x
+            Stable=x.x
+            Develop=x.x
+            Release_Path_Unix=/xxx/xxx
+            Release_Path_Win32=X:\xxx\xxx
+        */ 
         if(outfile.is_open()){
             outfile<<"This is the config file of Xe Release"<<std::endl;
             outfile<<"See more on github.com/daleclack/Xe-Release"<<std::endl;
@@ -40,6 +70,8 @@ void MyDialog::on_response(int response_id){
             outfile<<"Stable="<<config<<std::endl;
             config=entry_dev->get_text();
             outfile<<"Develop="<<config<<std::endl;
+            outfile<<"Release_Path_Unix="<<config_unix<<std::endl;
+            outfile<<"Release_Path_Win32="<<config_win32<<std::endl;
         }
         outfile.close();
     }
@@ -55,6 +87,24 @@ MyDialog * MyDialog::create(Gtk::Window& parent){
     dialog->set_transient_for(parent);
 
     return dialog;
+}
+
+void MyDialog::btnpath_clicked(){
+    //Create a Dialog
+    dialog = Gtk::FileChooserNative::create("Select a folder",*this,
+                                     Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER,"OK","Cancel");
+    
+    dialog->signal_response().connect(sigc::mem_fun(*this,&MyDialog::dialog_response));
+
+    dialog->show();
+}
+
+void MyDialog::dialog_response(int response_id){
+    if(response_id == Gtk::RESPONSE_ACCEPT){
+        Glib::ustring path = dialog->get_filename();
+        entry_path->set_text(path);
+    }
+    dialog.reset();
 }
 
 MsgBox::MsgBox(Gtk::Window &parent)

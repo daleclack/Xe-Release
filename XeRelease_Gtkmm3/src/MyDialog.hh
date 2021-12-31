@@ -12,7 +12,17 @@ protected:
     void on_response(int response_id) override;
 private:
     Glib::RefPtr<Gtk::Builder> ref_Glade;
-    Gtk::Entry * entry_lts,* entry_stable,* entry_dev;
+    //Child widgets
+    Gtk::Entry * entry_lts,* entry_stable,* entry_dev,* entry_path;
+    Gtk::Button * btnpath;
+
+    //Strings to store path on Windows and Unix-Like systems
+    std::string config_win32,config_unix;
+
+    //Signal Handlers
+    Glib::RefPtr<Gtk::FileChooserNative> dialog;
+    void btnpath_clicked();
+    void dialog_response(int response_id);
 };
 
 class MsgBox : public Gtk::Dialog{
@@ -28,3 +38,11 @@ private:
     Gtk::Label msg_label;
     Gtk::Box *vbox,hbox;
 };
+
+static inline bool unix_file_system_detected(){
+#ifdef _WIN32
+    return false;
+#else
+    return true;
+#endif
+}

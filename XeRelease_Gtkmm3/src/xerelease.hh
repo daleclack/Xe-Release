@@ -13,4 +13,12 @@ void stable(struct tm *local,const char * rel,char *str);
 
 void develop(struct tm *local,const char * devel,char *str);
 
+static inline bool rel_unix_file_system_detected(){
+#ifdef _WIN32
+    return false;
+#else
+    return true;
+#endif
+}
+
 #endif
