@@ -3,8 +3,6 @@
     <gresource prefix="org/gtk/daleclack">
         <file>icons/16x16/actions/open-menu.png</file>
         <file>icons/48x48/actions/Xe-Release.png</file>
-    </gresource>
-    <gresource prefix="XeRelease">
         <file preprocess="xml-stripblanks">menubar.xml</file>
         <file preprocess="xml-stripblanks">prefs.ui</file>
     </gresource>

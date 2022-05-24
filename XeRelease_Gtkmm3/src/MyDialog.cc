@@ -80,7 +80,7 @@ void MyDialog::on_response(int response_id){
 
 MyDialog * MyDialog::create(Gtk::Window& parent){   
     //Create a dialog
-    auto builder=Gtk::Builder::create_from_resource("/XeRelease/prefs.ui");
+    auto builder=Gtk::Builder::create_from_resource("/org/gtk/daleclack/prefs.ui");
     
     MyDialog * dialog=nullptr;
     builder->get_widget_derived("prefs",dialog);

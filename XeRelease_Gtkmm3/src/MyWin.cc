@@ -70,7 +70,7 @@ void MyWin::titlebar_init()
     set_titlebar(header);
 
     // Initalize Menu
-    menu_builder = Gtk::Builder::create_from_resource("/XeRelease/menubar.xml");
+    menu_builder = Gtk::Builder::create_from_resource("/org/gtk/daleclack/menubar.xml");
     auto object = menu_builder->get_object("app-menu");
     auto gmenu = Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
     popover.bind_model(gmenu);
