@@ -1,9 +1,29 @@
 # Xe-Release
+
 #### Xe-Release--a tool to generate version
 
 ##### I'm always on the way to find a breakthrough
 
-Notice : The build system switched to cmake,use cmake to build binaries for any platform
+How to compile: You can use Cmake or meson build system to compile it, but before the cmake command, the submodule should be initalized.
+
+build with cmake:
+
+```shell
+mkdir build
+cd build
+cmake ..
+make (or ninja, depends on the Generater of cmake)
+```
+
+build with meson:
+
+```shell
+meson build
+cd build
+ninja
+```
+
+~~Notice : The build system switched to cmake,use cmake to build binaries for any platform~~
 
 ~~this repository contain files for win64 and linux on amd64 and arm64~~
 
