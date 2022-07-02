@@ -1,6 +1,7 @@
 #include "MyWin.hh"
 #include "img7.xpm"
 #include "winpe.xpm"
+#include "fly.xpm"
 #include "xeapi.hh"
 #include "xerelease.hh"
 #include <cstdio>
@@ -23,7 +24,7 @@ MyWin::MyWin()
     titlebar_init();
 
     // Set Background Image
-    auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(img7);
+    auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
     auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
     gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
     overlay.add(background);
@@ -49,6 +50,7 @@ MyWin::MyWin()
     btn_box.pack_start(api_label, Gtk::PACK_SHRINK);
     btn_box.pack_start(combo, Gtk::PACK_SHRINK);
     btn_box.pack_start(btn_ver, Gtk::PACK_SHRINK);
+    btn_box.set_opacity(0.5);
     overlay.add_overlay(btn_box);
     btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
 
@@ -79,6 +81,7 @@ void MyWin::titlebar_init()
     add_action("configs", sigc::mem_fun(*this, &MyWin::config_dialog));
     add_action("back1", sigc::mem_fun(*this, &MyWin::background1));
     add_action("back2", sigc::mem_fun(*this, &MyWin::background2));
+    add_action("back3",sigc::mem_fun(*this,&MyWin::background3));
     add_action("about", sigc::mem_fun(*this, &MyWin::about_dialog));
     add_action("quit", sigc::mem_fun(*this, &MyWin::hide));
 
@@ -104,6 +107,17 @@ void MyWin::background2()
 {
     // Set Background Image
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(img7);
+    auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
+    gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
+    // overlay.add(background);
+    // Free Memory
+    pixbuf.reset();
+    sized.reset();
+}
+
+void MyWin::background3(){
+    // Set Background Image
+    auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
     auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
     gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
     // overlay.add(background);

@@ -33,6 +33,7 @@ private:
     //Backgrounds
     void background1();
     void background2();
+    void background3();
 
     //Version Configs
     struct tm *local;

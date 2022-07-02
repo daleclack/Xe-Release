@@ -16,6 +16,10 @@
                     <attribute name='label'>XeRelease10-14</attribute>
                     <attribute name='action'>win.back2</attribute>
                 </item>
+                <item>
+                    <attribute name='label'>XeRelease15</attribute>
+                    <attribute name='action'>win.back3</attribute>
+                </item>
             </submenu>
             <item>
                 <attribute name='label'>About</attribute>
