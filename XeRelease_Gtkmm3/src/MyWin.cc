@@ -64,7 +64,7 @@ MyWin::MyWin()
 void MyWin::titlebar_init()
 {
     // Add HeaderBar
-    header.set_title("Xe Release 14");
+    header.set_title("Xe Release 15");
     header.set_show_close_button();
     header.set_decoration_layout("close,minimize:menu");
     set_titlebar(header);
@@ -180,7 +180,7 @@ void MyWin::about_dialog()
 {
     char *version, *copyright;
     // The Gtkmm Version
-    version = g_strdup_printf("14.0\nRunning Against Gtkmm %d.%d.%d",
+    version = g_strdup_printf("15.0\nRunning Against Gtkmm %d.%d.%d",
                               GTKMM_MAJOR_VERSION,
                               GTKMM_MINOR_VERSION,
                               GTKMM_MICRO_VERSION);
