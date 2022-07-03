@@ -50,12 +50,14 @@ MyWin::MyWin()
     btn_box.pack_start(api_label, Gtk::PACK_SHRINK);
     btn_box.pack_start(combo, Gtk::PACK_SHRINK);
     btn_box.pack_start(btn_ver, Gtk::PACK_SHRINK);
-    btn_box.set_opacity(0.5);
+    btn_box.set_opacity(0.7);
     overlay.add_overlay(btn_box);
     btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
 
     // Show everything
-    add(overlay);
+    add(stack1);
+    stack1.add(overlay,"main_page","WelCome");
+    switcher.set_stack(stack1);
     show_all_children();
 
     // Free Memory
@@ -66,7 +68,10 @@ MyWin::MyWin()
 void MyWin::titlebar_init()
 {
     // Add HeaderBar
-    header.set_title("Xe Release 15");
+    //header.set_title("Xe Release 15");
+
+    // Add stack widget
+    header.set_custom_title(switcher);
     header.set_show_close_button();
     header.set_decoration_layout("close,minimize:menu");
     set_titlebar(header);

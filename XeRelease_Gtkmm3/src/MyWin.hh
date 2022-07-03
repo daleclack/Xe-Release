@@ -14,6 +14,8 @@ private:
     Glib::RefPtr<Gtk::Builder> menu_builder;
 
     //Main window
+    Gtk::Stack stack1;
+    Gtk::StackSwitcher switcher;
     Gtk::Image background;
     Gtk::Overlay overlay;
     Gtk::Box btn_box;
