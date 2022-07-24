@@ -2,7 +2,9 @@
 
 #include <gtkmm.h>
 #include <fstream>
-#include "../cfgfile2/cfgfile.hh"
+#include "../json_nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 class MyDialog : public Gtk::Dialog{
 public:
@@ -18,6 +20,9 @@ private:
 
     //Strings to store path on Windows and Unix-Like systems
     std::string config_win32,config_unix;
+
+    // Json data
+    json data;
 
     //Signal Handlers
     Glib::RefPtr<Gtk::FileChooserNative> dialog;
