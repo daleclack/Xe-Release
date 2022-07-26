@@ -9,34 +9,40 @@ public:
     MyWin();
 
 private:
-    //Child Widgets
+    // Child Widgets
     Glib::RefPtr<Gtk::Builder> menu_builder;
 
-    //Main window
+    // Main window
     Gtk::Stack stack1;
     Gtk::StackSwitcher switcher;
     Gtk::Image background;
-    Gtk::Overlay overlay;
-    Gtk::Box btn_box;
+    Gtk::Overlay back_overlay, overlay;
+    Gtk::Box btn_box, cfg_box;
     Gtk::Label api_label;
     Gtk::ComboBoxText combo;
     Gtk::Button btn_ver;
 
-    //TitleBar and menu
+    // TitleBar and menu
     Gtk::HeaderBar header;
     Gtk::MenuButton menubtn;
     Gtk::PopoverMenu popover;
     void titlebar_init();
 
-    //Dialogs
+    // Css Style
+    Glib::RefPtr<Gtk::CssProvider> provider;
+
+    // Config Page
+    MyPrefs *prefs;
+
+    // Dialogs
     MsgBox msg_dialog;
 
-    //Backgrounds
+    // Backgrounds
     void background1();
     void background2();
     void background3();
 
-    //Version Configs
+    // Version Configs
     struct tm *local;
     char api_version[57];
     json data;
@@ -44,8 +50,8 @@ private:
     void load_config();
     void config_dialog();
 
-    //Signal Handlers
-    void on_window_hide(Gtk::Window* window);
+    // Signal Handlers
+    void on_window_hide(Gtk::Window *window);
     void about_dialog();
     void main_releases();
 };

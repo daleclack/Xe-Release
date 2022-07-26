@@ -1,17 +1,18 @@
 #include "MyDialog.hh"
 
-MyDialog::MyDialog(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_builder)
-    : Gtk::Dialog(cobject),
+MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_builder)
+    : Gtk::Box(cobject),
       ref_Glade(ref_builder)
 {
-    // Initalize
-    set_icon_name("XeRelease");
+    // // Initalize
+    // set_icon_name("XeRelease");
     // Get Widgets
     ref_builder->get_widget("entry_lts", entry_lts);
     ref_builder->get_widget("entry_stable", entry_stable);
     ref_builder->get_widget("entry_dev", entry_dev);
     ref_builder->get_widget("entry_path", entry_path);
     ref_builder->get_widget("btnpath", btnpath);
+    ref_builder->get_widget("btn_ok", btnok);
 
     // json_file.close();
 
@@ -29,41 +30,40 @@ MyDialog::MyDialog(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &re
     // readCfgFile("xe_config","Release_Path_Win32",config_win32);
 
     // Connect Signal
-    btnpath->signal_clicked().connect(sigc::mem_fun(*this, &MyDialog::btnpath_clicked));
+    btnpath->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnpath_clicked));
+    btnok->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnok_clicked));
 }
 
-void MyDialog::on_response(int response_id)
+void MyPrefs::btnok_clicked()
 {
     // Save Configs to a file
-    if (response_id == Gtk::RESPONSE_OK)
+    Glib::ustring config;
+    std::fstream outfile;
+
+    // Initalize Config for path
+    if (unix_file_system_detected())
     {
-        Glib::ustring config;
-        std::fstream outfile;
+        config_unix = entry_path->get_text();
+    }
+    else
+    {
 
-        // Initalize Config for path
-        if (unix_file_system_detected())
-        {
-            config_unix = entry_path->get_text();
-        }
-        else
-        {
-
-            config_win32 = entry_path->get_text();
-        }
-        // Open the config file
-        outfile.open("xe_config.json", std::ios_base::out);
-        /*OutPut contents to the file
-            Simple Contents of xe_config:
-            Longterm=x.x
-            Stable=x.x
-            Develop=x.x
-            Release_Path_Unix=/xxx/xxx
-            Release_Path_Win32=X:\xxx\xxx
-        */
-        if (outfile.is_open())
-        {
-            // Create json object
-            json out_data = json::parse(R"(
+        config_win32 = entry_path->get_text();
+    }
+    // Open the config file
+    outfile.open("xe_config.json", std::ios_base::out);
+    /*OutPut contents to the file
+        Simple Contents of xe_config:
+        Longterm=x.x
+        Stable=x.x
+        Develop=x.x
+        Release_Path_Unix=/xxx/xxx
+        Release_Path_Win32=X:\xxx\xxx
+    */
+    if (outfile.is_open())
+    {
+        // Create json object
+        json out_data = json::parse(R"(
                 {
                     "Longterm":"",
                     "Stable":"",
@@ -73,31 +73,29 @@ void MyDialog::on_response(int response_id)
                 }
             )");
 
-            // Load config to json file
-            out_data["Longterm"] = entry_lts->get_text();
-            out_data["Stable"] = entry_stable->get_text();
-            out_data["Develop"] = entry_dev->get_text();
-            out_data["Release_Path_Unix"] = config_unix;
-            out_data["Release_Path_Win32"] = config_win32;
-            outfile << out_data;
-            // outfile<<"This is the config file of Xe Release"<<std::endl;
-            // outfile<<"See more on github.com/daleclack/Xe-Release"<<std::endl;
-            // outfile<<std::endl;
-            // config=entry_lts->get_text();
-            // outfile<<"Longterm="<<config<<std::endl;
-            // config=entry_stable->get_text();
-            // outfile<<"Stable="<<config<<std::endl;
-            // config=entry_dev->get_text();
-            // outfile<<"Develop="<<config<<std::endl;
-            // outfile<<"Release_Path_Unix="<<config_unix<<std::endl;
-            // outfile<<"Release_Path_Win32="<<config_win32<<std::endl;
-        }
-        outfile.close();
+        // Load config to json file
+        out_data["Longterm"] = entry_lts->get_text();
+        out_data["Stable"] = entry_stable->get_text();
+        out_data["Develop"] = entry_dev->get_text();
+        out_data["Release_Path_Unix"] = config_unix;
+        out_data["Release_Path_Win32"] = config_win32;
+        outfile << out_data;
+        // outfile<<"This is the config file of Xe Release"<<std::endl;
+        // outfile<<"See more on github.com/daleclack/Xe-Release"<<std::endl;
+        // outfile<<std::endl;
+        // config=entry_lts->get_text();
+        // outfile<<"Longterm="<<config<<std::endl;
+        // config=entry_stable->get_text();
+        // outfile<<"Stable="<<config<<std::endl;
+        // config=entry_dev->get_text();
+        // outfile<<"Develop="<<config<<std::endl;
+        // outfile<<"Release_Path_Unix="<<config_unix<<std::endl;
+        // outfile<<"Release_Path_Win32="<<config_win32<<std::endl;
     }
-    hide();
+    outfile.close();
 }
 
-void MyDialog::init_json_data(json &data1)
+void MyPrefs::init_json_data(json &data1)
 {
     // Read Configs
     std::string config_longterm, config_stable, config_devel;
@@ -129,30 +127,33 @@ void MyDialog::init_json_data(json &data1)
     }
 }
 
-MyDialog *MyDialog::create(Gtk::Window &parent)
+MyPrefs *MyPrefs::create()
 {
-    // Create a dialog
+    // Create the config widget
     auto builder = Gtk::Builder::create_from_resource("/org/gtk/daleclack/prefs.ui");
 
-    MyDialog *dialog = nullptr;
-    builder->get_widget_derived("prefs", dialog);
-    dialog->set_transient_for(parent);
+    MyPrefs *box = nullptr;
+    builder->get_widget_derived("prefs", box);
 
-    return dialog;
+    return box;
 }
 
-void MyDialog::btnpath_clicked()
+void MyPrefs::set_parent_win(Gtk::Window *parent){
+    parent_win = parent;
+}
+
+void MyPrefs::btnpath_clicked()
 {
     // Create a Dialog
-    dialog = Gtk::FileChooserNative::create("Select a folder", *this,
+    dialog = Gtk::FileChooserNative::create("Select a folder", *parent_win,
                                             Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER, "OK", "Cancel");
 
-    dialog->signal_response().connect(sigc::mem_fun(*this, &MyDialog::dialog_response));
+    dialog->signal_response().connect(sigc::mem_fun(*this, &MyPrefs::dialog_response));
 
     dialog->show();
 }
 
-void MyDialog::dialog_response(int response_id)
+void MyPrefs::dialog_response(int response_id)
 {
     if (response_id == Gtk::RESPONSE_ACCEPT)
     {

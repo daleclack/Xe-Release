@@ -16,6 +16,7 @@ enum Releases
 MyWin::MyWin()
     : btn_box(Gtk::ORIENTATION_VERTICAL, 5),
       btn_ver("Xe-Ver"),
+      cfg_box(Gtk::ORIENTATION_HORIZONTAL, 5),
       msg_dialog(*this)
 {
     // Initalize window
@@ -27,7 +28,7 @@ MyWin::MyWin()
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
     auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
     gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
-    overlay.add(background);
+    back_overlay.add(background);
 
     // Get Local time
     time_t t;
@@ -55,8 +56,27 @@ MyWin::MyWin()
     btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
 
     // Show everything
-    add(stack1);
+    add(back_overlay);
+    back_overlay.add_overlay(stack1);
     stack1.add(overlay, "main_page", "WelCome");
+
+    //Add Config Page
+    prefs = MyPrefs::create();
+    prefs->set_parent_win(this);
+    load_config();
+    prefs->init_json_data(data);
+    cfg_box.pack_start(*prefs, Gtk::PACK_SHRINK);
+    cfg_box.set_opacity(0.7);
+    stack1.add(cfg_box, "config_page", "Config");
+
+    // Create Style for widgets
+    provider = Gtk::CssProvider::create();
+    provider->load_from_resource("/org/gtk/daleclack/style.css");
+    auto style1 = btn_box.get_style_context();
+    style1->add_provider(provider, 1);
+    auto style2 = prefs->get_style_context();
+    style2->add_provider(provider, 1);
+
     switcher.set_stack(stack1);
     show_all_children();
 
@@ -135,10 +155,8 @@ void MyWin::background3()
 void MyWin::config_dialog()
 {
     load_config();
-    auto dialog = MyDialog::create(*this);
-    dialog->init_json_data(data);
-    dialog->signal_hide().connect(sigc::bind(sigc::mem_fun(*this, &MyWin::on_window_hide), dialog));
-    dialog->present();
+    prefs->init_json_data(data);
+    stack1.set_visible_child(cfg_box);
 }
 
 void MyWin::load_config(){
