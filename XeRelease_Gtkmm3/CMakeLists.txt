@@ -21,8 +21,8 @@ pkg_check_modules (GTKMM3 REQUIRED gtkmm-3.0)
 include_directories (${GTKMM3_INCLUDE_DIRS})
 link_directories (${GTKMM3_LIBRARY_DIRS})
 
-set(SOURCES src/main.cc src/MyWin.cc src/MyDialog.cc
-    src/xerelease.cc src/xeapi.cc ../cfgfile2/cfgfile.cc)
+set(SOURCES src/main.cc src/MyWin.cc src/MyPrefs.cc
+    src/xerelease.cc src/xeapi.cc)
 
 #Compile resources with GCR_CMake
 set(RESOURCE_LIST

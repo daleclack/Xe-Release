@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gtkmm.h>
-#include "MyDialog.hh"
+#include "MyPrefs.hh"
 
 class MyWin : public Gtk::ApplicationWindow
 {

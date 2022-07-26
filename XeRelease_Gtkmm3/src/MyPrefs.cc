@@ -1,4 +1,4 @@
-#include "MyDialog.hh"
+#include "MyPrefs.hh"
 
 MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_builder)
     : Gtk::Box(cobject),
