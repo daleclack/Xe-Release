@@ -56,7 +56,7 @@ MyWin::MyWin()
 
     // Show everything
     add(stack1);
-    stack1.add(overlay,"main_page","WelCome");
+    stack1.add(overlay, "main_page", "WelCome");
     switcher.set_stack(stack1);
     show_all_children();
 
@@ -68,7 +68,7 @@ MyWin::MyWin()
 void MyWin::titlebar_init()
 {
     // Add HeaderBar
-    //header.set_title("Xe Release 15");
+    // header.set_title("Xe Release 15");
 
     // Add stack widget
     header.set_custom_title(switcher);
@@ -86,7 +86,7 @@ void MyWin::titlebar_init()
     add_action("configs", sigc::mem_fun(*this, &MyWin::config_dialog));
     add_action("back1", sigc::mem_fun(*this, &MyWin::background1));
     add_action("back2", sigc::mem_fun(*this, &MyWin::background2));
-    add_action("back3",sigc::mem_fun(*this,&MyWin::background3));
+    add_action("back3", sigc::mem_fun(*this, &MyWin::background3));
     add_action("about", sigc::mem_fun(*this, &MyWin::about_dialog));
     add_action("quit", sigc::mem_fun(*this, &MyWin::hide));
 
@@ -120,7 +120,8 @@ void MyWin::background2()
     sized.reset();
 }
 
-void MyWin::background3(){
+void MyWin::background3()
+{
     // Set Background Image
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
     auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
@@ -147,50 +148,44 @@ void MyWin::main_releases()
 {
     // Get Selection
     int version = combo.get_active_row_number();
-    std::string ver; // Version and Full Version
     char str[57];
     // Get Configs
+    std::string config_longterm, config_stable, config_devel;
+    // Open json file
+    std::ifstream json_file("xe_config.json");
+    json data;
+    if (json_file.is_open())
+    {
+        // Read data from json file
+        data = json::parse(json_file);
+        config_longterm = data["Longterm"];
+        config_stable = data["Stable"];
+        config_devel = data["Develop"];
+    }
+    else
+    {
+        msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
+        msg_dialog.show_all();
+        return;
+    }
+    json_file.close();
 
     switch (version) // Use Selection to Perform
     {
     case Releases::LTS:
-        if (readCfgFile("xe_config", "Longterm", ver))
-        {
-            longterm(local, ver.c_str(), str);
-            msg_dialog.Init(str);
-            msg_dialog.show_all();
-        }
-        else
-        {
-            msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
-            msg_dialog.show_all();
-        }
+        longterm(local, config_longterm.c_str(), str);
+        msg_dialog.Init(str);
+        msg_dialog.show_all();
         break;
     case Releases::Stable:
-        if (readCfgFile("xe_config", "Stable", ver))
-        {
-            stable(local, ver.c_str(), str);
-            msg_dialog.Init(str);
-            msg_dialog.show_all();
-        }
-        else
-        {
-            msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
-            msg_dialog.show_all();
-        }
+        stable(local, config_stable.c_str(), str);
+        msg_dialog.Init(str);
+        msg_dialog.show_all();
         break;
     case Releases::Dev:
-        if (readCfgFile("xe_config", "Develop", ver))
-        {
-            develop(local, ver.c_str(), str);
-            msg_dialog.Init(str);
-            msg_dialog.show_all();
-        }
-        else
-        {
-            msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
-            msg_dialog.show_all();
-        }
+        develop(local, config_devel.c_str(), str);
+        msg_dialog.Init(str);
+        msg_dialog.show_all();
         break;
     }
 }

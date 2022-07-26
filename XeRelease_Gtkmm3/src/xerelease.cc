@@ -5,6 +5,9 @@
 #include "xerelease.hh"
 #include "xeapi.hh"
 #include "cfgfile2/cfgfile.hh"
+#include "../json_nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 // typedef void(*LP)(struct tm *local);//define a  pointer function
 
@@ -75,20 +78,30 @@ int total_year_day(int year1, int year2)
 
 static void path_translate(char *result, const char *version)
 {
-    // Just combine the release file path and filename
-    std::string path;
-    if (rel_unix_file_system_detected())
+    // Get Config from json file
+    std::ifstream json_file("xe_config.json");
+    if (json_file.is_open())
     {
-        if(readCfgFile("xe_config","Release_Path_Unix",path)){
+        // Read data from json file
+        json data = json::parse(json_file);
+        // Just combine the release file path and filename
+        std::string path;
+        if (rel_unix_file_system_detected())
+        {
+            path = data["Release_Path_Unix"];
             sprintf(result, "%s/xe-%c.x", path.c_str(), version[0]);
+        }
+        else
+        {
+            path = data["Release_Path_Win32"];
+            sprintf(result, "%s\\xe-%c.x", path.c_str(), version[0]);
         }
     }
     else
     {
-        if(readCfgFile("xe_config","Release_Path_Win32",path)){
-            sprintf(result, "%s\\xe-%c.x", path.c_str(), version[0]);
-        }   
+        sprintf(result, "./xe-%c.x", version[0]);
     }
+    json_file.close();
 }
 
 void dale(struct tm *local)
@@ -100,8 +113,8 @@ void longterm(struct tm *local, const char *lts, char *str)
 {
     // Print Version of longterm release in the file
     char filename[57];
-    path_translate(filename,lts);
-    //sprintf(filename, "xe-%c.x", lts[0]);
+    path_translate(filename, lts);
+    // sprintf(filename, "xe-%c.x", lts[0]);
     int lts_ver = 0; // default release version
     int year1 = 2019, month1 = 1, day1 = 11, year2 = local->tm_year + 1900,
         month2 = local->tm_mon + 1, day2 = local->tm_mday;
@@ -123,8 +136,8 @@ void stable(struct tm *local, const char *rel, char *str)
 {
     // Print Version of stable release in the file
     char filename[57];
-    path_translate(filename,rel);
-    //sprintf(filename, "xe-%c.x", rel[0]);
+    path_translate(filename, rel);
+    // sprintf(filename, "xe-%c.x", rel[0]);
     int devel1; // stable release version
     int year1 = 2017, month1 = 5, day1 = 19, year2 = local->tm_year + 1900,
         month2 = local->tm_mon + 1, day2 = local->tm_mday;
@@ -145,8 +158,8 @@ void develop(struct tm *local, const char *devel, char *str)
 {
     // Print Version of develop release in the file
     char filename[57];
-    path_translate(filename,devel);
-    //sprintf(filename, "xe-%c.x", devel[0]);
+    path_translate(filename, devel);
+    // sprintf(filename, "xe-%c.x", devel[0]);
     int devel1; // development version
     int year1 = 2017, month1 = 5, day1 = 19, year2 = local->tm_year + 1900,
         month2 = local->tm_mon + 1, day2 = local->tm_mday;

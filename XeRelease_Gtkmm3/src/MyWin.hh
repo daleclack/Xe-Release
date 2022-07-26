@@ -2,7 +2,6 @@
 
 #include <gtkmm.h>
 #include "MyDialog.hh"
-#include "../cfgfile2/cfgfile.hh"
 
 class MyWin : public Gtk::ApplicationWindow
 {

@@ -33,6 +33,7 @@ MyDialog::MyDialog(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &re
         entry_stable->set_text(config_stable);
         entry_dev->set_text(config_devel);
     }
+    json_file.close();
 
     // std::string config;
     // if(readCfgFile("xe_config","Longterm",config)){
