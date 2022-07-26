@@ -5,9 +5,8 @@
 #include "xerelease.hh"
 #include "xeapi.hh"
 #include "cfgfile2/cfgfile.hh"
-#include "../json_nlohmann/json.hpp"
 
-using json = nlohmann::json;
+static json data1;
 
 // typedef void(*LP)(struct tm *local);//define a  pointer function
 
@@ -78,22 +77,18 @@ int total_year_day(int year1, int year2)
 
 static void path_translate(char *result, const char *version)
 {
-    // Get Config from json file
-    std::ifstream json_file("xe_config.json");
-    if (json_file.is_open())
+    if (!data1.empty())
     {
-        // Read data from json file
-        json data = json::parse(json_file);
         // Just combine the release file path and filename
         std::string path;
         if (rel_unix_file_system_detected())
         {
-            path = data["Release_Path_Unix"];
+            path = data1["Release_Path_Unix"];
             sprintf(result, "%s/xe-%c.x", path.c_str(), version[0]);
         }
         else
         {
-            path = data["Release_Path_Win32"];
+            path = data1["Release_Path_Win32"];
             sprintf(result, "%s\\xe-%c.x", path.c_str(), version[0]);
         }
     }
@@ -101,7 +96,6 @@ static void path_translate(char *result, const char *version)
     {
         sprintf(result, "./xe-%c.x", version[0]);
     }
-    json_file.close();
 }
 
 void dale(struct tm *local)
@@ -174,4 +168,8 @@ void develop(struct tm *local, const char *devel, char *str)
     printf("%s.%d build:%d\n", devel, devel1, xeapi1(local));
     fclose(stdout);
     return;
+}
+
+void json_config_init(json &user_data){
+    data1 = user_data;
 }

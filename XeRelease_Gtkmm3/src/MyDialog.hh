@@ -10,6 +10,7 @@ class MyDialog : public Gtk::Dialog{
 public:
     MyDialog(BaseObjectType* cobject,const Glib::RefPtr<Gtk::Builder>& ref_builder);
     static MyDialog * create(Gtk::Window& parent);
+    void init_json_data(json &data1);
 protected:
     void on_response(int response_id) override;
 private:
@@ -20,9 +21,6 @@ private:
 
     //Strings to store path on Windows and Unix-Like systems
     std::string config_win32,config_unix;
-
-    // Json data
-    json data;
 
     //Signal Handlers
     Glib::RefPtr<Gtk::FileChooserNative> dialog;

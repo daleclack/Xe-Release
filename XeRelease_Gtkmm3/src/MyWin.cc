@@ -134,26 +134,18 @@ void MyWin::background3()
 
 void MyWin::config_dialog()
 {
+    load_config();
     auto dialog = MyDialog::create(*this);
+    dialog->init_json_data(data);
     dialog->signal_hide().connect(sigc::bind(sigc::mem_fun(*this, &MyWin::on_window_hide), dialog));
     dialog->present();
 }
 
-void MyWin::on_window_hide(Gtk::Window *window)
-{
-    delete window;
-}
+void MyWin::load_config(){
+    // Load/Reload json config file
 
-void MyWin::main_releases()
-{
-    // Get Selection
-    int version = combo.get_active_row_number();
-    char str[57];
-    // Get Configs
-    std::string config_longterm, config_stable, config_devel;
     // Open json file
     std::ifstream json_file("xe_config.json");
-    json data;
     if (json_file.is_open())
     {
         // Read data from json file
@@ -168,8 +160,22 @@ void MyWin::main_releases()
         msg_dialog.show_all();
         return;
     }
+    json_config_init(data);
     json_file.close();
+}
 
+void MyWin::on_window_hide(Gtk::Window *window)
+{
+    delete window;
+}
+
+void MyWin::main_releases()
+{
+    // Get Selection
+    int version = combo.get_active_row_number();
+    char str[57];
+    // Get Configs
+    load_config();
     switch (version) // Use Selection to Perform
     {
     case Releases::LTS:

@@ -39,6 +39,9 @@ private:
     //Version Configs
     struct tm *local;
     char api_version[57];
+    json data;
+    std::string config_longterm, config_stable, config_devel;
+    void load_config();
     void config_dialog();
 
     //Signal Handlers
