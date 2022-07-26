@@ -4,8 +4,6 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     : Gtk::Box(cobject),
       ref_Glade(ref_builder)
 {
-    // // Initalize
-    // set_icon_name("XeRelease");
     // Get Widgets
     ref_builder->get_widget("entry_lts", entry_lts);
     ref_builder->get_widget("entry_stable", entry_stable);
@@ -13,25 +11,12 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     ref_builder->get_widget("entry_path", entry_path);
     ref_builder->get_widget("btnpath", btnpath);
     ref_builder->get_widget("btn_ok", btnok);
-
-    // json_file.close();
-
-    // std::string config;
-    // if(readCfgFile("xe_config","Longterm",config)){
-    //     entry_lts->set_text(config);
-    // }
-    // if(readCfgFile("xe_config","Stable",config)){
-    //     entry_stable->set_text(config);
-    // }
-    // if(readCfgFile("xe_config","Develop",config)){
-    //     entry_dev->set_text(config);
-    // }
-    // readCfgFile("xe_config","Release_Path_Unix",config_unix);
-    // readCfgFile("xe_config","Release_Path_Win32",config_win32);
+    ref_builder->get_widget("btn_cancel", btncancel);
 
     // Connect Signal
     btnpath->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnpath_clicked));
     btnok->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnok_clicked));
+    btncancel->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnreset_clicked));
 }
 
 void MyPrefs::btnok_clicked()
@@ -54,14 +39,19 @@ void MyPrefs::btnok_clicked()
     outfile.open("xe_config.json", std::ios_base::out);
     /*OutPut contents to the file
         Simple Contents of xe_config:
-        Longterm=x.x
-        Stable=x.x
-        Develop=x.x
-        Release_Path_Unix=/xxx/xxx
-        Release_Path_Win32=X:\xxx\xxx
+        {
+            "Longterm":"x.x",
+            "Stable":"x.x",
+            "Develop":"x.x",
+            "Release_Path_Unix":"",
+            "Release_Path_Win32":""
+        }
     */
     if (outfile.is_open())
     {
+        // BackUp the original data
+        data_backup = data;
+
         // Create json object
         json out_data = json::parse(R"(
                 {
@@ -80,50 +70,65 @@ void MyPrefs::btnok_clicked()
         out_data["Release_Path_Unix"] = config_unix;
         out_data["Release_Path_Win32"] = config_win32;
         outfile << out_data;
-        // outfile<<"This is the config file of Xe Release"<<std::endl;
-        // outfile<<"See more on github.com/daleclack/Xe-Release"<<std::endl;
-        // outfile<<std::endl;
-        // config=entry_lts->get_text();
-        // outfile<<"Longterm="<<config<<std::endl;
-        // config=entry_stable->get_text();
-        // outfile<<"Stable="<<config<<std::endl;
-        // config=entry_dev->get_text();
-        // outfile<<"Develop="<<config<<std::endl;
-        // outfile<<"Release_Path_Unix="<<config_unix<<std::endl;
-        // outfile<<"Release_Path_Win32="<<config_win32<<std::endl;
+
+        // Set Current json data
+        data = out_data;
+
+        // Show Dialog
+        msg_dialog1.Init("Config File Saved!");
+        msg_dialog1.show_all();
     }
     outfile.close();
+}
+
+void MyPrefs::btnreset_clicked()
+{
+    // Restore the backup data
+    data = data_backup;
+
+    // Reset content of entries
+    reset_entries();
+
+    // Show Dialog
+    msg_dialog1.Init("Config Reseted!\n Press \"OK\" to save.");
+    msg_dialog1.show_all();
 }
 
 void MyPrefs::init_json_data(json &data1)
 {
     // Read Configs
-    std::string config_longterm, config_stable, config_devel;
     // Open json file
     if (!data1.empty())
     {
-        // Read data from json file
-        // data = json::parse(json_file);
-        config_longterm = data1["Longterm"];
-        config_stable = data1["Stable"];
-        config_devel = data1["Develop"];
-        config_unix = data1["Release_Path_Unix"];
-        config_win32 = data1["Release_Path_Win32"];
+        data = data1;
+        // Set the content of entry
+        reset_entries();
+    }
+}
 
-        // Set text from json file data
-        entry_lts->set_text(config_longterm);
-        entry_stable->set_text(config_stable);
-        entry_dev->set_text(config_devel);
+void MyPrefs::reset_entries()
+{
+    std::string config_longterm, config_stable, config_devel;
+    // Read json data
+    config_longterm = data["Longterm"];
+    config_stable = data["Stable"];
+    config_devel = data["Develop"];
+    config_unix = data["Release_Path_Unix"];
+    config_win32 = data["Release_Path_Win32"];
 
-        // Use different path for Linux filesystem and Windows
-        if (unix_file_system_detected())
-        {
-            entry_path->set_text(config_unix);
-        }
-        else
-        {
-            entry_path->set_text(config_win32);
-        }
+    // Set text from json file data
+    entry_lts->set_text(config_longterm);
+    entry_stable->set_text(config_stable);
+    entry_dev->set_text(config_devel);
+
+    // Use different path for Linux filesystem and Windows
+    if (unix_file_system_detected())
+    {
+        entry_path->set_text(config_unix);
+    }
+    else
+    {
+        entry_path->set_text(config_win32);
     }
 }
 
@@ -138,8 +143,10 @@ MyPrefs *MyPrefs::create()
     return box;
 }
 
-void MyPrefs::set_parent_win(Gtk::Window *parent){
+void MyPrefs::set_parent_win(Gtk::Window *parent)
+{
     parent_win = parent;
+    msg_dialog1.set_transient_for(*parent);
 }
 
 void MyPrefs::btnpath_clicked()
@@ -171,6 +178,20 @@ MsgBox::MsgBox(Gtk::Window &parent)
     set_default_size(300, 150);
     add_button("OK", Gtk::RESPONSE_OK);
     set_transient_for(parent);
+    // Add Message
+    image.set_from_icon_name("Xe-Release", Gtk::ICON_SIZE_DIALOG);
+    vbox = get_content_area();
+    hbox.pack_start(image, Gtk::PACK_SHRINK);
+    hbox.pack_start(msg_label, Gtk::PACK_SHRINK);
+    vbox->pack_start(hbox);
+}
+
+MsgBox::MsgBox()
+{
+    // Initalize MsgBox
+    set_icon_name("Xe-Release");
+    set_default_size(300, 150);
+    add_button("OK", Gtk::RESPONSE_OK);
     // Add Message
     image.set_from_icon_name("Xe-Release", Gtk::ICON_SIZE_DIALOG);
     vbox = get_content_area();
