@@ -5,13 +5,13 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
       ref_Glade(ref_builder)
 {
     // Get Widgets
-    ref_builder->get_widget("entry_lts", entry_lts);
-    ref_builder->get_widget("entry_stable", entry_stable);
-    ref_builder->get_widget("entry_dev", entry_dev);
-    ref_builder->get_widget("entry_path", entry_path);
-    ref_builder->get_widget("btnpath", btnpath);
-    ref_builder->get_widget("btn_ok", btnok);
-    ref_builder->get_widget("btn_cancel", btncancel);
+    entry_lts = ref_builder->get_widget<Gtk::Entry>("entry_lts");
+    entry_stable = ref_builder->get_widget<Gtk::Entry>("entry_stable");
+    entry_dev = ref_builder->get_widget<Gtk::Entry>("entry_dev");
+    entry_path = ref_builder->get_widget<Gtk::Entry>("entry_path");
+    btnpath = ref_builder->get_widget<Gtk::Button>("btnpath");
+    btnok = ref_builder->get_widget<Gtk::Button>("btn_ok");
+    btncancel = ref_builder->get_widget<Gtk::Button>("btn_cancel");
 
     // Connect Signal
     btnpath->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnpath_clicked));
@@ -76,7 +76,7 @@ void MyPrefs::btnok_clicked()
 
         // Show Dialog
         msg_dialog1.Init("Config File Saved!");
-        msg_dialog1.show_all();
+        msg_dialog1.show();
     }
     outfile.close();
 }
@@ -91,7 +91,7 @@ void MyPrefs::btnreset_clicked()
 
     // Show Dialog
     msg_dialog1.Init("Config Reseted!\n Press \"OK\" to save.");
-    msg_dialog1.show_all();
+    msg_dialog1.show();
 }
 
 void MyPrefs::init_json_data(json &data1)
@@ -138,7 +138,7 @@ MyPrefs *MyPrefs::create()
     auto builder = Gtk::Builder::create_from_resource("/org/gtk/daleclack/prefs.ui");
 
     MyPrefs *box = nullptr;
-    builder->get_widget_derived("prefs", box);
+    box = Gtk::Builder::get_widget_derived<MyPrefs>(builder, "prefs");
 
     return box;
 }
@@ -153,7 +153,7 @@ void MyPrefs::btnpath_clicked()
 {
     // Create a Dialog
     dialog = Gtk::FileChooserNative::create("Select a folder", *parent_win,
-                                            Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER, "OK", "Cancel");
+                                            Gtk::FileChooser::Action::SELECT_FOLDER, "OK", "Cancel");
 
     dialog->signal_response().connect(sigc::mem_fun(*this, &MyPrefs::dialog_response));
 
@@ -162,28 +162,33 @@ void MyPrefs::btnpath_clicked()
 
 void MyPrefs::dialog_response(int response_id)
 {
-    if (response_id == Gtk::RESPONSE_ACCEPT)
+    if (response_id == Gtk::ResponseType::ACCEPT)
     {
-        Glib::ustring path = dialog->get_filename();
+        auto file = dialog->get_file();
+        Glib::ustring path = file->get_path();
         entry_path->set_text(path);
+        file.reset();
     }
     dialog.reset();
 }
 
 MsgBox::MsgBox(Gtk::Window &parent)
-    : hbox(Gtk::ORIENTATION_HORIZONTAL, 5)
+    : hbox(Gtk::Orientation::HORIZONTAL, 5)
 {
     // Initalize MsgBox
     set_icon_name("Xe-Release");
     set_default_size(300, 150);
-    add_button("OK", Gtk::RESPONSE_OK);
+    add_button("OK", Gtk::ResponseType::OK);
     set_transient_for(parent);
     // Add Message
-    image.set_from_icon_name("Xe-Release", Gtk::ICON_SIZE_DIALOG);
+    image.set_from_icon_name("Xe-Release");
     vbox = get_content_area();
-    hbox.pack_start(image, Gtk::PACK_SHRINK);
-    hbox.pack_start(msg_label, Gtk::PACK_SHRINK);
-    vbox->pack_start(hbox);
+    hbox.append(image);
+    hbox.append(msg_label);
+    hbox.set_expand();
+    hbox.set_halign(Gtk::Align::FILL);
+    hbox.set_valign(Gtk::Align::FILL);
+    vbox->append(hbox);
 }
 
 MsgBox::MsgBox()
@@ -191,13 +196,16 @@ MsgBox::MsgBox()
     // Initalize MsgBox
     set_icon_name("Xe-Release");
     set_default_size(300, 150);
-    add_button("OK", Gtk::RESPONSE_OK);
+    add_button("OK", Gtk::ResponseType::OK);
     // Add Message
-    image.set_from_icon_name("Xe-Release", Gtk::ICON_SIZE_DIALOG);
+    image.set_from_icon_name("Xe-Release");
     vbox = get_content_area();
-    hbox.pack_start(image, Gtk::PACK_SHRINK);
-    hbox.pack_start(msg_label, Gtk::PACK_SHRINK);
-    vbox->pack_start(hbox);
+    hbox.append(image);
+    hbox.append(msg_label);
+    hbox.set_expand();
+    hbox.set_halign(Gtk::Align::FILL);
+    hbox.set_valign(Gtk::Align::FILL);
+    vbox->append(hbox);
 }
 
 void MsgBox::Init(Glib::ustring msg)

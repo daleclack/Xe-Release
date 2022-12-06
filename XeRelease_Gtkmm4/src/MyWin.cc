@@ -14,9 +14,9 @@ enum Releases
 };
 
 MyWin::MyWin()
-    : btn_box(Gtk::ORIENTATION_VERTICAL, 5),
+    : btn_box(Gtk::Orientation::VERTICAL, 5),
       btn_ver("Xe-Ver"),
-      cfg_box(Gtk::ORIENTATION_HORIZONTAL, 5),
+      cfg_box(Gtk::Orientation::HORIZONTAL, 5),
       msg_dialog(*this)
 {
     // Initalize window
@@ -28,7 +28,7 @@ MyWin::MyWin()
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
     auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
     gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
-    back_overlay.add(background);
+    back_overlay.set_child(background);
 
     // Get Local time
     time_t t;
@@ -46,17 +46,17 @@ MyWin::MyWin()
     combo.set_active(1);
 
     // Add Main Controls
-    btn_box.set_halign(Gtk::ALIGN_CENTER);
-    btn_box.set_valign(Gtk::ALIGN_CENTER);
-    btn_box.pack_start(api_label, Gtk::PACK_SHRINK);
-    btn_box.pack_start(combo, Gtk::PACK_SHRINK);
-    btn_box.pack_start(btn_ver, Gtk::PACK_SHRINK);
+    btn_box.set_halign(Gtk::Align::CENTER);
+    btn_box.set_valign(Gtk::Align::CENTER);
+    btn_box.append(api_label);
+    btn_box.append(combo);
+    btn_box.append(btn_ver);
     btn_box.set_opacity(0.7);
     overlay.add_overlay(btn_box);
     btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
 
     // Show everything
-    add(back_overlay);
+    set_child(back_overlay);
     back_overlay.add_overlay(stack1);
     stack1.add(overlay, "main_page", "WelCome");
 
@@ -65,7 +65,7 @@ MyWin::MyWin()
     prefs->set_parent_win(this);
     load_config();
     prefs->init_json_data(data);
-    cfg_box.pack_start(*prefs, Gtk::PACK_SHRINK);
+    cfg_box.append(*prefs);
     cfg_box.set_opacity(0.7);
     stack1.add(cfg_box, "config_page", "Config");
 
@@ -78,7 +78,7 @@ MyWin::MyWin()
     style2->add_provider(provider, 1);
 
     switcher.set_stack(stack1);
-    show_all_children();
+    // show_all_children();
 
     // Free Memory
     pixbuf.reset();

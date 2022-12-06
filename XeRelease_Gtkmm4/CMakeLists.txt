@@ -17,9 +17,9 @@ include_directories(..)
 include_directories(../cfgfile2)
 
 find_package (PkgConfig REQUIRED)
-pkg_check_modules (GTKMM3 REQUIRED gtkmm-3.0)
-include_directories (${GTKMM3_INCLUDE_DIRS})
-link_directories (${GTKMM3_LIBRARY_DIRS})
+pkg_check_modules (GTKMM4 REQUIRED gtkmm-4.0)
+include_directories (${GTKMM4_INCLUDE_DIRS})
+link_directories (${GTKMM4_LIBRARY_DIRS})
 
 set(SOURCES src/main.cc src/MyWin.cc src/MyPrefs.cc
     src/xerelease.cc src/xeapi.cc)
@@ -54,5 +54,5 @@ else()
     add_executable(XeRelease ${SOURCES} ${RESOURCE_FILE})
 endif(WIN32)
 
-SET (CMAKE_EXTRA_CXX_FLAGS ${GTKMM3_CFLAGS_OTHER})
-target_link_libraries (${PROJECT_NAME} ${GTKMM3_LIBRARIES})
+SET (CMAKE_EXTRA_CXX_FLAGS ${GTKMM4_CFLAGS_OTHER})
+target_link_libraries (${PROJECT_NAME} ${GTKMM4_LIBRARIES})

@@ -17,7 +17,7 @@ src=['src/main.cc', 'src/MyWin.cc', 'src/MyPrefs.cc',
      'src/xeapi.cc', 'src/xerelease.cc']
 
 #The Gtkmm Library as a dependency
-gtkdep = dependency('gtkmm-3.0')
+gtkdep = dependency('gtkmm-4.0')
 
 #Additional include dirs
 dir_include = include_directories('..')
