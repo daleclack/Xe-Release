@@ -16,7 +16,7 @@ enum Releases
 MyWin::MyWin()
     : btn_box(Gtk::Orientation::VERTICAL, 5),
       btn_ver("Xe-Ver"),
-      cfg_box(Gtk::Orientation::HORIZONTAL, 5),
+      cfg_box(Gtk::Orientation::VERTICAL, 5),
       msg_dialog(*this)
 {
     // Initalize window
@@ -26,9 +26,13 @@ MyWin::MyWin()
 
     // Set Background Image
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
-    auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
-    gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
+    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+    background.set_pixbuf(sized);
     back_overlay.set_child(background);
+    background.set_size_request(640, 360);
+    back_overlay.set_halign(Gtk::Align::FILL);
+    back_overlay.set_valign(Gtk::Align::FILL);
+    back_overlay.set_expand();
 
     // Get Local time
     time_t t;
@@ -66,6 +70,9 @@ MyWin::MyWin()
     load_config();
     prefs->init_json_data(data);
     cfg_box.append(*prefs);
+    // cfg_box.set_hexpand();
+    cfg_box.set_halign(Gtk::Align::CENTER);
+    cfg_box.set_valign(Gtk::Align::CENTER);
     cfg_box.set_opacity(0.7);
     stack1.add(cfg_box, "config_page", "Config");
 
@@ -91,16 +98,16 @@ void MyWin::titlebar_init()
     // header.set_title("Xe Release 15");
 
     // Add stack widget
-    header.set_custom_title(switcher);
-    header.set_show_close_button();
+    //header.set_custom_title(switcher);
+    header.set_title_widget(switcher);
+    header.set_show_title_buttons();
     header.set_decoration_layout("close,minimize:menu");
     set_titlebar(header);
 
     // Initalize Menu
     menu_builder = Gtk::Builder::create_from_resource("/org/gtk/daleclack/menubar.xml");
-    auto object = menu_builder->get_object("app-menu");
-    auto gmenu = Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-    popover.bind_model(gmenu);
+    auto object = menu_builder->get_object<Gio::MenuModel>("app-menu");
+    popover.set_menu_model(object);
 
     // Add Menu Actions
     add_action("configs", sigc::mem_fun(*this, &MyWin::config_dialog));
@@ -111,7 +118,7 @@ void MyWin::titlebar_init()
     add_action("quit", sigc::mem_fun(*this, &MyWin::hide));
 
     // Initalize MenuButton
-    menubtn.set_image_from_icon_name("open-menu");
+    menubtn.set_icon_name("open-menu");
     menubtn.set_popover(popover);
     header.pack_end(menubtn);
 }
@@ -120,8 +127,9 @@ void MyWin::background1()
 {
     // Set Background Image
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(winpe);
-    auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
-    gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
+    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+    background.set_pixbuf(sized);
+    // gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
     // overlay.add(background);
     // Free Memory
     pixbuf.reset();
@@ -132,8 +140,9 @@ void MyWin::background2()
 {
     // Set Background Image
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(img7);
-    auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
-    gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
+    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+    background.set_pixbuf(sized);
+    // gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
     // overlay.add(background);
     // Free Memory
     pixbuf.reset();
@@ -144,8 +153,9 @@ void MyWin::background3()
 {
     // Set Background Image
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
-    auto sized = pixbuf->scale_simple(640, 360, Gdk::INTERP_BILINEAR);
-    gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
+    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+    background.set_pixbuf(sized);
+    // gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
     // overlay.add(background);
     // Free Memory
     pixbuf.reset();
@@ -175,7 +185,7 @@ void MyWin::load_config(){
     else
     {
         msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
-        msg_dialog.show_all();
+        msg_dialog.show();
         return;
     }
     json_config_init(data);
@@ -199,17 +209,17 @@ void MyWin::main_releases()
     case Releases::LTS:
         longterm(local, config_longterm.c_str(), str);
         msg_dialog.Init(str);
-        msg_dialog.show_all();
+        msg_dialog.show();
         break;
     case Releases::Stable:
         stable(local, config_stable.c_str(), str);
         msg_dialog.Init(str);
-        msg_dialog.show_all();
+        msg_dialog.show();
         break;
     case Releases::Dev:
         develop(local, config_devel.c_str(), str);
         msg_dialog.Init(str);
-        msg_dialog.show_all();
+        msg_dialog.show();
         break;
     }
 }
@@ -235,7 +245,7 @@ void MyWin::about_dialog()
                           "license-type", GTK_LICENSE_GPL_3_0,
                           "logo-icon-name", "Xe-Release",
                           "title", "About Xe Release",
-                          NULL);
+                          NULL, nullptr);
     // Free memory
     g_free(version);
     g_free(copyright);

@@ -182,6 +182,8 @@ MsgBox::MsgBox(Gtk::Window &parent)
     set_transient_for(parent);
     // Add Message
     image.set_from_icon_name("Xe-Release");
+    image.set_icon_size(Gtk::IconSize::LARGE);
+    image.set_size_request(64, 64);
     vbox = get_content_area();
     hbox.append(image);
     hbox.append(msg_label);
@@ -189,6 +191,7 @@ MsgBox::MsgBox(Gtk::Window &parent)
     hbox.set_halign(Gtk::Align::FILL);
     hbox.set_valign(Gtk::Align::FILL);
     vbox->append(hbox);
+    vbox->set_margin(5);
 }
 
 MsgBox::MsgBox()
@@ -199,6 +202,8 @@ MsgBox::MsgBox()
     add_button("OK", Gtk::ResponseType::OK);
     // Add Message
     image.set_from_icon_name("Xe-Release");
+    image.set_icon_size(Gtk::IconSize::LARGE);
+    image.set_size_request(64, 64);
     vbox = get_content_area();
     hbox.append(image);
     hbox.append(msg_label);
@@ -206,6 +211,7 @@ MsgBox::MsgBox()
     hbox.set_halign(Gtk::Align::FILL);
     hbox.set_valign(Gtk::Align::FILL);
     vbox->append(hbox);
+    vbox->set_margin(5);
 }
 
 void MsgBox::Init(Glib::ustring msg)

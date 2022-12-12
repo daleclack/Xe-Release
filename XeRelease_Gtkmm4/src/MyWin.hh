@@ -15,7 +15,7 @@ private:
     // Main window
     Gtk::Stack stack1;
     Gtk::StackSwitcher switcher;
-    Gtk::Image background;
+    Gtk::Picture background;
     Gtk::Overlay back_overlay, overlay;
     Gtk::Box btn_box, cfg_box;
     Gtk::Label api_label;
