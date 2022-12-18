@@ -29,6 +29,7 @@ private:
     void titlebar_init();
 
     // Css Style
+    bool dark_mode;
     Glib::RefPtr<Gtk::CssProvider> provider;
 
     // Config Page

@@ -17,7 +17,8 @@ MyWin::MyWin()
     : btn_box(Gtk::Orientation::VERTICAL, 5),
       btn_ver("Xe-Ver"),
       cfg_box(Gtk::Orientation::VERTICAL, 5),
-      msg_dialog(*this)
+      msg_dialog(*this),
+      dark_mode(true)
 {
     // Initalize window
     set_icon_name("Xe-Release");
@@ -78,7 +79,11 @@ MyWin::MyWin()
 
     // Create Style for widgets
     provider = Gtk::CssProvider::create();
-    provider->load_from_resource("/org/gtk/daleclack/style.css");
+    if(dark_mode){
+        provider->load_from_resource("/org/gtk/daleclack/style_dark.css");
+    }else{
+        provider->load_from_resource("/org/gtk/daleclack/style.css");
+    }
     auto style1 = btn_box.get_style_context();
     style1->add_provider(provider, 1);
     auto style2 = prefs->get_style_context();

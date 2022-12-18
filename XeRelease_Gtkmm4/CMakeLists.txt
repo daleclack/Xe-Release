@@ -27,6 +27,7 @@ set(SOURCES src/main.cc src/MyWin.cc src/MyPrefs.cc
 #Compile resources with GCR_CMake
 set(RESOURCE_LIST
     style.css
+    style_dark.css
     STRIPBLANKS menubar.xml
     STRIPBLANKS prefs.ui
     icons/16x16/actions/open-menu.png
