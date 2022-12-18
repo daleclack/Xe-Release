@@ -3,6 +3,7 @@
 #include <gtkmm.h>
 #include <fstream>
 #include "../json_nlohmann/json.hpp"
+#include "os_detector.hh"
 
 using json = nlohmann::json;
 
@@ -40,9 +41,10 @@ private:
     // Child widgets
     Gtk::Entry *entry_lts, *entry_stable, *entry_dev, *entry_path;
     Gtk::Button *btnpath, *btnok, *btncancel;
+    bool dark_mode;
 
     // Strings to store path on Windows and Unix-Like systems
-    std::string config_win32, config_unix;
+    std::string config_win32, config_unix, config_darwin;
     json data, data_backup;
 
     // Messagebox
@@ -57,11 +59,11 @@ private:
     void reset_entries();
 };
 
-static inline bool unix_file_system_detected()
-{
-#ifdef _WIN32
-    return false;
-#else
-    return true;
-#endif
-}
+// static inline bool unix_file_system_detected()
+// {
+// #ifdef _WIN32
+//     return false;
+// #else
+//     return true;
+// #endif
+// }

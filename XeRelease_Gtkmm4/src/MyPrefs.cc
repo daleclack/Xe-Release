@@ -26,15 +26,27 @@ void MyPrefs::btnok_clicked()
     std::fstream outfile;
 
     // Initalize Config for path
-    if (unix_file_system_detected())
+    switch (get_os_type())
     {
+    case OS_Type::Linux:
         config_unix = entry_path->get_text();
-    }
-    else
-    {
-
+        break;
+    case OS_Type::Windows:
         config_win32 = entry_path->get_text();
+        break;
+    case OS_Type::Darwin:
+        config_darwin = entry_path->get_text();
+        break;
     }
+    // if (get_os_type() == OS_Type::Linux)
+    // {
+    //     config_unix = entry_path->get_text();
+    // }
+    // else
+    // {
+
+    //     config_win32 = entry_path->get_text();
+    // }
     // Open the config file
     outfile.open("xe_config.json", std::ios_base::out);
     /*OutPut contents to the file
@@ -43,8 +55,10 @@ void MyPrefs::btnok_clicked()
             "Longterm":"x.x",
             "Stable":"x.x",
             "Develop":"x.x",
+            "dark_mode":false,
             "Release_Path_Unix":"",
-            "Release_Path_Win32":""
+            "Release_Path_Win32":"",
+            "Release_Path_Darwin":""
         }
     */
     if (outfile.is_open())
@@ -59,7 +73,9 @@ void MyPrefs::btnok_clicked()
                     "Stable":"",
                     "Develop":"",
                     "Release_Path_Unix":"",
-                    "Release_Path_Win32":""
+                    "Release_Path_Win32":"",
+                    "Release_Path_Darwin":"",
+                    "dark_mode":false  
                 }
             )");
 
@@ -69,6 +85,8 @@ void MyPrefs::btnok_clicked()
         out_data["Develop"] = entry_dev->get_text();
         out_data["Release_Path_Unix"] = config_unix;
         out_data["Release_Path_Win32"] = config_win32;
+        out_data["Release_Path_Darwin"] = config_darwin;
+        out_data["dark_mode"] = dark_mode;
         outfile << out_data;
 
         // Set Current json data
@@ -115,6 +133,8 @@ void MyPrefs::reset_entries()
     config_devel = data["Develop"];
     config_unix = data["Release_Path_Unix"];
     config_win32 = data["Release_Path_Win32"];
+    config_darwin = data["Release_Path_Darwin"];
+    dark_mode = data["dark_mode"];
 
     // Set text from json file data
     entry_lts->set_text(config_longterm);
@@ -122,14 +142,26 @@ void MyPrefs::reset_entries()
     entry_dev->set_text(config_devel);
 
     // Use different path for Linux filesystem and Windows
-    if (unix_file_system_detected())
+    switch (get_os_type())
     {
+    case OS_Type::Linux:
         entry_path->set_text(config_unix);
-    }
-    else
-    {
+        break;
+    case OS_Type::Windows:
         entry_path->set_text(config_win32);
+        break;
+    case OS_Type::Darwin:
+        entry_path->set_text(config_darwin);
+        break;
     }
+    // if (get_os_type() == OS_Type::Linux)
+    // {
+    //     entry_path->set_text(config_unix);
+    // }
+    // else
+    // {
+    //     entry_path->set_text(config_win32);
+    // }
 }
 
 MyPrefs *MyPrefs::create()

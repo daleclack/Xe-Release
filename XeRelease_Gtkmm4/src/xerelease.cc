@@ -81,16 +81,31 @@ static void path_translate(char *result, const char *version)
     {
         // Just combine the release file path and filename
         std::string path;
-        if (rel_unix_file_system_detected())
+        switch (get_os_type())
         {
+        case OS_Type::Linux:
             path = data1["Release_Path_Unix"];
             sprintf(result, "%s/xe-%c.x", path.c_str(), version[0]);
-        }
-        else
-        {
+            break;
+        case OS_Type::Darwin:
+            path = data1["Release_Path_Darwin"];
+            sprintf(result, "%s/xe-%c.x", path.c_str(), version[0]);
+            break;
+        case OS_Type::Windows:
             path = data1["Release_Path_Win32"];
             sprintf(result, "%s\\xe-%c.x", path.c_str(), version[0]);
+            break;
         }
+        // if (rel_unix_file_system_detected())
+        // {
+        //     path = data1["Release_Path_Unix"];
+        //     sprintf(result, "%s/xe-%c.x", path.c_str(), version[0]);
+        // }
+        // else
+        // {
+        //     path = data1["Release_Path_Win32"];
+        //     sprintf(result, "%s\\xe-%c.x", path.c_str(), version[0]);
+        // }
     }
     else
     {
@@ -170,6 +185,7 @@ void develop(struct tm *local, const char *devel, char *str)
     return;
 }
 
-void json_config_init(json &user_data){
+void json_config_init(json &user_data)
+{
     data1 = user_data;
 }
