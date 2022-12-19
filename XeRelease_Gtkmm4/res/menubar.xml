@@ -22,6 +22,9 @@
                 </item>
             </submenu>
             <item>
+                <attribute name='custom'>check_dark</attribute>
+            </item>
+            <item>
                 <attribute name='label'>About</attribute>
                 <attribute name='action'>win.about</attribute>
             </item>

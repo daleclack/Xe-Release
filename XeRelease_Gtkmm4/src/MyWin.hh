@@ -29,7 +29,8 @@ private:
     void titlebar_init();
 
     // Css Style
-    bool dark_mode;
+    // bool dark_mode;
+    Gtk::CheckButton check_dark;
     Glib::RefPtr<Gtk::CssProvider> provider;
 
     // Config Page
@@ -55,4 +56,5 @@ private:
     void on_window_hide(Gtk::Window *window);
     void about_dialog();
     void main_releases();
+    void check_toggled();
 };

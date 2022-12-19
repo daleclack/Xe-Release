@@ -32,6 +32,8 @@ public:
     static MyPrefs *create();
     void set_parent_win(Gtk::Window *parent);
     void init_json_data(json &data1);
+    void save_config_now();
+    void set_dark_mode(bool dark_mode_enabled);
 
 private:
     Glib::RefPtr<Gtk::Builder> ref_Glade;

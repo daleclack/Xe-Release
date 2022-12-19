@@ -18,7 +18,7 @@ MyWin::MyWin()
       btn_ver("Xe-Ver"),
       cfg_box(Gtk::Orientation::VERTICAL, 5),
       msg_dialog(*this),
-      dark_mode(true)
+      check_dark("Enable dark mode")
 {
     // Initalize window
     set_icon_name("Xe-Release");
@@ -58,7 +58,6 @@ MyWin::MyWin()
     btn_box.append(btn_ver);
     btn_box.set_opacity(0.7);
     overlay.add_overlay(btn_box);
-    btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
 
     // Show everything
     set_child(back_overlay);
@@ -79,7 +78,7 @@ MyWin::MyWin()
 
     // Create Style for widgets
     provider = Gtk::CssProvider::create();
-    if(dark_mode){
+    if(check_dark.get_active()){
         provider->load_from_resource("/org/gtk/daleclack/style_dark.css");
     }else{
         provider->load_from_resource("/org/gtk/daleclack/style.css");
@@ -91,6 +90,10 @@ MyWin::MyWin()
 
     switcher.set_stack(stack1);
     // show_all_children();
+
+    // Connect Signals
+    btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
+    check_dark.signal_toggled().connect(sigc::mem_fun(*this, &MyWin::check_toggled));
 
     // Free Memory
     pixbuf.reset();
@@ -113,6 +116,9 @@ void MyWin::titlebar_init()
     menu_builder = Gtk::Builder::create_from_resource("/org/gtk/daleclack/menubar.xml");
     auto object = menu_builder->get_object<Gio::MenuModel>("app-menu");
     popover.set_menu_model(object);
+
+    // Add a check button for dark mode
+    popover.add_child(check_dark, "check_dark");
 
     // Add Menu Actions
     add_action("configs", sigc::mem_fun(*this, &MyWin::config_dialog));
@@ -186,6 +192,7 @@ void MyWin::load_config(){
         config_longterm = data["Longterm"];
         config_stable = data["Stable"];
         config_devel = data["Develop"];
+        check_dark.set_active(data["dark_mode"]);
     }
     else
     {
@@ -227,6 +234,12 @@ void MyWin::main_releases()
         msg_dialog.show();
         break;
     }
+}
+
+void MyWin::check_toggled(){
+    // Get the state of check button and set the config to json file
+    prefs->set_dark_mode(check_dark.get_active());
+    prefs->save_config_now();
 }
 
 void MyWin::about_dialog()

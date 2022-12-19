@@ -181,6 +181,16 @@ void MyPrefs::set_parent_win(Gtk::Window *parent)
     msg_dialog1.set_transient_for(*parent);
 }
 
+void MyPrefs::set_dark_mode(bool dark_mode_enabled){
+    // Put the config of dark mode to the class
+    dark_mode = dark_mode_enabled;
+}
+
+void MyPrefs::save_config_now(){
+    // Save config when the dark mode config is modified
+    btnok_clicked();
+}
+
 void MyPrefs::btnpath_clicked()
 {
     // Create a Dialog
