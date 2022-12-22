@@ -2,7 +2,7 @@
 
 /*
 Xe Release Gtkmm4 Reset Version
-The project is originally build with Gtk3, in Jun 25, 2021, 
+The project is originally build with Gtk3, in 2020, 
 the first Gtk4 build is finished, but there is some font rendering issues, 
 and the Gtkmm3 and Gtkmm4 build is finished in 2021, 
 in a long time, the Gtkmm3 is the main framework for Xe Release, 
