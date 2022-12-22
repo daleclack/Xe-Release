@@ -17,7 +17,7 @@
                     <attribute name='action'>win.back2</attribute>
                 </item>
                 <item>
-                    <attribute name='label'>XeRelease15</attribute>
+                    <attribute name='label'>XeRelease15-16</attribute>
                     <attribute name='action'>win.back3</attribute>
                 </item>
             </submenu>
