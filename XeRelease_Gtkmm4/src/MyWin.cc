@@ -77,6 +77,8 @@ MyWin::MyWin()
     stack1.add(cfg_box, "config_page", "Config");
 
     // Set background from the config
+    // The vaild background id is 1 to 3
+    // else the background 3 will load
     switch (back_id)
     {
     case 1:
@@ -88,6 +90,8 @@ MyWin::MyWin()
     case 3:
         background3();
         break;
+    default:
+        background3();
     }
 
     // Create Style for widgets
