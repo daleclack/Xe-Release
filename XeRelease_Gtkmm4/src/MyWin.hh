@@ -40,7 +40,7 @@ private:
     MsgBox msg_dialog;
 
     // Backgrounds
-    int back_id;
+    int back_id = 3;
     bool start = true;
     void background1();
     void background2();
