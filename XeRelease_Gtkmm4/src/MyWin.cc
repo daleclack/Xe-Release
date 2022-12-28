@@ -25,10 +25,10 @@ MyWin::MyWin()
     set_default_size(640, 360);
     titlebar_init();
 
-    // Set Background Image
-    auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
-    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
-    background.set_pixbuf(sized);
+    // // Set Background Image
+    // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
+    // auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+    // background.set_pixbuf(sized);
     back_overlay.set_child(background);
     background.set_size_request(640, 360);
     back_overlay.set_halign(Gtk::Align::FILL);
@@ -64,7 +64,7 @@ MyWin::MyWin()
     back_overlay.add_overlay(stack1);
     stack1.add(overlay, "main_page", "WelCome");
 
-    //Add Config Page
+    // Add Config Page
     prefs = MyPrefs::create();
     prefs->set_parent_win(this);
     load_config();
@@ -76,11 +76,28 @@ MyWin::MyWin()
     cfg_box.set_opacity(0.7);
     stack1.add(cfg_box, "config_page", "Config");
 
+    // Set background from the config
+    switch (back_id)
+    {
+    case 1:
+        background1();
+        break;
+    case 2:
+        background2();
+        break;
+    case 3:
+        background3();
+        break;
+    }
+
     // Create Style for widgets
     provider = Gtk::CssProvider::create();
-    if(check_dark.get_active()){
+    if (check_dark.get_active())
+    {
         provider->load_from_resource("/org/gtk/daleclack/style_dark.css");
-    }else{
+    }
+    else
+    {
         provider->load_from_resource("/org/gtk/daleclack/style.css");
     }
     auto style1 = btn_box.get_style_context();
@@ -95,9 +112,9 @@ MyWin::MyWin()
     btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
     check_dark.signal_toggled().connect(sigc::mem_fun(*this, &MyWin::check_toggled));
 
-    // Free Memory
-    pixbuf.reset();
-    sized.reset();
+    // // Free Memory
+    // pixbuf.reset();
+    // sized.reset();
 }
 
 void MyWin::titlebar_init()
@@ -106,7 +123,7 @@ void MyWin::titlebar_init()
     // header.set_title("Xe Release 15");
 
     // Add stack widget
-    //header.set_custom_title(switcher);
+    // header.set_custom_title(switcher);
     header.set_title_widget(switcher);
     header.set_show_title_buttons();
     header.set_decoration_layout("close,minimize:menu");
@@ -145,6 +162,14 @@ void MyWin::background1()
     // Free Memory
     pixbuf.reset();
     sized.reset();
+
+    // Update config
+    if(!start){
+        prefs->background_id = 1;
+        prefs->save_config_now();
+    }else{
+        start = false;
+    }
 }
 
 void MyWin::background2()
@@ -158,6 +183,14 @@ void MyWin::background2()
     // Free Memory
     pixbuf.reset();
     sized.reset();
+
+    // Update config
+    if(!start){
+        prefs->background_id = 2;
+        prefs->save_config_now();
+    }else{
+        start = false;
+    }
 }
 
 void MyWin::background3()
@@ -171,6 +204,14 @@ void MyWin::background3()
     // Free Memory
     pixbuf.reset();
     sized.reset();
+
+    // Update config
+    if(!start){
+        prefs->background_id = 3;
+        prefs->save_config_now();
+    }else{
+        start = false;
+    }
 }
 
 void MyWin::config_dialog()
@@ -180,7 +221,8 @@ void MyWin::config_dialog()
     stack1.set_visible_child(cfg_box);
 }
 
-void MyWin::load_config(){
+void MyWin::load_config()
+{
     // Load/Reload json config file
 
     // Open json file
@@ -193,11 +235,14 @@ void MyWin::load_config(){
         config_stable = data["Stable"];
         config_devel = data["Develop"];
         check_dark.set_active(data["dark_mode"]);
+        back_id = data["background"];
     }
     else
     {
         msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
         msg_dialog.show();
+        check_dark.set_active(false);
+        back_id = 3;
         return;
     }
     json_config_init(data);
@@ -236,7 +281,8 @@ void MyWin::main_releases()
     }
 }
 
-void MyWin::check_toggled(){
+void MyWin::check_toggled()
+{
     // Get the state of check button and set the config to json file
     prefs->set_dark_mode(check_dark.get_active());
     prefs->save_config_now();

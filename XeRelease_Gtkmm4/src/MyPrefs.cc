@@ -56,6 +56,7 @@ void MyPrefs::btnok_clicked()
             "Stable":"x.x",
             "Develop":"x.x",
             "dark_mode":false,
+            "background":0
             "Release_Path_Unix":"",
             "Release_Path_Win32":"",
             "Release_Path_Darwin":""
@@ -75,7 +76,8 @@ void MyPrefs::btnok_clicked()
                     "Release_Path_Unix":"",
                     "Release_Path_Win32":"",
                     "Release_Path_Darwin":"",
-                    "dark_mode":false  
+                    "dark_mode":false,
+                    "background":2
                 }
             )");
 
@@ -87,6 +89,7 @@ void MyPrefs::btnok_clicked()
         out_data["Release_Path_Win32"] = config_win32;
         out_data["Release_Path_Darwin"] = config_darwin;
         out_data["dark_mode"] = dark_mode;
+        out_data["background"] = background_id;
         outfile << out_data;
 
         // Set Current json data
@@ -135,6 +138,7 @@ void MyPrefs::reset_entries()
     config_win32 = data["Release_Path_Win32"];
     config_darwin = data["Release_Path_Darwin"];
     dark_mode = data["dark_mode"];
+    background_id = data["background"];
 
     // Set text from json file data
     entry_lts->set_text(config_longterm);

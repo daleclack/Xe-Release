@@ -34,6 +34,7 @@ public:
     void init_json_data(json &data1);
     void save_config_now();
     void set_dark_mode(bool dark_mode_enabled);
+    int background_id;
 
 private:
     Glib::RefPtr<Gtk::Builder> ref_Glade;
