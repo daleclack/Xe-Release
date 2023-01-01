@@ -41,7 +41,7 @@ MyWin::MyWin()
     local = localtime(&t);
 
     // Initalize Api Label
-    sprintf(api_version, "Xe Api Version:%d", xeapi1(local));
+    snprintf(api_version, 57, "Xe Api Version:%d", xeapi1(local));
     api_label.set_label(api_version);
 
     // Initalize combobox

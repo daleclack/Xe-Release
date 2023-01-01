@@ -85,15 +85,15 @@ static void path_translate(char *result, const char *version)
         {
         case OS_Type::Linux:
             path = data1["Release_Path_Unix"];
-            sprintf(result, "%s/xe-%c.x", path.c_str(), version[0]);
+            snprintf(result, 57, "%s/xe-%c.x", path.c_str(), version[0]);
             break;
         case OS_Type::Darwin:
             path = data1["Release_Path_Darwin"];
-            sprintf(result, "%s/xe-%c.x", path.c_str(), version[0]);
+            snprintf(result, 57, "%s/xe-%c.x", path.c_str(), version[0]);
             break;
         case OS_Type::Windows:
             path = data1["Release_Path_Win32"];
-            sprintf(result, "%s\\xe-%c.x", path.c_str(), version[0]);
+            snprintf(result, 57, "%s\\xe-%c.x", path.c_str(), version[0]);
             break;
         }
         // if (rel_unix_file_system_detected())
@@ -109,7 +109,7 @@ static void path_translate(char *result, const char *version)
     }
     else
     {
-        sprintf(result, "./xe-%c.x", version[0]);
+        snprintf(result, 57, "./xe-%c.x", version[0]);
     }
 }
 
@@ -131,7 +131,7 @@ void longterm(struct tm *local, const char *lts, char *str)
     lts_ver = total_year_day(year1, year2) - total_day(year1, month1, day1) +
               total_day(year2, month2, day2);
     // For show in dialog or console
-    sprintf(str, "Xeinit LTS version:%s.%d\n", lts, lts_ver);
+    snprintf(str, 57, "Xeinit LTS version:%s.%d\n", lts, lts_ver);
     freopen(filename, "a", stdout);
     // put all output in the release file
     // output:release branch time in xe-release
@@ -153,7 +153,7 @@ void stable(struct tm *local, const char *rel, char *str)
     // get release version
     devel1 = total_year_day(year1, year2) - total_day(year1, month1, day1) +
              total_day(year2, month2, day2);
-    sprintf(str, "Xeinit stable Version:%s.%d\n", rel, devel1);
+    snprintf(str, 57, "Xeinit stable Version:%s.%d\n", rel, devel1);
     freopen(filename, "a", stdout);
     // put all output in the release file
     // output:development branch time in xe-release
@@ -175,7 +175,7 @@ void develop(struct tm *local, const char *devel, char *str)
     // get release version
     devel1 = total_year_day(year1, year2) - total_day(year1, month1, day1) +
              total_day(year2, month2, day2);
-    sprintf(str, "Xeinit devel Version:%s.%d\n", devel, devel1);
+    snprintf(str, 57, "Xeinit devel Version:%s.%d\n", devel, devel1);
     freopen(filename, "a", stdout);
     // put all output in the release file
     // output:development branch time in xe-release
