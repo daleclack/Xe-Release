@@ -45,16 +45,22 @@ MyWin::MyWin()
     api_label.set_label(api_version);
 
     // Initalize combobox
-    combo.append("Longterm");
-    combo.append("Stable");
-    combo.append("Development");
-    combo.set_active(1);
+    // combo.append("Longterm");
+    // combo.append("Stable");
+    // combo.append("Development");
+    // combo.set_active(1);
+    combo_list = Gtk::StringList::create();
+    combo_list->append("Longterm");
+    combo_list->append("Stable");
+    combo_list->append("Development");
+    drop_down.set_model(combo_list);
+    drop_down.set_selected(1);
 
     // Add Main Controls
     btn_box.set_halign(Gtk::Align::CENTER);
     btn_box.set_valign(Gtk::Align::CENTER);
     btn_box.append(api_label);
-    btn_box.append(combo);
+    btn_box.append(drop_down);
     btn_box.append(btn_ver);
     btn_box.set_opacity(0.7);
     overlay.add_overlay(btn_box);
@@ -95,19 +101,35 @@ MyWin::MyWin()
     }
 
     // Create Style for widgets
+    // Due to the changes of Gtk4.10, the way to load custom style is changed
     provider = Gtk::CssProvider::create();
+
+    // Only one css file is needed to load
+    provider->load_from_resource("/org/gtk/daleclack/style.css");
+
+    // Set css class of widget instead of loading different css files
     if (check_dark.get_active())
     {
-        provider->load_from_resource("/org/gtk/daleclack/style_dark.css");
+        btn_box.add_css_class("style_dark");
+        prefs->add_css_class("style_dark");
+        // provider->load_from_resource("/org/gtk/daleclack/style_dark.css");
     }
     else
     {
-        provider->load_from_resource("/org/gtk/daleclack/style.css");
+        btn_box.add_css_class("style_light");
+        prefs->add_css_class("style_light");
+        // provider->load_from_resource("/org/gtk/daleclack/style.css");
     }
-    auto style1 = btn_box.get_style_context();
-    style1->add_provider(provider, 1);
-    auto style2 = prefs->get_style_context();
-    style2->add_provider(provider, 1);
+
+    // Apply css class for widgets
+    Gtk::CssProvider::add_provider_for_display(btn_box.get_display(), provider, 
+                                               GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    Gtk::CssProvider::add_provider_for_display(prefs->get_display(), provider, 
+                                               GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    // auto style1 = btn_box.get_style_context();
+    // style1->add_provider(provider, 1);
+    // auto style2 = prefs->get_style_context();
+    // style2->add_provider(provider, 1);
 
     switcher.set_stack(stack1);
     // show_all_children();
@@ -261,7 +283,8 @@ void MyWin::on_window_hide(Gtk::Window *window)
 void MyWin::main_releases()
 {
     // Get Selection
-    int version = combo.get_active_row_number();
+    // int version = combo.get_active_row_number();
+    int version = drop_down.get_selected();
     char str[57];
     // Get Configs
     load_config();

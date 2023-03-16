@@ -19,7 +19,9 @@ private:
     Gtk::Overlay back_overlay, overlay;
     Gtk::Box btn_box, cfg_box;
     Gtk::Label api_label;
-    Gtk::ComboBoxText combo;
+    // Gtk::ComboBoxText combo;
+    Glib::RefPtr<Gtk::StringList> combo_list;
+    Gtk::DropDown drop_down;
     Gtk::Button btn_ver;
 
     // TitleBar and menu
