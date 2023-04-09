@@ -276,7 +276,7 @@ void MyWin::load_config()
     else
     {
         msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
-        msg_dialog.show();
+        msg_dialog.present();
         check_dark.set_active(false);
         back_id = 3;
         return;
@@ -303,22 +303,22 @@ void MyWin::main_releases()
     case Releases::LTS:
 #ifdef DISABLE_LONGTERM_BUILD
         msg_dialog.Init("The longterm build is diasbled!");
-        msg_dialog.show();
+        msg_dialog.present();
 #else
         longterm(local, config_longterm.c_str(), str);
         msg_dialog.Init(str);
-        msg_dialog.show();
+        msg_dialog.present();
 #endif
         break;
     case Releases::Stable:
         stable(local, config_stable.c_str(), str);
         msg_dialog.Init(str);
-        msg_dialog.show();
+        msg_dialog.present();
         break;
     case Releases::Dev:
         develop(local, config_devel.c_str(), str);
         msg_dialog.Init(str);
-        msg_dialog.show();
+        msg_dialog.present();
         break;
     }
 }

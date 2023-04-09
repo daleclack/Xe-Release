@@ -97,7 +97,7 @@ void MyPrefs::btnok_clicked()
 
         // Show Dialog
         msg_dialog1.Init("Config File Saved!");
-        msg_dialog1.show();
+        msg_dialog1.present();
     }
     outfile.close();
 }
@@ -112,7 +112,7 @@ void MyPrefs::btnreset_clicked()
 
     // Show Dialog
     msg_dialog1.Init("Config Reseted!\n Press \"OK\" to save.");
-    msg_dialog1.show();
+    msg_dialog1.present();
 }
 
 void MyPrefs::init_json_data(json &data1)
