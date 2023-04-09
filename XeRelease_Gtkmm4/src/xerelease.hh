@@ -2,7 +2,7 @@
 #define __XE_RELEASE_
 
 #include "../json_nlohmann/json.hpp"
-#include "os_detector.hh"
+#include "config.hh"
 
 using json = nlohmann::json;
 

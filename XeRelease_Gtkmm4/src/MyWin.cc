@@ -4,6 +4,7 @@
 #include "fly.xpm"
 #include "xeapi.hh"
 #include "xerelease.hh"
+#include "config.hh"
 #include <cstdio>
 
 enum Releases
@@ -122,9 +123,9 @@ MyWin::MyWin()
     }
 
     // Apply css class for widgets
-    Gtk::CssProvider::add_provider_for_display(btn_box.get_display(), provider, 
+    Gtk::CssProvider::add_provider_for_display(btn_box.get_display(), provider,
                                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    Gtk::CssProvider::add_provider_for_display(prefs->get_display(), provider, 
+    Gtk::CssProvider::add_provider_for_display(prefs->get_display(), provider,
                                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     // auto style1 = btn_box.get_style_context();
     // style1->add_provider(provider, 1);
@@ -190,10 +191,13 @@ void MyWin::background1()
     sized.reset();
 
     // Update config
-    if(!start){
+    if (!start)
+    {
         prefs->background_id = 1;
         prefs->save_config_now();
-    }else{
+    }
+    else
+    {
         start = false;
     }
 }
@@ -211,10 +215,13 @@ void MyWin::background2()
     sized.reset();
 
     // Update config
-    if(!start){
+    if (!start)
+    {
         prefs->background_id = 2;
         prefs->save_config_now();
-    }else{
+    }
+    else
+    {
         start = false;
     }
 }
@@ -232,10 +239,13 @@ void MyWin::background3()
     sized.reset();
 
     // Update config
-    if(!start){
+    if (!start)
+    {
         prefs->background_id = 3;
         prefs->save_config_now();
-    }else{
+    }
+    else
+    {
         start = false;
     }
 }
@@ -291,9 +301,14 @@ void MyWin::main_releases()
     switch (version) // Use Selection to Perform
     {
     case Releases::LTS:
+#ifdef DISABLE_LONGTERM_BUILD
+        msg_dialog.Init("The longterm build is diasbled!");
+        msg_dialog.show();
+#else
         longterm(local, config_longterm.c_str(), str);
         msg_dialog.Init(str);
         msg_dialog.show();
+#endif
         break;
     case Releases::Stable:
         stable(local, config_stable.c_str(), str);

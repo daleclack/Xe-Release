@@ -80,5 +80,6 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "variant": "cpp"
-    }
+    },
+    "mesonbuild.configureOnOpen": false
 }

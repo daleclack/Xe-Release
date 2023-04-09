@@ -1,4 +1,6 @@
+// This header file is to get the platform and features enable/disable
 #pragma once
+
 // Defining the OS
 enum class OS_Type{
     Linux,
@@ -18,3 +20,6 @@ static inline OS_Type get_os_type(){
     return OS_Type::Windows;
 #endif
 }
+
+// Disable longterm build
+#define DISABLE_LONGTERM_BUILD
