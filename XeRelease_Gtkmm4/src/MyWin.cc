@@ -311,14 +311,24 @@ void MyWin::main_releases()
 #endif
         break;
     case Releases::Stable:
+#ifdef DISABLE_STABLE_BUILD
+        msg_dialog.Init("The stable build is diasbled!");
+        msg_dialog.present();
+#else
         stable(local, config_stable.c_str(), str);
         msg_dialog.Init(str);
         msg_dialog.present();
+#endif
         break;
     case Releases::Dev:
+#ifdef DISABLE_DEVELOP_BUILD
+        msg_dialog.Init("The development build is diasbled!");
+        msg_dialog.present();
+#else
         develop(local, config_devel.c_str(), str);
         msg_dialog.Init(str);
         msg_dialog.present();
+#endif
         break;
     }
 }

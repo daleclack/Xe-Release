@@ -21,5 +21,5 @@ static inline OS_Type get_os_type(){
 #endif
 }
 
-// Disable longterm build
-#define DISABLE_LONGTERM_BUILD
+// Enable/Disable longterm build
+// #define DISABLE_LONGTERM_BUILD
