@@ -185,12 +185,14 @@ void MyPrefs::set_parent_win(Gtk::Window *parent)
     msg_dialog1.set_transient_for(*parent);
 }
 
-void MyPrefs::set_dark_mode(bool dark_mode_enabled){
+void MyPrefs::set_dark_mode(bool dark_mode_enabled)
+{
     // Put the config of dark mode to the class
     dark_mode = dark_mode_enabled;
 }
 
-void MyPrefs::save_config_now(){
+void MyPrefs::save_config_now()
+{
     // Save config when the dark mode config is modified
     btnok_clicked();
 }
@@ -219,45 +221,75 @@ void MyPrefs::dialog_response(int response_id)
 }
 
 MsgBox::MsgBox(Gtk::Window &parent)
-    : hbox(Gtk::Orientation::HORIZONTAL, 5)
+    : vbox(Gtk::Orientation::VERTICAL, 5),
+      hbox(Gtk::Orientation::HORIZONTAL, 5),
+      btn_box(Gtk::Orientation::HORIZONTAL, 5),
+      btn_ok("OK")
 {
     // Initalize MsgBox
     set_icon_name("Xe-Release");
     set_default_size(300, 150);
-    add_button("OK", Gtk::ResponseType::OK);
+    // add_button("OK", Gtk::ResponseType::OK);
     set_transient_for(parent);
-    // Add Message
+    // Add Message and icon
     image.set_from_icon_name("Xe-Release");
     image.set_icon_size(Gtk::IconSize::LARGE);
     image.set_size_request(64, 64);
-    vbox = get_content_area();
+    // vbox = get_content_area();
     hbox.append(image);
     hbox.append(msg_label);
+
+    // Add message box to the main box
     hbox.set_expand();
     hbox.set_halign(Gtk::Align::FILL);
     hbox.set_valign(Gtk::Align::FILL);
-    vbox->append(hbox);
-    vbox->set_margin(5);
+    vbox.append(hbox);
+    vbox.set_margin(5);
+
+    // Add button
+    btn_box.append(btn_ok);
+    btn_box.set_halign(Gtk::Align::END);
+    btn_ok.set_halign(Gtk::Align::END);
+    btn_ok.signal_clicked().connect(sigc::mem_fun(*this, &MsgBox::on_response));
+    vbox.append(btn_box);
+
+    set_child(vbox);
 }
 
 MsgBox::MsgBox()
+    : vbox(Gtk::Orientation::VERTICAL, 5),
+      hbox(Gtk::Orientation::HORIZONTAL, 5),
+      btn_box(Gtk::Orientation::HORIZONTAL, 5),
+      btn_ok("OK")
 {
-    // Initalize MsgBox
+     // Initalize MsgBox
     set_icon_name("Xe-Release");
     set_default_size(300, 150);
-    add_button("OK", Gtk::ResponseType::OK);
-    // Add Message
+    // add_button("OK", Gtk::ResponseType::OK);
+    // set_transient_for(parent);
+    // Add Message and icon
     image.set_from_icon_name("Xe-Release");
     image.set_icon_size(Gtk::IconSize::LARGE);
     image.set_size_request(64, 64);
-    vbox = get_content_area();
+    // vbox = get_content_area();
     hbox.append(image);
     hbox.append(msg_label);
+
+    // Add message box to the main box
     hbox.set_expand();
     hbox.set_halign(Gtk::Align::FILL);
     hbox.set_valign(Gtk::Align::FILL);
-    vbox->append(hbox);
-    vbox->set_margin(5);
+    vbox.append(hbox);
+    vbox.set_margin(5);
+
+    // Add button
+    btn_box.append(btn_ok);
+    btn_box.set_halign(Gtk::Align::END);
+    btn_ok.set_halign(Gtk::Align::END);
+    btn_ok.signal_clicked().connect(sigc::mem_fun(*this, &MsgBox::on_response));
+    vbox.append(btn_box);
+
+    set_child(vbox);
 }
 
 void MsgBox::Init(Glib::ustring msg)
@@ -265,7 +297,7 @@ void MsgBox::Init(Glib::ustring msg)
     msg_label.set_label(msg);
 }
 
-void MsgBox::on_response(int response_id)
+void MsgBox::on_response()
 {
     hide();
 }
