@@ -1,7 +1,7 @@
 #ifndef __XE_RELEASE_
 #define __XE_RELEASE_
 
-#include "../json_nlohmann/json.hpp"
+#include "json_nlohmann/json.hpp"
 #include "config.hh"
 
 using json = nlohmann::json;

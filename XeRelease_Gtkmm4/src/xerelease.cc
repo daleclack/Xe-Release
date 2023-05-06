@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include "xerelease.hh"
 #include "xeapi.hh"
-#include "cfgfile2/cfgfile.hh"
 
 static json data1;
 

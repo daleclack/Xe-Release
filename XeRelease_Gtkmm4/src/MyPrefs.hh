@@ -2,7 +2,7 @@
 
 #include <gtkmm.h>
 #include <fstream>
-#include "../json_nlohmann/json.hpp"
+#include "json_nlohmann/json.hpp"
 #include "config.hh"
 
 using json = nlohmann::json;
