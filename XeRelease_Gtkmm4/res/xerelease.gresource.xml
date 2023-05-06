@@ -5,5 +5,7 @@
         <file>icons/48x48/actions/Xe-Release.png</file>
         <file preprocess="xml-stripblanks">menubar.xml</file>
         <file preprocess="xml-stripblanks">prefs.ui</file>
+        <file>style.css</file>
+        <file>style_dark.css</file>
     </gresource>
 </gresources>
