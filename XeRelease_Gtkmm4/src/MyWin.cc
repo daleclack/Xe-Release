@@ -16,10 +16,10 @@ enum Releases
 
 MyWin::MyWin()
     : btn_box(Gtk::Orientation::VERTICAL, 5),
-      btn_ver("Xe-Ver"),
       cfg_box(Gtk::Orientation::VERTICAL, 5),
-      msg_dialog(*this),
-      check_dark("Enable dark mode")
+      btn_ver("Xe-Ver"),
+      check_dark("Enable dark mode"),
+      msg_dialog(*this)
 {
     // Initalize window
     set_icon_name("Xe-Release");
