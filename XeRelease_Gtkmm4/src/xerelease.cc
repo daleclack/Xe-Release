@@ -8,6 +8,10 @@
 static json data1;
 
 // typedef void(*LP)(struct tm *local);//define a  pointer function
+#define MAX_PATH 260
+static const int longterm_year = 2019, longterm_month = 1, longterm_day = 11;
+static const int stable_year = 2017, stable_month = 5, stable_day = 19;
+static const int develop_year = 2017, develop_month = 5, develop_day = 19;
 
 int total_day(int year, int month, int day)
 {
@@ -120,14 +124,15 @@ void dale(struct tm *local)
 void longterm(struct tm *local, const char *lts, char *str)
 {
     // Print Version of longterm release in the file
-    char filename[57];
+    char filename[MAX_PATH];
     path_translate(filename, lts);
     // sprintf(filename, "xe-%c.x", lts[0]);
     int lts_ver = 0; // default release version
-    int year1 = 2019, month1 = 1, day1 = 11, year2 = local->tm_year + 1900,
+    int year2 = local->tm_year + 1900,
         month2 = local->tm_mon + 1, day2 = local->tm_mday;
     // get release version
-    lts_ver = total_year_day(year1, year2) - total_day(year1, month1, day1) +
+    lts_ver = total_year_day(longterm_year, year2) -
+              total_day(longterm_year, longterm_month, longterm_day) +
               total_day(year2, month2, day2);
     // For show in dialog or console
     snprintf(str, 57, "Xeinit LTS version:%s.%d\n", lts, lts_ver);
@@ -147,10 +152,11 @@ void stable(struct tm *local, const char *rel, char *str)
     path_translate(filename, rel);
     // sprintf(filename, "xe-%c.x", rel[0]);
     int devel1; // stable release version
-    int year1 = 2017, month1 = 5, day1 = 19, year2 = local->tm_year + 1900,
+    int year2 = local->tm_year + 1900,
         month2 = local->tm_mon + 1, day2 = local->tm_mday;
     // get release version
-    devel1 = total_year_day(year1, year2) - total_day(year1, month1, day1) +
+    devel1 = total_year_day(stable_year, year2) -
+             total_day(stable_year, stable_month, stable_day) +
              total_day(year2, month2, day2);
     snprintf(str, 57, "Xeinit stable Version:%s.%d\n", rel, devel1);
     freopen(filename, "a", stdout);
@@ -169,10 +175,11 @@ void develop(struct tm *local, const char *devel, char *str)
     path_translate(filename, devel);
     // sprintf(filename, "xe-%c.x", devel[0]);
     int devel1; // development version
-    int year1 = 2017, month1 = 5, day1 = 19, year2 = local->tm_year + 1900,
+    int year2 = local->tm_year + 1900,
         month2 = local->tm_mon + 1, day2 = local->tm_mday;
     // get release version
-    devel1 = total_year_day(year1, year2) - total_day(year1, month1, day1) +
+    devel1 = total_year_day(develop_year, year2) -
+             total_day(develop_year, develop_month, develop_day) +
              total_day(year2, month2, day2);
     snprintf(str, 57, "Xeinit devel Version:%s.%d\n", devel, devel1);
     freopen(filename, "a", stdout);
