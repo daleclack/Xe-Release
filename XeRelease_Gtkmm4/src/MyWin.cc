@@ -18,7 +18,6 @@ MyWin::MyWin()
     : btn_box(Gtk::Orientation::VERTICAL, 5),
       cfg_box(Gtk::Orientation::VERTICAL, 5),
       btn_ver("Xe-Ver"),
-      check_dark("Enable dark mode"),
       msg_dialog(*this)
 {
     // Initalize window
@@ -109,7 +108,7 @@ MyWin::MyWin()
     provider->load_from_resource("/org/gtk/daleclack/style.css");
 
     // Set css class of widget instead of loading different css files
-    if (check_dark.get_active())
+    if (get_dark_mode())
     {
         btn_box.add_css_class("style_dark");
         prefs->add_css_class("style_dark");
@@ -137,11 +136,32 @@ MyWin::MyWin()
 
     // Connect Signals
     btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
-    check_dark.signal_toggled().connect(sigc::mem_fun(*this, &MyWin::check_toggled));
+    // check_dark.signal_toggled().connect(sigc::mem_fun(*this, &MyWin::check_toggled));
 
     // // Free Memory
     // pixbuf.reset();
     // sized.reset();
+}
+
+bool MyWin::get_dark_mode()
+{
+    // Get Icon theme
+    Glib::ustring icon_theme, tmp_str;
+    auto display = get_display();
+    Glib::RefPtr<Gtk::IconTheme> theme1 = Gtk::IconTheme::get_for_display(display);
+    icon_theme = theme1->get_theme_name();
+
+    // Check "dark" string
+    size_t theme_str_length = icon_theme.length();
+    tmp_str = icon_theme.substr(theme_str_length - 4, theme_str_length - 1);
+    if (tmp_str.lowercase() == "dark")
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void MyWin::titlebar_init()
@@ -162,7 +182,7 @@ void MyWin::titlebar_init()
     popover.set_menu_model(object);
 
     // Add a check button for dark mode
-    popover.add_child(check_dark, "check_dark");
+    // popover.add_child(check_dark, "check_dark");
 
     // Add Menu Actions
     add_action("configs", sigc::mem_fun(*this, &MyWin::config_dialog));
@@ -270,14 +290,14 @@ void MyWin::load_config()
         config_longterm = data["Longterm"];
         config_stable = data["Stable"];
         config_devel = data["Develop"];
-        check_dark.set_active(data["dark_mode"]);
+        // check_dark.set_active(data["dark_mode"]);
         back_id = data["background"];
     }
     else
     {
         msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
         msg_dialog.present();
-        check_dark.set_active(false);
+        // check_dark.set_active(false);
         back_id = 3;
         return;
     }
@@ -336,7 +356,7 @@ void MyWin::main_releases()
 void MyWin::check_toggled()
 {
     // Get the state of check button and set the config to json file
-    prefs->set_dark_mode(check_dark.get_active());
+    // prefs->set_dark_mode(check_dark.get_active());
     prefs->save_config_now();
 }
 

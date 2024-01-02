@@ -21,9 +21,9 @@
                     <attribute name='action'>win.back3</attribute>
                 </item>
             </submenu>
-            <item>
+            <!-- <item>
                 <attribute name='custom'>check_dark</attribute>
-            </item>
+            </item> -->
             <item>
                 <attribute name='label'>About</attribute>
                 <attribute name='action'>win.about</attribute>

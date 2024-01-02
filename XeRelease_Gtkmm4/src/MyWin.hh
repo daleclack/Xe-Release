@@ -32,8 +32,9 @@ private:
 
     // Css Style
     // bool dark_mode;
-    Gtk::CheckButton check_dark;
+    // Gtk::CheckButton check_dark;
     Glib::RefPtr<Gtk::CssProvider> provider;
+    bool get_dark_mode();
 
     // Config Page
     MyPrefs *prefs;
