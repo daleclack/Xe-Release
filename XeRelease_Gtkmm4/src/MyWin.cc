@@ -364,7 +364,7 @@ void MyWin::about_dialog()
 {
     char *version, *copyright;
     // The Gtkmm Version
-    version = g_strdup_printf("17.0\nRunning Against Gtkmm %d.%d.%d",
+    version = g_strdup_printf("17.0\nRunning Against Gtkmm %d.%d.%d\n2023 Update Summary edition",
                               GTKMM_MAJOR_VERSION,
                               GTKMM_MINOR_VERSION,
                               GTKMM_MICRO_VERSION);
