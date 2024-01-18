@@ -5,9 +5,6 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
       ref_Glade(ref_builder)
 {
     // Get Widgets
-    entry_lts = ref_builder->get_widget<Gtk::Entry>("entry_lts");
-    entry_stable = ref_builder->get_widget<Gtk::Entry>("entry_stable");
-    entry_dev = ref_builder->get_widget<Gtk::Entry>("entry_dev");
     entry_path = ref_builder->get_widget<Gtk::Entry>("entry_path");
     btnpath = ref_builder->get_widget<Gtk::Button>("btnpath");
     btnok = ref_builder->get_widget<Gtk::Button>("btn_ok");
@@ -82,9 +79,6 @@ void MyPrefs::btnok_clicked()
             )");
 
         // Load config to json file
-        out_data["Longterm"] = entry_lts->get_text();
-        out_data["Stable"] = entry_stable->get_text();
-        out_data["Develop"] = entry_dev->get_text();
         out_data["Release_Path_Unix"] = config_unix;
         out_data["Release_Path_Win32"] = config_win32;
         out_data["Release_Path_Darwin"] = config_darwin;
@@ -141,9 +135,6 @@ void MyPrefs::reset_entries()
     background_id = data["background"];
 
     // Set text from json file data
-    entry_lts->set_text(config_longterm);
-    entry_stable->set_text(config_stable);
-    entry_dev->set_text(config_devel);
 
     // Use different path for Linux filesystem and Windows
     switch (get_os_type())

@@ -19,42 +19,6 @@
             <property name="halign">center</property>
             <property name="valign">center</property>
             <child>
-              <object class="GtkLabel" id="label_lts">
-                <property name="halign">end</property>
-                <property name="label">LongTerm:</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="column-span">1</property>
-                  <property name="row">0</property>
-                  <property name="row-span">1</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label_stable">
-                <property name="halign">end</property>
-                <property name="label">Stable:</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="column-span">1</property>
-                  <property name="row">1</property>
-                  <property name="row-span">1</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label_dev">
-                <property name="halign">end</property>
-                <property name="label">Development:</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="column-span">1</property>
-                  <property name="row">2</property>
-                  <property name="row-span">1</property>
-                </layout>
-              </object>
-            </child>
-            <child>
               <object class="GtkLabel">
                 <property name="halign">end</property>
                 <property name="label">Path:</property>
@@ -62,39 +26,6 @@
                   <property name="column">0</property>
                   <property name="column-span">1</property>
                   <property name="row">3</property>
-                  <property name="row-span">1</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="GtkEntry" id="entry_lts">
-                <property name="text">default config</property>
-                <layout>
-                  <property name="column">1</property>
-                  <property name="column-span">1</property>
-                  <property name="row">0</property>
-                  <property name="row-span">1</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="GtkEntry" id="entry_stable">
-                <property name="text">default config</property>
-                <layout>
-                  <property name="column">1</property>
-                  <property name="column-span">1</property>
-                  <property name="row">1</property>
-                  <property name="row-span">1</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="GtkEntry" id="entry_dev">
-                <property name="text">default config</property>
-                <layout>
-                  <property name="column">1</property>
-                  <property name="column-span">1</property>
-                  <property name="row">2</property>
                   <property name="row-span">1</property>
                 </layout>
               </object>

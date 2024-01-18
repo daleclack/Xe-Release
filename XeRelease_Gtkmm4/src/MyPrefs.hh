@@ -43,7 +43,7 @@ private:
     Gtk::Window *parent_win;
 
     // Child widgets
-    Gtk::Entry *entry_lts, *entry_stable, *entry_dev, *entry_path;
+    Gtk::Entry *entry_path;
     Gtk::Button *btnpath, *btnok, *btncancel;
     bool dark_mode;
 
