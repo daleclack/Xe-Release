@@ -148,10 +148,7 @@ bool MyWin::get_dark_mode()
 void MyWin::titlebar_init()
 {
     // Add HeaderBar
-    // header.set_title("Xe Release 15");
-
     // Add stack widget
-    // header.set_custom_title(switcher);
     header.set_title_widget(switcher);
     header.set_show_title_buttons();
     header.set_decoration_layout("close,minimize:menu");
@@ -161,9 +158,6 @@ void MyWin::titlebar_init()
     menu_builder = Gtk::Builder::create_from_resource("/org/gtk/daleclack/menubar.xml");
     auto object = menu_builder->get_object<Gio::MenuModel>("app-menu");
     popover.set_menu_model(object);
-
-    // Add a check button for dark mode
-    // popover.add_child(check_dark, "check_dark");
 
     // Add Menu Actions
     add_action("configs", sigc::mem_fun(*this, &MyWin::config_dialog));
@@ -185,8 +179,6 @@ void MyWin::background1()
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(winpe);
     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
     background.set_pixbuf(sized);
-    // gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
-    // overlay.add(background);
     // Free Memory
     pixbuf.reset();
     sized.reset();
@@ -209,8 +201,6 @@ void MyWin::background2()
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(img7);
     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
     background.set_pixbuf(sized);
-    // gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
-    // overlay.add(background);
     // Free Memory
     pixbuf.reset();
     sized.reset();
@@ -233,8 +223,6 @@ void MyWin::background3()
     auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
     background.set_pixbuf(sized);
-    // gtk_image_set_from_pixbuf(background.gobj(), sized->gobj());
-    // overlay.add(background);
     // Free Memory
     pixbuf.reset();
     sized.reset();
@@ -271,14 +259,12 @@ void MyWin::load_config()
         config_longterm = data["Longterm"];
         config_stable = data["Stable"];
         config_devel = data["Develop"];
-        // check_dark.set_active(data["dark_mode"]);
         back_id = data["background"];
     }
     else
     {
         msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
         msg_dialog.present();
-        // check_dark.set_active(false);
         back_id = 3;
         return;
     }
@@ -294,7 +280,6 @@ void MyWin::on_window_hide(Gtk::Window *window)
 void MyWin::main_releases()
 {
     // Get Selection
-    // int version = combo.get_active_row_number();
     int version = drop_down.get_selected();
     char str[57];
     // Get Configs
@@ -337,7 +322,6 @@ void MyWin::main_releases()
 void MyWin::check_toggled()
 {
     // Get the state of check button and set the config to json file
-    // prefs->set_dark_mode(check_dark.get_active());
     prefs->save_config_now();
 }
 
