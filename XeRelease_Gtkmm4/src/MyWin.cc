@@ -25,10 +25,7 @@ MyWin::MyWin()
     set_default_size(640, 360);
     titlebar_init();
 
-    // // Set Background Image
-    // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
-    // auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
-    // background.set_pixbuf(sized);
+    // Set Background Image
     back_overlay.set_child(background);
     background.set_size_request(640, 360);
     back_overlay.set_halign(Gtk::Align::FILL);
@@ -45,10 +42,6 @@ MyWin::MyWin()
     api_label.set_label(api_version);
 
     // Initalize combobox
-    // combo.append("Longterm");
-    // combo.append("Stable");
-    // combo.append("Development");
-    // combo.set_active(1);
     combo_list = Gtk::StringList::create();
     combo_list->append("Longterm");
     combo_list->append("Stable");
@@ -112,13 +105,11 @@ MyWin::MyWin()
     {
         btn_box.add_css_class("style_dark");
         prefs->add_css_class("style_dark");
-        // provider->load_from_resource("/org/gtk/daleclack/style_dark.css");
     }
     else
     {
         btn_box.add_css_class("style_light");
         prefs->add_css_class("style_light");
-        // provider->load_from_resource("/org/gtk/daleclack/style.css");
     }
 
     // Apply css class for widgets
@@ -126,21 +117,11 @@ MyWin::MyWin()
                                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     Gtk::CssProvider::add_provider_for_display(prefs->get_display(), provider,
                                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    // auto style1 = btn_box.get_style_context();
-    // style1->add_provider(provider, 1);
-    // auto style2 = prefs->get_style_context();
-    // style2->add_provider(provider, 1);
 
     switcher.set_stack(stack1);
-    // show_all_children();
 
     // Connect Signals
     btn_ver.signal_clicked().connect(sigc::mem_fun(*this, &MyWin::main_releases));
-    // check_dark.signal_toggled().connect(sigc::mem_fun(*this, &MyWin::check_toggled));
-
-    // // Free Memory
-    // pixbuf.reset();
-    // sized.reset();
 }
 
 bool MyWin::get_dark_mode()

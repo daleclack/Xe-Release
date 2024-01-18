@@ -5,8 +5,10 @@
 #include "json_nlohmann/json.hpp"
 #include "config.hh"
 #include "MsgBox.hh"
+#include "ModelColumns.hh"
 
 using json = nlohmann::json;
+typedef std::vector<std::string> str_vec;
 
 class MyPrefs : public Gtk::Box
 {
@@ -26,10 +28,27 @@ private:
 
     // Child widgets
     Gtk::ScrolledWindow *version_sw;
+    Gtk::ColumnView version_view;
     Gtk::Button *btnadd, *btnremove;
     Gtk::Entry *entry_path;
     Gtk::Button *btnpath, *btnok, *btncancel;
     bool dark_mode;
+
+    // The Column View for versions
+    Glib::RefPtr<Gio::ListStore<ModelColumns>> ver_list;
+    Glib::RefPtr<Gtk::NoSelection> selection;
+
+    // Factory to renderer branch string
+    Glib::RefPtr<Gtk::ColumnViewColumn> branch_column;
+    Glib::RefPtr<Gtk::SignalListItemFactory> branch_factory;
+    void setup_branch(const Glib::RefPtr<Gtk::ListItem> &item);
+    void bind_branch(const Glib::RefPtr<Gtk::ListItem> &item);
+
+    // Factory to renderer version string
+    Glib::RefPtr<Gtk::ColumnViewColumn> version_column;
+    Glib::RefPtr<Gtk::SignalListItemFactory> version_factory;
+    void setup_version(const Glib::RefPtr<Gtk::ListItem> &item);
+    void bind_version(const Glib::RefPtr<Gtk::ListItem> &item);
 
     // Strings to store path on Windows and Unix-Like systems
     std::string config_win32, config_unix, config_darwin;

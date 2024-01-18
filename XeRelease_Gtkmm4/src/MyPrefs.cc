@@ -17,6 +17,15 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     btnpath->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnpath_clicked));
     btnok->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnok_clicked));
     btncancel->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnreset_clicked));
+
+    // Create the list store
+    ver_list = Gio::ListStore<ModelColumns>::create();
+    selection = Gtk::NoSelection::create(ver_list);
+
+    // Add Column View
+    version_sw->set_child(version_view);
+
+    
 }
 
 void MyPrefs::btnok_clicked()
@@ -126,11 +135,8 @@ void MyPrefs::init_json_data(json &data1)
 
 void MyPrefs::reset_entries()
 {
-    std::string config_longterm, config_stable, config_devel;
+    str_vec branchs_vec, versions_vec;
     // Read json data
-    config_longterm = data["Longterm"];
-    config_stable = data["Stable"];
-    config_devel = data["Develop"];
     config_unix = data["Release_Path_Unix"];
     config_win32 = data["Release_Path_Win32"];
     config_darwin = data["Release_Path_Darwin"];
@@ -214,3 +220,52 @@ void MyPrefs::dialog_response(int response_id)
     dialog.reset();
 }
 
+void MyPrefs::setup_branch(const Glib::RefPtr<Gtk::ListItem> &item)
+{
+    // Set label for item
+    item->set_child(*Gtk::make_managed<Gtk::Entry>());
+}
+
+void MyPrefs::bind_branch(const Glib::RefPtr<Gtk::ListItem> &item)
+{
+    // Get position
+    auto pos = item->get_position();
+
+    // Get Entry
+    auto entry = dynamic_cast<Gtk::Entry *>(item->get_child());
+    if (!entry)
+    {
+        return;
+    }
+
+    // Bind text
+    auto item1 = ver_list->get_item(pos);
+    entry->set_text(item1->get_branch_str());
+    Glib::Binding::bind_property(item1->property_branch(), entry->property_text(),
+                                 Glib::Binding::Flags::BIDIRECTIONAL);
+}
+
+void MyPrefs::setup_version(const Glib::RefPtr<Gtk::ListItem> &item)
+{
+    // Set label for item
+    item->set_child(*Gtk::make_managed<Gtk::Entry>());
+}
+
+void MyPrefs::bind_version(const Glib::RefPtr<Gtk::ListItem> &item)
+{
+    // Get position
+    auto pos = item->get_position();
+
+    // Get Entry
+    auto entry = dynamic_cast<Gtk::Entry *>(item->get_child());
+    if (!entry)
+    {
+        return;
+    }
+
+    // Bind text
+    auto item1 = ver_list->get_item(pos);
+    entry->set_text(item1->get_version_str());
+    Glib::Binding::bind_property(item1->property_version(), entry->property_text(),
+                                 Glib::Binding::Flags::BIDIRECTIONAL);
+}
