@@ -21,8 +21,8 @@ pkg_check_modules (GTKMM4 REQUIRED gtkmm-4.0)
 include_directories (${GTKMM4_INCLUDE_DIRS})
 link_directories (${GTKMM4_LIBRARY_DIRS})
 
-set(SOURCES src/main.cc src/MyWin.cc src/MyPrefs.cc
-    src/xerelease.cc src/xeapi.cc)
+set(SOURCES src/main.cc src/MyWin.cc src/MsgBox.cc 
+    src/MyPrefs.cc src/xerelease.cc src/xeapi.cc)
 
 #Compile resources with GCR_CMake
 set(RESOURCE_LIST

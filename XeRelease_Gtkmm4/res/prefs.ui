@@ -15,6 +15,29 @@
           </object>
         </child>
         <child>
+          <object class="GtkScrolledWindow" id="version_sw">
+            <property name="height-request">200</property>
+            <property name="hscrollbar-policy">never</property>
+            <property name="width-request">350</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="halign">center</property>
+            <child>
+              <object class="GtkButton" id="btn_add">
+                <property name="label">Add Item</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_remove">
+                <property name="label">Remove Item</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
           <object class="GtkGrid">
             <property name="halign">center</property>
             <property name="valign">center</property>

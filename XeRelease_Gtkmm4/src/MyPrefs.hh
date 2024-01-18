@@ -4,27 +4,9 @@
 #include <fstream>
 #include "json_nlohmann/json.hpp"
 #include "config.hh"
+#include "MsgBox.hh"
 
 using json = nlohmann::json;
-
-class MsgBox : public Gtk::Window
-{
-public:
-    MsgBox(Gtk::Window &parent);
-    MsgBox();
-    void Init(Glib::ustring msg);
-
-private:
-    // Child Widgets
-    Gtk::Image image;
-    Gtk::Label msg_label;
-    Gtk::Box vbox, hbox, btn_box;
-    Gtk::Button btn_ok;
-
-    // Signal Handler
-    void on_response();
-
-};
 
 class MyPrefs : public Gtk::Box
 {
@@ -43,6 +25,8 @@ private:
     Gtk::Window *parent_win;
 
     // Child widgets
+    Gtk::ScrolledWindow *version_sw;
+    Gtk::Button *btnadd, *btnremove;
     Gtk::Entry *entry_path;
     Gtk::Button *btnpath, *btnok, *btncancel;
     bool dark_mode;
