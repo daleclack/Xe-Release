@@ -9,6 +9,7 @@
 
 using json = nlohmann::json;
 typedef std::vector<std::string> str_vec;
+typedef Glib::RefPtr<Gio::ListStore<ModelColumns>> MyListStore;
 
 class MyPrefs : public Gtk::Box
 {
@@ -16,9 +17,9 @@ public:
     MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_builder);
     static MyPrefs *create();
     void set_parent_win(Gtk::Window *parent);
-    void init_json_data(json &data1);
     void save_config_now();
-    void set_dark_mode(bool dark_mode_enabled);
+    int get_background_id();
+    MyListStore get_model();
     int background_id = 3;
 
 private:
@@ -35,7 +36,7 @@ private:
     bool dark_mode;
 
     // The Column View for versions
-    Glib::RefPtr<Gio::ListStore<ModelColumns>> ver_list;
+    MyListStore ver_list;
     Glib::RefPtr<Gtk::NoSelection> selection;
 
     // Factory to renderer branch string
@@ -59,6 +60,8 @@ private:
 
     // Signal Handlers
     Glib::RefPtr<Gtk::FileChooserNative> dialog;
+    void btnadd_clicked();
+    void btnremove_clicked();
     void btnpath_clicked();
     void dialog_response(int response_id);
     void btnok_clicked();

@@ -41,12 +41,20 @@ MyWin::MyWin()
     snprintf(api_version, 57, "Xe Api Version:%d", xeapi1(local));
     api_label.set_label(api_version);
 
+    // Get perferences
+    prefs = MyPrefs::create();
+    back_id = prefs->get_background_id();
+
     // Initalize combobox
-    combo_list = Gtk::StringList::create();
-    combo_list->append("Longterm");
-    combo_list->append("Stable");
-    combo_list->append("Development");
-    drop_down.set_model(combo_list);
+    drop_list = prefs->get_model();
+    drop_down.set_model(drop_list);
+
+    // Add factory for dropdown
+    drop_factory = Gtk::SignalListItemFactory::create();
+    drop_factory->signal_bind().connect(sigc::mem_fun(*this, &MyWin::bind_drop));
+    drop_factory->signal_setup().connect(sigc::mem_fun(*this, &MyWin::setup_drop));
+    drop_down.set_factory(drop_factory);
+    drop_down.set_list_factory(drop_factory);
     drop_down.set_selected(1);
 
     // Add Main Controls
@@ -64,10 +72,8 @@ MyWin::MyWin()
     stack1.add(overlay, "main_page", "WelCome");
 
     // Add Config Page
-    prefs = MyPrefs::create();
     prefs->set_parent_win(this);
-    load_config();
-    prefs->init_json_data(data);
+    // load_config();
     cfg_box.append(*prefs);
     // cfg_box.set_hexpand();
     cfg_box.set_halign(Gtk::Align::CENTER);
@@ -241,36 +247,36 @@ void MyWin::background3()
 
 void MyWin::config_dialog()
 {
-    load_config();
-    prefs->init_json_data(data);
+    // load_config();
+    // prefs->init_json_data(data);
     stack1.set_visible_child(cfg_box);
 }
 
-void MyWin::load_config()
-{
-    // Load/Reload json config file
+// void MyWin::load_config()
+// {
+//     // Load/Reload json config file
 
-    // Open json file
-    std::ifstream json_file("xe_config.json");
-    if (json_file.is_open())
-    {
-        // Read data from json file
-        data = json::parse(json_file);
-        config_longterm = data["Longterm"];
-        config_stable = data["Stable"];
-        config_devel = data["Develop"];
-        back_id = data["background"];
-    }
-    else
-    {
-        msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
-        msg_dialog.present();
-        back_id = 3;
-        return;
-    }
-    json_config_init(data);
-    json_file.close();
-}
+//     // Open json file
+//     std::ifstream json_file("xe_config.json");
+//     if (json_file.is_open())
+//     {
+//         // Read data from json file
+//         data = json::parse(json_file);
+//         config_longterm = data["Longterm"];
+//         config_stable = data["Stable"];
+//         config_devel = data["Develop"];
+//         back_id = data["background"];
+//     }
+//     else
+//     {
+//         msg_dialog.Init("The config doesn't exist!\nPlease use \"Config\" menu to set releases");
+//         msg_dialog.present();
+//         back_id = 3;
+//         return;
+//     }
+//     json_config_init(data);
+//     json_file.close();
+// }
 
 void MyWin::on_window_hide(Gtk::Window *window)
 {
@@ -282,32 +288,32 @@ void MyWin::main_releases()
     // Get Selection
     int version = drop_down.get_selected();
     char str[57];
+
+    // Get Version string
+    auto item = drop_list->get_item(version);
+    auto message = item->get_version_str();
+    msg_dialog.Init(message);
+    msg_dialog.present();
     // Get Configs
-    load_config();
-    switch (version) // Use Selection to Perform
-    {
-    case Releases::LTS:
-        msg_dialog.Init("The longterm build is diasbled!");
-        msg_dialog.present();
-        longterm(local, config_longterm.c_str(), str);
-        msg_dialog.Init(str);
-        msg_dialog.present();
-        break;
-    case Releases::Stable:
-        msg_dialog.Init("The stable build is diasbled!");
-        msg_dialog.present();
-        stable(local, config_stable.c_str(), str);
-        msg_dialog.Init(str);
-        msg_dialog.present();
-        break;
-    case Releases::Dev:
-        msg_dialog.Init("The development build is diasbled!");
-        msg_dialog.present();
-        develop(local, config_devel.c_str(), str);
-        msg_dialog.Init(str);
-        msg_dialog.present();
-        break;
-    }
+    // load_config();
+    // switch (version) // Use Selection to Perform
+    // {
+    // case Releases::LTS:
+    //     longterm(local, config_longterm.c_str(), str);
+    //     msg_dialog.Init(str);
+    //     msg_dialog.present();
+    //     break;
+    // case Releases::Stable:
+    //     stable(local, config_stable.c_str(), str);
+    //     msg_dialog.Init(str);
+    //     msg_dialog.present();
+    //     break;
+    // case Releases::Dev:
+    //     develop(local, config_devel.c_str(), str);
+    //     msg_dialog.Init(str);
+    //     msg_dialog.present();
+    //     break;
+    // }
 }
 
 void MyWin::check_toggled()
@@ -316,11 +322,34 @@ void MyWin::check_toggled()
     prefs->save_config_now();
 }
 
+void MyWin::setup_drop(const Glib::RefPtr<Gtk::ListItem> &item)
+{
+    // Set label for item
+    item->set_child(*Gtk::make_managed<Gtk::Label>());
+}
+
+void MyWin::bind_drop(const Glib::RefPtr<Gtk::ListItem> &item)
+{
+    // Get position
+    auto pos = item->get_position();
+
+    // Get label widget
+    auto label = dynamic_cast<Gtk::Label *>(item->get_child());
+    if (!label)
+    {
+        return;
+    }
+
+    // Set text to the label
+    auto item1 = drop_list->get_item(pos);
+    label->set_text(item1->get_branch_str());
+}
+
 void MyWin::about_dialog()
 {
     char *version, *copyright;
     // The Gtkmm Version
-    version = g_strdup_printf("17.0\nRunning Against Gtkmm %d.%d.%d\n2023 Update Summary edition",
+    version = g_strdup_printf("17.0\nRunning Against Gtkmm %d.%d.%d\n",
                               GTKMM_MAJOR_VERSION,
                               GTKMM_MINOR_VERSION,
                               GTKMM_MICRO_VERSION);

@@ -14,6 +14,8 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     btncancel = ref_builder->get_widget<Gtk::Button>("btn_cancel");
 
     // Connect Signal
+    btnadd->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnadd_clicked));
+    btnremove->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnremove_clicked));
     btnpath->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnpath_clicked));
     btnok->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnok_clicked));
     btncancel->signal_clicked().connect(sigc::mem_fun(*this, &MyPrefs::btnreset_clicked));
@@ -22,10 +24,28 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     ver_list = Gio::ListStore<ModelColumns>::create();
     selection = Gtk::NoSelection::create(ver_list);
 
+    // List content for test
+    ver_list->append(ModelColumns::create("Longterm", "5.15"));
+    ver_list->append(ModelColumns::create("Stable", "9.1"));
+    ver_list->append(ModelColumns::create("Develop", "-1"));
+    version_view.set_model(selection);
+
     // Add Column View
     version_sw->set_child(version_view);
 
-    
+    // Add branch column
+    branch_factory = Gtk::SignalListItemFactory::create();
+    branch_factory->signal_bind().connect(sigc::mem_fun(*this, &MyPrefs::bind_branch));
+    branch_factory->signal_setup().connect(sigc::mem_fun(*this, &MyPrefs::setup_branch));
+    branch_column = Gtk::ColumnViewColumn::create("Branch", branch_factory);
+    version_view.append_column(branch_column);
+
+    // Add version column
+    version_factory = Gtk::SignalListItemFactory::create();
+    version_factory->signal_bind().connect(sigc::mem_fun(*this, &MyPrefs::bind_version));
+    version_factory->signal_setup().connect(sigc::mem_fun(*this, &MyPrefs::setup_version));
+    version_column = Gtk::ColumnViewColumn::create("Version", version_factory);
+    version_view.append_column(version_column);
 }
 
 void MyPrefs::btnok_clicked()
@@ -47,15 +67,6 @@ void MyPrefs::btnok_clicked()
         config_darwin = entry_path->get_text();
         break;
     }
-    // if (get_os_type() == OS_Type::Linux)
-    // {
-    //     config_unix = entry_path->get_text();
-    // }
-    // else
-    // {
-
-    //     config_win32 = entry_path->get_text();
-    // }
     // Open the config file
     outfile.open("xe_config.json", std::ios_base::out);
     /*OutPut contents to the file
@@ -121,18 +132,6 @@ void MyPrefs::btnreset_clicked()
     msg_dialog1.present();
 }
 
-void MyPrefs::init_json_data(json &data1)
-{
-    // Read Configs
-    // Open json file
-    if (!data1.empty())
-    {
-        data = data1;
-        // Set the content of entry
-        reset_entries();
-    }
-}
-
 void MyPrefs::reset_entries()
 {
     str_vec branchs_vec, versions_vec;
@@ -158,14 +157,6 @@ void MyPrefs::reset_entries()
         entry_path->set_text(config_darwin);
         break;
     }
-    // if (get_os_type() == OS_Type::Linux)
-    // {
-    //     entry_path->set_text(config_unix);
-    // }
-    // else
-    // {
-    //     entry_path->set_text(config_win32);
-    // }
 }
 
 MyPrefs *MyPrefs::create()
@@ -183,18 +174,6 @@ void MyPrefs::set_parent_win(Gtk::Window *parent)
 {
     parent_win = parent;
     msg_dialog1.set_transient_for(*parent);
-}
-
-void MyPrefs::set_dark_mode(bool dark_mode_enabled)
-{
-    // Put the config of dark mode to the class
-    dark_mode = dark_mode_enabled;
-}
-
-void MyPrefs::save_config_now()
-{
-    // Save config when the dark mode config is modified
-    btnok_clicked();
 }
 
 void MyPrefs::btnpath_clicked()
@@ -268,4 +247,35 @@ void MyPrefs::bind_version(const Glib::RefPtr<Gtk::ListItem> &item)
     entry->set_text(item1->get_version_str());
     Glib::Binding::bind_property(item1->property_version(), entry->property_text(),
                                  Glib::Binding::Flags::BIDIRECTIONAL);
+}
+
+void MyPrefs::btnadd_clicked()
+{
+    // Append a item to the list
+    ver_list->append(ModelColumns::create("<empty>", "<empty>"));
+}
+
+void MyPrefs::btnremove_clicked()
+{
+    // Get Position of item
+    auto pos = ver_list->get_n_items() - 1;
+
+    // Remove item
+    ver_list->remove(pos);
+}
+
+int MyPrefs::get_background_id()
+{
+    // The id for background
+    return background_id;
+}
+
+MyListStore MyPrefs::get_model()
+{
+    // The store for the dropdown and list
+    return ver_list;
+}
+
+void MyPrefs::save_config_now()
+{
 }
