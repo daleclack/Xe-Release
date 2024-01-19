@@ -1,4 +1,5 @@
 #include "MyPrefs.hh"
+#include "xerelease.hh"
 
 MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_builder)
     : Gtk::Box(cobject),
@@ -25,9 +26,11 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     selection = Gtk::NoSelection::create(ver_list);
 
     // List content for test
-    ver_list->append(ModelColumns::create("Longterm", "5.15", 0));
-    ver_list->append(ModelColumns::create("Stable", "9.1", 1));
-    ver_list->append(ModelColumns::create("Develop", "-1", 1));
+    // ver_list->append(ModelColumns::create("Longterm", "5.15", 0));
+    // ver_list->append(ModelColumns::create("Stable", "9.1", 1));
+    // ver_list->append(ModelColumns::create("Develop", "-1", 1));
+    load_config();
+    apply_config();
     version_view.set_model(selection);
 
     // Add Column View
@@ -58,12 +61,39 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     version_view.append_column(mode_column);
 }
 
+void MyPrefs::load_config()
+{
+    // Open the json file
+    std::fstream json_file;
+    json_file.open("xe_config.json", std::ios_base::in);
+    if (json_file.is_open())
+    {
+        data = json::parse(json_file);
+    }
+    else
+    {
+        data = json::parse(
+            R"({
+                    "Branches": ["Longterm","Stable","Develop"],
+                    "Modes": [0,1,1],
+                    "Release_Path_Darwin": "./",
+                    "Release_Path_Unix": "./",
+                    "Release_Path_Win32": "./",
+                    "Versions": ["5.15","9.1","<empty>"],
+                    "background": 3,
+                    "dark_mode": false
+                })");
+    }
+    data_backup = data;
+    json_config_init(data);
+}
+
 void MyPrefs::btnok_clicked()
 {
     // Save Configs to a file
     Glib::ustring config;
     std::fstream outfile;
-    
+
     // Config for Branches, Versions and Modes
     str_vec branches, versions;
     std::vector<guint> modes;
@@ -116,7 +146,7 @@ void MyPrefs::btnok_clicked()
             )");
 
         // Get Branchs, Versions and Modes
-        for(int i = 0; i < ver_list->get_n_items(); i++)
+        for (int i = 0; i < ver_list->get_n_items(); i++)
         {
             // Get Item
             auto item = ver_list->get_item(i);
@@ -141,6 +171,9 @@ void MyPrefs::btnok_clicked()
         // Set Current json data
         data = out_data;
 
+        // Update data for xe release core
+        json_config_init(data);
+
         // Show Dialog
         msg_dialog1.Init("Config File Saved!");
         msg_dialog1.present();
@@ -154,17 +187,23 @@ void MyPrefs::btnreset_clicked()
     data = data_backup;
 
     // Reset content of entries
-    reset_entries();
+    apply_config();
+
+    // Update data for xe release core
+    json_config_init(data);
 
     // Show Dialog
     msg_dialog1.Init("Config Reseted!\n Press \"OK\" to save.");
     msg_dialog1.present();
 }
 
-void MyPrefs::reset_entries()
+void MyPrefs::apply_config()
 {
-    str_vec branchs_vec, versions_vec;
+    // str_vec branches_vec, versions_vec, modes_vec;
     // Read json data
+    str_vec branches_vec = data["Branches"];
+    str_vec versions_vec = data["Versions"];
+    std::vector<guint> modes_vec = data["Modes"];
     config_unix = data["Release_Path_Unix"];
     config_win32 = data["Release_Path_Win32"];
     config_darwin = data["Release_Path_Darwin"];
@@ -172,6 +211,11 @@ void MyPrefs::reset_entries()
     background_id = data["background"];
 
     // Set text from json file data
+    for (int i = 0; i < branches_vec.size(); i++)
+    {
+        ver_list->append(ModelColumns::create(
+            branches_vec[i].c_str(), versions_vec[i].c_str(), modes_vec[i]));
+    }
 
     // Use different path for Linux filesystem and Windows
     switch (get_os_type())
@@ -323,6 +367,13 @@ int MyPrefs::get_background_id()
 {
     // The id for background
     return background_id;
+}
+
+void MyPrefs::set_background_id(int back_id)
+{
+    // Set background id
+    background_id = back_id;
+    btnok_clicked();
 }
 
 MyListStore MyPrefs::get_model()

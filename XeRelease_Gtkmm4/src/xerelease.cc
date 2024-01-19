@@ -116,7 +116,7 @@ static void path_translate(char *result, const char *version)
     }
 }
 
-void release_mode_1(struct tm *local, const XeVer &version1, char *callback_str)
+void get_release_str(struct tm *local, const XeVer &version1, char *callback_str)
 {
     // Print Version of release mode 1 in the file
     char filename[MAX_PATH];
@@ -137,30 +137,6 @@ void release_mode_1(struct tm *local, const XeVer &version1, char *callback_str)
     // output:release branch time in xe-release
     printf("%4d-%02d-%02d ", local->tm_year + 1900, local->tm_mon + 1, local->tm_mday);
     printf("%s.%d Api:%d\n", version1.version, lts_ver, xeapi1(local));
-    fclose(stdout);
-    return;
-}
-
-void release_mode_2(struct tm *local, const XeVer &version1, char *callback_str)
-{
-    // Print Version of release mode 2 in the file
-    char filename[57];
-    path_translate(filename, version1.version);
-    // sprintf(filename, "xe-%c.x", rel[0]);
-    int devel1; // stable release version
-    int year2 = local->tm_year + 1900,
-        month2 = local->tm_mon + 1, day2 = local->tm_mday;
-    // get release version
-    devel1 = total_year_day(version1.year, year2) -
-             total_day(version1.year, stable_month, version1.day) +
-             total_day(year2, month2, day2);
-    snprintf(callback_str, 57, "Xeinit %s Version:%s.%d\n",
-             version1.branch, version1.version, devel1);
-    freopen(filename, "a", stdout);
-    // put all output in the release file
-    // output:development branch time in xe-release
-    printf("%4d-%02d-%02d ", local->tm_year + 1900, local->tm_mon + 1, local->tm_mday);
-    printf("%s.%d build:%d\n", version1.version, devel1, xeapi1(local));
     fclose(stdout);
     return;
 }

@@ -84,6 +84,7 @@ MyWin::MyWin()
     // Set background from the config
     // The vaild background id is 1 to 3
     // else the background 3 will load
+    back_id = prefs->get_background_id();
     switch (back_id)
     {
     case 1:
@@ -192,8 +193,9 @@ void MyWin::background1()
     // Update config
     if (!start)
     {
-        prefs->background_id = 1;
-        prefs->save_config_now();
+        prefs->set_background_id(1);
+        // prefs->background_id = 1;
+        // prefs->save_config_now();
     }
     else
     {
@@ -214,8 +216,9 @@ void MyWin::background2()
     // Update config
     if (!start)
     {
-        prefs->background_id = 2;
-        prefs->save_config_now();
+        prefs->set_background_id(2);
+        // prefs->background_id = 2;
+        // prefs->save_config_now();
     }
     else
     {
@@ -236,8 +239,9 @@ void MyWin::background3()
     // Update config
     if (!start)
     {
-        prefs->background_id = 3;
-        prefs->save_config_now();
+        prefs->set_background_id(3);
+        // prefs->background_id = 3;
+        // prefs->save_config_now();
     }
     else
     {

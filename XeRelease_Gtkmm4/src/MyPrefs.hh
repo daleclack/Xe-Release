@@ -17,8 +17,15 @@ public:
     MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_builder);
     static MyPrefs *create();
     void set_parent_win(Gtk::Window *parent);
+
+    // xe_config file management
+    void load_config();
     void save_config_now();
+
+    // Background preferences
+    void set_background_id(int back_id);
     int get_background_id();
+
     MyListStore get_model();
     int background_id = 3;
 
@@ -73,7 +80,7 @@ private:
     void dialog_response(int response_id);
     void btnok_clicked();
     void btnreset_clicked();
-    void reset_entries();
+    void apply_config();
 };
 
 // static inline bool unix_file_system_detected()

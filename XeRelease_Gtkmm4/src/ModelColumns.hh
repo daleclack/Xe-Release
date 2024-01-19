@@ -8,17 +8,17 @@ class ModelColumns : public Glib::Object
 public:
     // Create a new object
     static Glib::RefPtr<ModelColumns> create(Glib::ustring &branch1,
-                                             Glib::ustring &version1, guint mode1)
+                                             Glib::ustring &version1, guint mode2)
     {
         return Glib::make_refptr_for_instance<ModelColumns>(
-            new ModelColumns(branch1, version1, mode1));
+            new ModelColumns(branch1, version1, mode2));
     }
     static Glib::RefPtr<ModelColumns> create(const char *branch1,
-                                             const char *version1, guint mode1)
+                                             const char *version1, guint mode2)
     {
         Glib::ustring temp_branch(branch1), temp_version(version1);
         return Glib::make_refptr_for_instance<ModelColumns>(
-            new ModelColumns(temp_branch, temp_version, mode1));
+            new ModelColumns(temp_branch, temp_version, mode2));
     }
 
     // Get Value of branch and version

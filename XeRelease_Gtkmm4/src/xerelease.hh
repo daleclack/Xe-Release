@@ -18,9 +18,7 @@ int total_day(int year,int month,int day);
 
 int total_year_day(int year1,int year2);
 
-void release_mode_1(struct tm *local,const XeVer &version1, char *callback_str);
-
-void release_mode_2(struct tm *local,const XeVer &version1, char *callback_str);
+void get_release_str(struct tm *local,const XeVer &version1, char *callback_str);
 
 void json_config_init(json &user_data);
 
