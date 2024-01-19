@@ -10,8 +10,8 @@ typedef struct{
     int year;
     int month;
     int day;
-    char *branch;
-    char *version;
+    const char *branch;
+    const char *version;
 }XeVer;
 
 int total_day(int year,int month,int day);

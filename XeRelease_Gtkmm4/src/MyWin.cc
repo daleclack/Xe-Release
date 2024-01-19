@@ -291,13 +291,41 @@ void MyWin::main_releases()
 {
     // Get Selection
     guint version = drop_down.get_selected();
+    XeVer rel_version;
     char str[57];
 
-    // Get Version string
+    // Get Branch, Version and mode
     auto item = drop_list->get_item(version);
-    auto message = item->get_version_str();
-    msg_dialog.Init(message);
-    msg_dialog.present();
+    rel_version.branch = item->get_branch_str().c_str();
+    rel_version.version = item->get_version_str().c_str();
+    guint mode = item->get_branch_mode();
+
+    switch (mode)
+    {
+    case 0:
+        // The Release Mode 0
+        rel_version.year = 2019;
+        rel_version.month = 1;
+        rel_version.day = 11;
+
+        // Get Relase String and Show
+        get_release_str(local, rel_version, str);
+        msg_dialog.Init(str);
+        msg_dialog.present();
+        break;
+    case 1:
+    default:
+        // The Release Mode 1(default)
+        rel_version.year = 2017;
+        rel_version.month = 5;
+        rel_version.day = 19;
+
+        // Get Relase String and Show
+        get_release_str(local, rel_version, str);
+        msg_dialog.Init(str);
+        msg_dialog.present();
+        break;
+    }
     // Get Configs
     // load_config();
     // switch (version) // Use Selection to Perform

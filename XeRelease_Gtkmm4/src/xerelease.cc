@@ -58,7 +58,7 @@ int total_day(int year, int month, int day)
     default:
         printf("Date Wrong!");
     }
-    if (year % 4 == 0 && year % 100 != 0)
+    if (year % 4 == 0 && year % 100 != 0 && month > 2)
         sum = sum + 1;
     return sum;
 }
@@ -127,7 +127,7 @@ void get_release_str(struct tm *local, const XeVer &version1, char *callback_str
         month2 = local->tm_mon + 1, day2 = local->tm_mday;
     // get release version
     lts_ver = total_year_day(version1.year, year2) -
-              total_day(version1.year, longterm_month, version1.day) +
+              total_day(version1.year, version1.month, version1.day) +
               total_day(year2, month2, day2);
     // For show in dialog or console
     snprintf(callback_str, 57, "Xeinit %s version:%s.%d\n",
