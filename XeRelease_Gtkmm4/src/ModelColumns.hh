@@ -7,14 +7,18 @@ class ModelColumns : public Glib::Object
 {
 public:
     // Create a new object
-    static Glib::RefPtr<ModelColumns> create(Glib::ustring &branch1, Glib::ustring &version1)
+    static Glib::RefPtr<ModelColumns> create(Glib::ustring &branch1,
+                                             Glib::ustring &version1, guint mode1)
     {
-        return Glib::make_refptr_for_instance<ModelColumns>(new ModelColumns(branch1, version1));
+        return Glib::make_refptr_for_instance<ModelColumns>(
+            new ModelColumns(branch1, version1, mode1));
     }
-    static Glib::RefPtr<ModelColumns> create(const char *branch1, const char *version1)
+    static Glib::RefPtr<ModelColumns> create(const char *branch1,
+                                             const char *version1, guint mode1)
     {
         Glib::ustring temp_branch(branch1), temp_version(version1);
-        return Glib::make_refptr_for_instance<ModelColumns>(new ModelColumns(temp_branch, temp_version));
+        return Glib::make_refptr_for_instance<ModelColumns>(
+            new ModelColumns(temp_branch, temp_version, mode1));
     }
 
     // Get Value of branch and version
@@ -28,6 +32,11 @@ public:
         return version_prep.get_value();
     }
 
+    guint get_branch_mode()
+    {
+        return branch_mode.get_value();
+    }
+
     // Get PropertyProxy
     Glib::PropertyProxy<Glib::ustring> property_branch()
     {
@@ -39,17 +48,24 @@ public:
         return version_prep.get_proxy();
     }
 
+    Glib::PropertyProxy<guint> property_branch_mode()
+    {
+        return branch_mode.get_proxy();
+    }
+
 private:
     // Use Glib::Property to bind
     Glib::Property<Glib::ustring> branch_prep, version_prep;
+    Glib::Property<guint> branch_mode;
 
 protected:
     // Register type and initalize properties
-    ModelColumns(Glib::ustring branch, Glib::ustring version)
+    ModelColumns(Glib::ustring branch, Glib::ustring version, guint mode)
         : Glib::ObjectBase(typeid(ModelColumns)),
           Glib::Object(),
           branch_prep(*this, "branch", branch),
-          version_prep(*this, "version", version)
+          version_prep(*this, "version", version),
+          branch_mode(*this, "branch-mode", mode)
     {
     }
 };

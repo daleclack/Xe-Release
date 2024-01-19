@@ -126,8 +126,8 @@ void release_mode_1(struct tm *local, const XeVer &version1, char *callback_str)
     int year2 = local->tm_year + 1900,
         month2 = local->tm_mon + 1, day2 = local->tm_mday;
     // get release version
-    lts_ver = total_year_day(longterm_year, year2) -
-              total_day(longterm_year, longterm_month, longterm_day) +
+    lts_ver = total_year_day(version1.year, year2) -
+              total_day(version1.year, longterm_month, version1.day) +
               total_day(year2, month2, day2);
     // For show in dialog or console
     snprintf(callback_str, 57, "Xeinit %s version:%s.%d\n",
@@ -151,8 +151,8 @@ void release_mode_2(struct tm *local, const XeVer &version1, char *callback_str)
     int year2 = local->tm_year + 1900,
         month2 = local->tm_mon + 1, day2 = local->tm_mday;
     // get release version
-    devel1 = total_year_day(stable_year, year2) -
-             total_day(stable_year, stable_month, stable_day) +
+    devel1 = total_year_day(version1.year, year2) -
+             total_day(version1.year, stable_month, version1.day) +
              total_day(year2, month2, day2);
     snprintf(callback_str, 57, "Xeinit %s Version:%s.%d\n",
              version1.branch, version1.version, devel1);

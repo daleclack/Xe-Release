@@ -286,7 +286,7 @@ void MyWin::on_window_hide(Gtk::Window *window)
 void MyWin::main_releases()
 {
     // Get Selection
-    int version = drop_down.get_selected();
+    guint version = drop_down.get_selected();
     char str[57];
 
     // Get Version string

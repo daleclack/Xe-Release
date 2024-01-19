@@ -7,6 +7,9 @@
 using json = nlohmann::json;
 
 typedef struct{
+    int year;
+    int month;
+    int day;
     char *branch;
     char *version;
 }XeVer;
@@ -21,7 +24,7 @@ void release_mode_2(struct tm *local,const XeVer &version1, char *callback_str);
 
 void json_config_init(json &user_data);
 
-void dale(struct tm *local);
+// void dale(struct tm *local);
 
 // void longterm(struct tm *local,const char * lts,char *str);
 
