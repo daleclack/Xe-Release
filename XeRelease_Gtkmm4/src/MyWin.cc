@@ -348,11 +348,11 @@ void MyWin::main_releases()
     // }
 }
 
-void MyWin::check_toggled()
-{
-    // Get the state of check button and set the config to json file
-    prefs->save_config_now();
-}
+// void MyWin::check_toggled()
+// {
+//     // Get the state of check button and set the config to json file
+//     prefs->save_config_now();
+// }
 
 void MyWin::setup_drop(const Glib::RefPtr<Gtk::ListItem> &item)
 {

@@ -67,5 +67,5 @@ private:
     void on_window_hide(Gtk::Window *window);
     void about_dialog();
     void main_releases();
-    void check_toggled();
+    // void check_toggled();
 };
