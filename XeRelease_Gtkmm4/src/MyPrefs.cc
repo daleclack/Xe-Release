@@ -63,6 +63,10 @@ void MyPrefs::btnok_clicked()
     // Save Configs to a file
     Glib::ustring config;
     std::fstream outfile;
+    
+    // Config for Branches, Versions and Modes
+    str_vec branches, versions;
+    std::vector<guint> modes;
 
     // Initalize Config for path
     switch (get_os_type())
@@ -82,9 +86,9 @@ void MyPrefs::btnok_clicked()
     /*OutPut contents to the file
         Simple Contents of xe_config:
         {
-            "Longterm":"x.x",
-            "Stable":"x.x",
-            "Develop":"x.x",
+            "Branches":[],
+            "Versions":[],
+            "Modes":[],
             "dark_mode":false,
             "background":0
             "Release_Path_Unix":"",
@@ -100,9 +104,9 @@ void MyPrefs::btnok_clicked()
         // Create json object
         json out_data = json::parse(R"(
                 {
-                    "Longterm":"",
-                    "Stable":"",
-                    "Develop":"",
+                    "Branches":[],
+                    "Versions":[],
+                    "Modes":[],
                     "Release_Path_Unix":"",
                     "Release_Path_Win32":"",
                     "Release_Path_Darwin":"",
@@ -111,7 +115,22 @@ void MyPrefs::btnok_clicked()
                 }
             )");
 
+        // Get Branchs, Versions and Modes
+        for(int i = 0; i < ver_list->get_n_items(); i++)
+        {
+            // Get Item
+            auto item = ver_list->get_item(i);
+
+            // Get properities
+            branches.push_back(item->get_branch_str().c_str());
+            versions.push_back(item->get_version_str().c_str());
+            modes.push_back(item->get_branch_mode());
+        }
+
         // Load config to json file
+        out_data["Branches"] = branches;
+        out_data["Versions"] = versions;
+        out_data["Modes"] = modes;
         out_data["Release_Path_Unix"] = config_unix;
         out_data["Release_Path_Win32"] = config_win32;
         out_data["Release_Path_Darwin"] = config_darwin;
@@ -314,4 +333,5 @@ MyListStore MyPrefs::get_model()
 
 void MyPrefs::save_config_now()
 {
+    btnok_clicked();
 }
