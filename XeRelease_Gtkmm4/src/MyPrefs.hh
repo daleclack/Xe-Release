@@ -20,7 +20,6 @@ public:
 
     // xe_config file management
     void load_config();
-    void save_config_now();
 
     // Background preferences
     void set_background_id(int back_id);

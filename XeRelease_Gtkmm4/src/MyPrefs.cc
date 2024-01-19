@@ -381,8 +381,3 @@ MyListStore MyPrefs::get_model()
     // The store for the dropdown and list
     return ver_list;
 }
-
-void MyPrefs::save_config_now()
-{
-    btnok_clicked();
-}
