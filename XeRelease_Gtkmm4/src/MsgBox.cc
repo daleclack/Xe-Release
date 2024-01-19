@@ -42,7 +42,8 @@ MsgBox::MsgBox()
       btn_box(Gtk::Orientation::HORIZONTAL, 5),
       btn_ok("OK")
 {
-     // Initalize MsgBox
+    // Initalize MsgBox
+    set_title("Message");
     set_icon_name("Xe-Release");
     set_default_size(300, 150);
     // add_button("OK", Gtk::ResponseType::OK);
