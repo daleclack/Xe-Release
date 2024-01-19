@@ -38,6 +38,7 @@ private:
     // The Column View for versions
     MyListStore ver_list;
     Glib::RefPtr<Gtk::NoSelection> selection;
+    Glib::RefPtr<Gtk::StringList> drop_list;
 
     // Factory to renderer branch string
     Glib::RefPtr<Gtk::ColumnViewColumn> branch_column;
@@ -50,6 +51,12 @@ private:
     Glib::RefPtr<Gtk::SignalListItemFactory> version_factory;
     void setup_version(const Glib::RefPtr<Gtk::ListItem> &item);
     void bind_version(const Glib::RefPtr<Gtk::ListItem> &item);
+
+    // Factory to renderer the mode selection
+    Glib::RefPtr<Gtk::ColumnViewColumn> mode_column;
+    Glib::RefPtr<Gtk::SignalListItemFactory> mode_factory;
+    void setup_mode(const Glib::RefPtr<Gtk::ListItem> &item);
+    void bind_mode(const Glib::RefPtr<Gtk::ListItem> &item);
 
     // Strings to store path on Windows and Unix-Like systems
     std::string config_win32, config_unix, config_darwin;

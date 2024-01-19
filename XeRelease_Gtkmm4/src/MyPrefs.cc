@@ -25,9 +25,9 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     selection = Gtk::NoSelection::create(ver_list);
 
     // List content for test
-    ver_list->append(ModelColumns::create("Longterm", "5.15"));
-    ver_list->append(ModelColumns::create("Stable", "9.1"));
-    ver_list->append(ModelColumns::create("Develop", "-1"));
+    ver_list->append(ModelColumns::create("Longterm", "5.15", 0));
+    ver_list->append(ModelColumns::create("Stable", "9.1", 1));
+    ver_list->append(ModelColumns::create("Develop", "-1", 1));
     version_view.set_model(selection);
 
     // Add Column View
@@ -46,6 +46,16 @@ MyPrefs::MyPrefs(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &ref_
     version_factory->signal_setup().connect(sigc::mem_fun(*this, &MyPrefs::setup_version));
     version_column = Gtk::ColumnViewColumn::create("Version", version_factory);
     version_view.append_column(version_column);
+
+    // Create list for mode column
+    drop_list = Gtk::StringList::create({"Mode0", "Mode1"});
+
+    // Add mode column
+    mode_factory = Gtk::SignalListItemFactory::create();
+    mode_factory->signal_bind().connect(sigc::mem_fun(*this, &MyPrefs::bind_mode));
+    mode_factory->signal_setup().connect(sigc::mem_fun(*this, &MyPrefs::setup_mode));
+    mode_column = Gtk::ColumnViewColumn::create("Mode", mode_factory);
+    version_view.append_column(mode_column);
 }
 
 void MyPrefs::btnok_clicked()
@@ -249,10 +259,36 @@ void MyPrefs::bind_version(const Glib::RefPtr<Gtk::ListItem> &item)
                                  Glib::Binding::Flags::BIDIRECTIONAL);
 }
 
+void MyPrefs::setup_mode(const Glib::RefPtr<Gtk::ListItem> &item)
+{
+    // Add dropdown for mode selection
+    auto dropdown_mode = Gtk::make_managed<Gtk::DropDown>(drop_list);
+    item->set_child(*dropdown_mode);
+}
+
+void MyPrefs::bind_mode(const Glib::RefPtr<Gtk::ListItem> &item)
+{
+    // Get Position
+    auto pos = item->get_position();
+
+    // Get Dropdown widget
+    auto dropdown_mode = dynamic_cast<Gtk::DropDown *>(item->get_child());
+    if (!dropdown_mode)
+    {
+        return;
+    }
+
+    // Bind mode
+    auto item1 = ver_list->get_item(pos);
+    dropdown_mode->set_selected(item1->get_branch_mode());
+    Glib::Binding::bind_property(item1->property_branch_mode(), dropdown_mode->property_selected(),
+                                 Glib::Binding::Flags::BIDIRECTIONAL);
+}
+
 void MyPrefs::btnadd_clicked()
 {
     // Append a item to the list
-    ver_list->append(ModelColumns::create("<empty>", "<empty>"));
+    ver_list->append(ModelColumns::create("<empty>", "<empty>", 1));
 }
 
 void MyPrefs::btnremove_clicked()
