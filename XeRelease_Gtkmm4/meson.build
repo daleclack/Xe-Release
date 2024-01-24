@@ -13,8 +13,8 @@ gresources = gnome.compile_resources(
 )
 
 #source files
-src=['src/main.cc', 'src/MyWin.cc', 'src/MyPrefs.cc', 
-     'src/xeapi.cc', 'src/xerelease.cc']
+src=['src/main.cc', 'src/MyWin.cc', 'src/MsgBox.cc',
+    'src/MyPrefs.cc', 'src/xeapi.cc', 'src/xerelease.cc']
 
 #The Gtkmm Library as a dependency
 gtkdep = dependency('gtkmm-4.0')
