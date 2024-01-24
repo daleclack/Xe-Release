@@ -146,7 +146,7 @@ void MyPrefs::btnok_clicked()
             )");
 
         // Get Branchs, Versions and Modes
-        for (int i = 0; i < ver_list->get_n_items(); i++)
+        for (guint i = 0; i < ver_list->get_n_items(); i++)
         {
             // Get Item
             auto item = ver_list->get_item(i);
@@ -211,7 +211,7 @@ void MyPrefs::apply_config()
     background_id = data["background"];
 
     // Set text from json file data
-    for (int i = 0; i < branches_vec.size(); i++)
+    for (guint i = 0; i < branches_vec.size(); i++)
     {
         ver_list->append(ModelColumns::create(
             branches_vec[i].c_str(), versions_vec[i].c_str(), modes_vec[i]));
