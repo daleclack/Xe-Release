@@ -29,16 +29,24 @@ ninja
 
 (The binaries have moved to release page)
 
-Current version is xe-release 11(Gtk3 and Gtk4 Version);XeRelease 12(Gtkmm3 Version)
+Current version is Xe Release 17
 
-Notice:The Gtk4 version only supports linux
+Release Modes:
 
-Current releases:
+Mode 1:  2019-01-11 to now
+
+Mode 2:  2017-05-18 to now
+
+~~xe-release 11(Gtk3 and Gtk4 Version);XeRelease 12(Gtkmm3 Version)~~
+
+~~Notice:The Gtk4 version only supports linux~~
+
+~~Current releases:~~
 
 ~~Longterm(5.x):2019-01-11 to now~~
 
-Stable : Before 2021-02-07 : The start time is 2017-06-17
+~~Stable(6.x) : Before 2021-02-07 : The start time is 2017-06-17~~
 
-After 2021 : The date is changed to 2017-05-18
+~~After 2021 : The date is changed to 2017-05-18~~
 
-Development : 2017-05-18 to now
+~~Development : 2017-05-18 to now~~
