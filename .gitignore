@@ -69,3 +69,5 @@ FiveRow
 *.out
 *.app
 
+# clangd gererated
+*.idx
