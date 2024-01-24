@@ -70,4 +70,5 @@ FiveRow
 *.app
 
 # clangd gererated
+*/.cache/clangd/index/*
 *.idx
