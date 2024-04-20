@@ -28,6 +28,9 @@ set(SOURCES src/main.cc src/MyWin.cc src/MsgBox.cc
 set(RESOURCE_LIST
     style.css
     style_dark.css
+    fly.png
+    img7.png
+    winpe.png
     STRIPBLANKS menubar.xml
     STRIPBLANKS prefs.ui
     icons/16x16/actions/open-menu.png

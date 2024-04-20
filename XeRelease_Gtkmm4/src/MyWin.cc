@@ -1,7 +1,7 @@
 #include "MyWin.hh"
-#include "img7.xpm"
-#include "winpe.xpm"
-#include "fly.xpm"
+// #include "img7.xpm"
+// #include "winpe.xpm"
+// #include "fly.xpm"
 #include "xeapi.hh"
 #include "xerelease.hh"
 #include "config.hh"
@@ -183,7 +183,8 @@ void MyWin::titlebar_init()
 void MyWin::background1()
 {
     // Set Background Image
-    auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(winpe);
+    // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(winpe);
+    auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/winpe.png");
     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
     background.set_pixbuf(sized);
     // Free Memory
@@ -206,7 +207,8 @@ void MyWin::background1()
 void MyWin::background2()
 {
     // Set Background Image
-    auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(img7);
+    // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(img7);
+    auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/img7.png");
     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
     background.set_pixbuf(sized);
     // Free Memory
@@ -229,7 +231,8 @@ void MyWin::background2()
 void MyWin::background3()
 {
     // Set Background Image
-    auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
+    // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
+    auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
     background.set_pixbuf(sized);
     // Free Memory
