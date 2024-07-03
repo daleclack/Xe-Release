@@ -84,6 +84,8 @@ static void path_translate(char *result, const char *version)
     {
         // Just combine the release file path and filename
         std::string path;
+
+        // Get the major version number
         std::string tmp_str = std::string(version);
         size_t pos = tmp_str.find_first_of(".");
         std::string version_major = tmp_str.substr(0, pos);
