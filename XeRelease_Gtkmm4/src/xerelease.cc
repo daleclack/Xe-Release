@@ -84,19 +84,22 @@ static void path_translate(char *result, const char *version)
     {
         // Just combine the release file path and filename
         std::string path;
+        std::string tmp_str = std::string(version);
+        size_t pos = tmp_str.find_first_of(".");
+        std::string version_major = tmp_str.substr(0, pos);
         switch (get_os_type())
         {
         case OS_Type::Linux:
             path = data1["Release_Path_Unix"];
-            snprintf(result, 57, "%s/xe-%c.x", path.c_str(), version[0]);
+            snprintf(result, 57, "%s/xe-%s.x", path.c_str(), version_major.c_str());
             break;
         case OS_Type::Darwin:
             path = data1["Release_Path_Darwin"];
-            snprintf(result, 57, "%s/xe-%c.x", path.c_str(), version[0]);
+            snprintf(result, 57, "%s/xe-%s.x", path.c_str(), version_major.c_str());
             break;
         case OS_Type::Windows:
             path = data1["Release_Path_Win32"];
-            snprintf(result, 57, "%s\\xe-%c.x", path.c_str(), version[0]);
+            snprintf(result, 57, "%s\\xe-%s.x", path.c_str(), version_major.c_str());
             break;
         }
         // if (rel_unix_file_system_detected())
