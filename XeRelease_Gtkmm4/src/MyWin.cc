@@ -85,20 +85,21 @@ MyWin::MyWin()
     // The vaild background id is 1 to 3
     // else the background 3 will load
     back_id = prefs->get_background_id();
-    switch (back_id)
-    {
-    case 1:
-        background1();
-        break;
-    case 2:
-        background2();
-        break;
-    case 3:
-        background3();
-        break;
-    default:
-        background3();
-    }
+    set_background();
+    // switch (back_id)
+    // {
+    // case 1:
+    //     background1();
+    //     break;
+    // case 2:
+    //     background2();
+    //     break;
+    // case 3:
+    //     background3();
+    //     break;
+    // default:
+    //     background3();
+    // }
 
     // Create Style for widgets
     // Due to the changes of Gtk4.10, the way to load custom style is changed
@@ -178,6 +179,43 @@ void MyWin::titlebar_init()
     menubtn.set_icon_name("open-menu");
     menubtn.set_popover(popover);
     header.pack_end(menubtn);
+}
+
+void MyWin::set_background()
+{
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf;
+    switch (back_id)
+    {
+        case 1:
+            pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/winpe.png");
+            break;
+        case 2:
+            pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/img7.png");
+            break;
+        case 3:
+            pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
+            break;
+        default:
+            pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
+            break;
+    }
+    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+    background.set_pixbuf(sized);
+    // Free Memory
+    pixbuf.reset();
+    sized.reset();
+
+    // Update config
+    if (!start)
+    {
+        prefs->set_background_id(3);
+        // prefs->background_id = 3;
+        // prefs->save_config_now();
+    }
+    else
+    {
+        start = false;
+    }
 }
 
 void MyWin::background1()
