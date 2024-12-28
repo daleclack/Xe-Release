@@ -172,6 +172,8 @@ void MyWin::titlebar_init()
     add_action("back1", sigc::bind(sigc::mem_fun(*this, &MyWin::set_background), "1"));
     add_action("back2", sigc::bind(sigc::mem_fun(*this, &MyWin::set_background), "2"));
     add_action("back3", sigc::bind(sigc::mem_fun(*this, &MyWin::set_background), "3"));
+    add_action("back4", sigc::bind(sigc::mem_fun(*this, &MyWin::set_background), "4"));
+    add_action("back5", sigc::bind(sigc::mem_fun(*this, &MyWin::set_background), "5"));
     add_action("about", sigc::mem_fun(*this, &MyWin::about_dialog));
     add_action("quit", sigc::mem_fun(*this, &MyWin::hide));
 
@@ -199,8 +201,14 @@ void MyWin::set_background(const std::string& id)
     case 3:
         pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
         break;
+    case 4:
+        pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/c182rg_1.png");
+        break;
+    case 5:
+        pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/c182rg_2.png");
+        break;
     default:
-        pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
+        pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/c182rg_1.png");
         break;
     }
     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
@@ -426,7 +434,7 @@ void MyWin::about_dialog()
 {
     char *version, *copyright;
     // The Gtkmm Version
-    version = g_strdup_printf("18.0\nRunning Against Gtkmm %d.%d.%d\n",
+    version = g_strdup_printf("19.0\nRunning Against Gtkmm %d.%d.%d\n",
                               GTKMM_MAJOR_VERSION,
                               GTKMM_MINOR_VERSION,
                               GTKMM_MICRO_VERSION);

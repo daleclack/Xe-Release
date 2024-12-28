@@ -20,6 +20,14 @@
                     <attribute name='label'>XeRelease15-17</attribute>
                     <attribute name='action'>win.back3</attribute>
                 </item>
+                <item>
+                    <attribute name='label'>XeRelease18-1</attribute>
+                    <attribute name='action'>win.back4</attribute>
+                </item>
+                <item>
+                    <attribute name='label'>XeRelease18-2</attribute>
+                    <attribute name='action'>win.back5</attribute>
+                </item>
             </submenu>
             <!-- <item>
                 <attribute name='custom'>check_dark</attribute>

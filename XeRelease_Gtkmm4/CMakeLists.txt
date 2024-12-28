@@ -1,6 +1,6 @@
 set(CMAKE_CXX_STANDARD 17)
 cmake_minimum_required(VERSION 3.10.0)
-project(XeRelease VERSION 18.0.0)
+project(XeRelease VERSION 19.0.0)
 
 #Add GCR_CMake
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../GCR_CMake/macros)
@@ -31,6 +31,8 @@ set(RESOURCE_LIST
     fly.png
     img7.png
     winpe.png
+    c182rg_1.png
+    c182rg_2.png
     STRIPBLANKS menubar.xml
     STRIPBLANKS prefs.ui
     icons/16x16/actions/open-menu.png
