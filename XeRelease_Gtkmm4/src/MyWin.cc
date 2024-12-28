@@ -85,7 +85,7 @@ MyWin::MyWin()
     // The vaild background id is 1 to 3
     // else the background 3 will load
     back_id = prefs->get_background_id();
-    set_background();
+    set_background("0");
     // switch (back_id)
     // {
     // case 1:
@@ -169,9 +169,9 @@ void MyWin::titlebar_init()
 
     // Add Menu Actions
     add_action("configs", sigc::mem_fun(*this, &MyWin::config_dialog));
-    add_action("back1", sigc::mem_fun(*this, &MyWin::background1));
-    add_action("back2", sigc::mem_fun(*this, &MyWin::background2));
-    add_action("back3", sigc::mem_fun(*this, &MyWin::background3));
+    add_action("back1", sigc::bind(sigc::mem_fun(*this, &MyWin::set_background), "1"));
+    add_action("back2", sigc::bind(sigc::mem_fun(*this, &MyWin::set_background), "2"));
+    add_action("back3", sigc::bind(sigc::mem_fun(*this, &MyWin::set_background), "3"));
     add_action("about", sigc::mem_fun(*this, &MyWin::about_dialog));
     add_action("quit", sigc::mem_fun(*this, &MyWin::hide));
 
@@ -181,23 +181,27 @@ void MyWin::titlebar_init()
     header.pack_end(menubtn);
 }
 
-void MyWin::set_background()
+void MyWin::set_background(const std::string& id)
 {
+    if (id != "0")
+    {
+        back_id = std::stoi(id);
+    }
     Glib::RefPtr<Gdk::Pixbuf> pixbuf;
     switch (back_id)
     {
-        case 1:
-            pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/winpe.png");
-            break;
-        case 2:
-            pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/img7.png");
-            break;
-        case 3:
-            pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
-            break;
-        default:
-            pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
-            break;
+    case 1:
+        pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/winpe.png");
+        break;
+    case 2:
+        pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/img7.png");
+        break;
+    case 3:
+        pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
+        break;
+    default:
+        pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
+        break;
     }
     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
     background.set_pixbuf(sized);
@@ -208,7 +212,7 @@ void MyWin::set_background()
     // Update config
     if (!start)
     {
-        prefs->set_background_id(3);
+        prefs->set_background_id(back_id);
         // prefs->background_id = 3;
         // prefs->save_config_now();
     }
@@ -218,77 +222,77 @@ void MyWin::set_background()
     }
 }
 
-void MyWin::background1()
-{
-    // Set Background Image
-    // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(winpe);
-    auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/winpe.png");
-    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
-    background.set_pixbuf(sized);
-    // Free Memory
-    pixbuf.reset();
-    sized.reset();
+// void MyWin::background1()
+// {
+//     // Set Background Image
+//     // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(winpe);
+//     auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/winpe.png");
+//     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+//     background.set_pixbuf(sized);
+//     // Free Memory
+//     pixbuf.reset();
+//     sized.reset();
 
-    // Update config
-    if (!start)
-    {
-        prefs->set_background_id(1);
-        // prefs->background_id = 1;
-        // prefs->save_config_now();
-    }
-    else
-    {
-        start = false;
-    }
-}
+//     // Update config
+//     if (!start)
+//     {
+//         prefs->set_background_id(1);
+//         // prefs->background_id = 1;
+//         // prefs->save_config_now();
+//     }
+//     else
+//     {
+//         start = false;
+//     }
+// }
 
-void MyWin::background2()
-{
-    // Set Background Image
-    // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(img7);
-    auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/img7.png");
-    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
-    background.set_pixbuf(sized);
-    // Free Memory
-    pixbuf.reset();
-    sized.reset();
+// void MyWin::background2()
+// {
+//     // Set Background Image
+//     // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(img7);
+//     auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/img7.png");
+//     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+//     background.set_pixbuf(sized);
+//     // Free Memory
+//     pixbuf.reset();
+//     sized.reset();
 
-    // Update config
-    if (!start)
-    {
-        prefs->set_background_id(2);
-        // prefs->background_id = 2;
-        // prefs->save_config_now();
-    }
-    else
-    {
-        start = false;
-    }
-}
+//     // Update config
+//     if (!start)
+//     {
+//         prefs->set_background_id(2);
+//         // prefs->background_id = 2;
+//         // prefs->save_config_now();
+//     }
+//     else
+//     {
+//         start = false;
+//     }
+// }
 
-void MyWin::background3()
-{
-    // Set Background Image
-    // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
-    auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
-    auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
-    background.set_pixbuf(sized);
-    // Free Memory
-    pixbuf.reset();
-    sized.reset();
+// void MyWin::background3()
+// {
+//     // Set Background Image
+//     // auto pixbuf = Gdk::Pixbuf::create_from_xpm_data(fly);
+//     auto pixbuf = Gdk::Pixbuf::create_from_resource("/org/gtk/daleclack/fly.png");
+//     auto sized = pixbuf->scale_simple(640, 360, Gdk::InterpType::BILINEAR);
+//     background.set_pixbuf(sized);
+//     // Free Memory
+//     pixbuf.reset();
+//     sized.reset();
 
-    // Update config
-    if (!start)
-    {
-        prefs->set_background_id(3);
-        // prefs->background_id = 3;
-        // prefs->save_config_now();
-    }
-    else
-    {
-        start = false;
-    }
-}
+//     // Update config
+//     if (!start)
+//     {
+//         prefs->set_background_id(3);
+//         // prefs->background_id = 3;
+//         // prefs->save_config_now();
+//     }
+//     else
+//     {
+//         start = false;
+//     }
+// }
 
 void MyWin::config_dialog()
 {

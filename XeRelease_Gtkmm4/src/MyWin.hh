@@ -51,10 +51,10 @@ private:
     // Backgrounds
     int back_id = 3;
     bool start = true;
-    void set_background();
-    void background1();
-    void background2();
-    void background3();
+    void set_background(const std::string& id);
+    // void background1();
+    // void background2();
+    // void background3();
 
     // Version Configs
     struct tm *local;
